@@ -31,7 +31,6 @@ public class UserService {
   public ResponseEntity<String> signup(SignupRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());
-    String email = requestDto.getEmail();
     String nickname = requestDto.getNickname();
 
     if (Pattern.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
@@ -41,7 +40,7 @@ public class UserService {
       if (checkUsername.isPresent()) {
         throw new IllegalArgumentException("중복된 username 입니다.");
       } else {
-        User user = new User(username, password, email, nickname);
+        User user = new User(username, password, nickname);
         userRepository.save(user);
 
         return ResponseEntity.ok().body("회원가입 성공");
