@@ -103,4 +103,9 @@ public class UserController {
         }
         return null;
     }
+    @GetMapping("/user/accumulated_id")
+    public String getaccumulatedtime() {
+
+        return null;
+    }
 }
