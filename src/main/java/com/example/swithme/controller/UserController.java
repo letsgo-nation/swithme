@@ -34,8 +34,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
-        return userService.login(requestDto,response);
+    public String login(@ModelAttribute LoginRequestDto requestDto, HttpServletResponse response) {
+        userService.login(requestDto,response);
+        return "index";
     }
 
     @GetMapping("/profile")
@@ -58,14 +59,7 @@ public class UserController {
 
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-        String token = kakaoService.kakaoLogin(code); // 반환 값이 JWT 토큰
-
-        token = token.substring(7);
-        token = "Bearer%20" + token;
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER,token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
+        kakaoService.kakaoLogin(code, response); // 쿠키 생성
         return "redirect:/";
     }
 

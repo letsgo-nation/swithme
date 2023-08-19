@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="layout/head :: common_header(~{::title},~{::link})">
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
     <title>로그인</title>
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
@@ -10,7 +10,7 @@
 <div th:replace="~{fragment/nav :: useNav}">insert</div>
 
 <div class="main">
-    <form action="/api/users/login" method="post" id="login">
+    <form action="/api/user/login" method="post" id="login">
         <fieldset>
             <legend>일반 로그인</legend>
             <label for="username">아이디</label><br>
@@ -24,11 +24,10 @@
 
         <fieldset>
             <legend>로그인</legend>
-            <a href="/api/user/google/callback?code=">구글로 가라</a>
-            <button type="button"  onclick="location.href='/api/user/google/callback'">
+            <button type="button"  onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com'">
                 Log in with Google
             </button>
-            <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=69c6784b29563e201f3e2b1639ea772c&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+            <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=7073cdcdc5d2c3f6193e4ab0db89ba84&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
                 카카오로 로그인하기
             </button>
         </fieldset>
