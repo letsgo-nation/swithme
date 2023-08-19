@@ -69,8 +69,8 @@ public class GoogleService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "548376826797-uqt9obkjel3lov2i65ia5580hg1a1ntb.apps.googleusercontent.com");
-        body.add("client_secret", "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");
+        body.add("client_id", "964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com");
+        body.add("client_secret", "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");
         body.add("redirect_uri","http://localhost:8080/api/user/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
         body.add("code",code); // 인가 코드
 
