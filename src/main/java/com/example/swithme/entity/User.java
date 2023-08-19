@@ -32,6 +32,9 @@ public class User {
 
     private String googleId;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
