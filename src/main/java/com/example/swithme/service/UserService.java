@@ -1,7 +1,7 @@
 package com.example.swithme.service;
 
 import com.example.swithme.dto.*;
-import com.example.swithme.entity.TokenBlacklist;
+import com.example.swithme.dto.user.SignupRequestDto;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.repository.TokenBlacklistRepository;
@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -28,25 +30,37 @@ public class UserService {
   private final JwtUtil jwtUtil;
   private final TokenBlacklistRepository tokenBlacklistRepository;
 
-  public ResponseEntity<String> signup(SignupRequestDto requestDto) {
-    String username = requestDto.getUsername();
-    String password = passwordEncoder.encode(requestDto.getPassword());
-    String nickname = requestDto.getNickname();
+  //회원가입
+  public void signup(SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+    String username = signupRequestDto.getUsername();
+    String password = signupRequestDto.getPassword();
+    String checkPassword = signupRequestDto.getCheckPassword();
+    String email = signupRequestDto.getEmail();
+    String nickName = signupRequestDto.getNickName();
 
-    if (Pattern.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
-            requestDto.getUsername()) && Pattern.matches("^[a-z0-9]{4,10}$",
-            requestDto.getPassword())) {
-      Optional<User> checkUsername = userRepository.findByUsername(username);
-      if (checkUsername.isPresent()) {
-        throw new IllegalArgumentException("중복된 username 입니다.");
-      } else {
-        User user = new User(username, password, nickname);
-        userRepository.save(user);
-
-        return ResponseEntity.ok().body("회원가입 성공");
-      }
+    //닉네임과 같은 값이 비밀번호에 포함된 경우 회원가입 실패
+    boolean usernameCheck = password.contains(username);
+    if (usernameCheck) {
+      bindingResult.addError(new FieldError("signupRequestDto", "password", "비밀번호에 유저네임을 포함할 수 없습니다."));
     }
-    throw new IllegalArgumentException("username, password 형식에 맞춰 작성해주세요.");
+
+    //가입시 비밀번호 입력, 비밀번호 확인 같은지 확인
+    if (!password.equals(checkPassword)) {
+      bindingResult.addError(new FieldError("signupRequestDto", "password", "비밀번호가 일치하지 않습니다."));
+    }
+
+    //회원 중복 확인
+    Optional<User> checkUsername = userRepository.findByUsername(username);
+    if (checkUsername.isPresent()) {
+      bindingResult.addError(new FieldError("signupRequestDto", "username", "중복된 사용자가 존재합니다."));
+    }
+
+    //에러 없을 때 회원가입 성공
+    if (!bindingResult.hasErrors()) {
+      String passwordEncode = passwordEncoder.encode(signupRequestDto.getPassword());
+      User user = new User(username, passwordEncode, email, nickName);
+      userRepository.save(user);
+    }
   }
 
   public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response) {

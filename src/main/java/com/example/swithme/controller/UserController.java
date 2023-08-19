@@ -1,6 +1,7 @@
 package com.example.swithme.controller;
 
 import com.example.swithme.dto.*;
+import com.example.swithme.dto.user.SignupRequestDto;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.GoogleService;
@@ -13,7 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -25,10 +30,27 @@ public class UserController {
     private final GoogleService googleService;
     private final JwtUtil jwtUtil;
 
-    // 회원가입
-    @PostMapping("/users/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequestDto requestDto) {
-        return userService.signup(requestDto);
+    // 회원가입 페이지 이동
+    @GetMapping("/users/signup")
+    public String signUp(Model model) {
+        model.addAttribute("signupRequestDto", new SignupRequestDto());
+        return "user/signUp";
+    }
+
+    //회원가입
+    @PostMapping("/api/users/signup")
+    public String signup(@Validated @ModelAttribute SignupRequestDto signupRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        //검증 오류 확인 후 에러 발생시 리턴
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            return "user/signUp";
+        }
+        //특정 조건 오류 검증 후 실패시 리턴
+        userService.signup(signupRequestDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "user/signUp";
+        }
+        return "user/login";
     }
 
     // 로그인 페이지 이동
