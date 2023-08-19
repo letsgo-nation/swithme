@@ -1,6 +1,6 @@
 package com.example.swithme.entity;
 
-import com.example.swithme.dto.UpdateRequestDto;
+import com.example.swithme.dto.user.UserUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,18 +22,18 @@ public class User {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "nickname")
     private String nickname;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
     private Long kakaoId;
 
     private String googleId;
-
-    @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
 
     public User(String username, String password, String nickname) {
         this.username = username;
@@ -41,6 +41,7 @@ public class User {
         this.nickname = nickname;
     }
 
+    // 카카오 로그인시 회원가입
     public User(String username, String password, String nickname, Long kakaoId) {
         this.username = username;
         this.password = password;
@@ -48,6 +49,7 @@ public class User {
         this.kakaoId = kakaoId;
     }
 
+    // 구글 로그인시 회원가입
     public User(String username, String password, String nickname, String googleId) {
         this.username = username;
         this.password = password;
@@ -65,8 +67,7 @@ public class User {
         return this;
     }
 
-    public void update(UpdateRequestDto updateRequestDto, String password) {
-        this.nickname = updateRequestDto.getNickname();
-        this.password = password;
+    public void update(UserUpdateRequestDto userUpdateRequestDto) {
+
     }
 }

@@ -1,7 +1,7 @@
 package com.example.swithme.controller;
 
-import com.example.swithme.dto.*;
-import com.example.swithme.dto.user.SignupRequestDto;
+import com.example.swithme.dto.user.*;
+import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.GoogleService;
@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,21 +86,68 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/users/profile")
-    @ResponseBody
-    public UserResponseDto lookupUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.lookupUser(userDetails.getUser().getUserId());
+    //마이 페이지 이동
+    @GetMapping("/users/myPage")
+    public String myPage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("userUpdateRequestDto", new UserUpdateRequestDto(user));
+        return "user/myPage";
     }
 
-    @PutMapping("/users/profile/{userId}")
-    @ResponseBody
-    public ResponseEntity<ApiResponseDto> updateUser(@PathVariable Long userId, @RequestBody UpdateRequestDto updateRequestDto) {
-        return userService.updateUser(userId, updateRequestDto);
+    //정보 수정(닉네임, 이메일)
+    @PostMapping("/api/users/myPage")
+    public String updateUser(@Validated @ModelAttribute UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            return "user/myPage";
+        }
+
+        UserUpdateResponseDto userUpdateResponseDto = userService.updateUser(userUpdateRequestDto);
+        model.addAttribute("userUpdateRequestDto", userUpdateResponseDto);
+        return "user/myPage";
     }
 
-    @DeleteMapping("/users/profile/{userId}")
-    @ResponseBody
-    public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.deletePost(userId, userDetails.getUser());
+    //비밀번호 변경 페이지 이동
+    @GetMapping("/users/updatePassword")
+    public String updateMovePassword(Model model) {
+        model.addAttribute("passwordRequestDto", new PasswordRequestDto());
+        return "user/updatePassword";
+    }
+
+    //비밀번호 변경
+    @PostMapping("/api/users/updatePassword")
+    public String updatePassword(@Validated @ModelAttribute PasswordRequestDto passwordRequestDto, BindingResult bindingResult, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            return "user/updatePassword";
+        }
+        userService.updatePassword(passwordRequestDto, userDetails.getUser(), bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "user/updatePassword";
+        }
+        return "redirect:/?success=password";
+    }
+
+    //회원탈퇴 페이지로 이동
+    @GetMapping("/users/delete")
+    public String moveDeleteUser(@AuthenticationPrincipal  UserDetailsImpl userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("username", user.getUsername());
+        return "user/deleteUser";
+    }
+
+    //회원탈퇴
+    @PostMapping("/api/users/delete")
+    public String deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute PasswordRequestDto passwordRequestDto, Model model, HttpServletResponse response) {
+        User user = userDetails.getUser();
+        if (userService.checkPassword(user, passwordRequestDto)) {
+            userService.delete(user);
+            jwtUtil.expireCookie(response);
+            return "redirect:/?success=delete";
+        }
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("error", "비밀번호를 확인해주세요");
+        return "user/deleteUser";
     }
 }

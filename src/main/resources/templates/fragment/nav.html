@@ -10,7 +10,7 @@
     <div class="nav-SWM">
       <ul>
 <!--        <li><a href="#" th:if="${nickName}"><p> <span th:text="${nickName}"></span>님의 접속을 환영합니다.</p></a></li>-->
-        <li><a th:href="@{/users/checkPassword}" sec:authorize="isAuthenticated()">마이페이지</a></li>
+        <li><a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()">마이페이지</a></li>
         <li><a th:href="@{/users/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
 
         <li><a th:href="@{/users/login}" sec:authorize="!isAuthenticated()">로그인</a></li>

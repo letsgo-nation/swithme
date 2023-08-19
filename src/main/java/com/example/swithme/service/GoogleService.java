@@ -1,6 +1,6 @@
 package com.example.swithme.service;
 
-import com.example.swithme.dto.GoogleUserInfoDto;
+import com.example.swithme.dto.user.GoogleUserInfoDto;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.repository.UserRepository;
