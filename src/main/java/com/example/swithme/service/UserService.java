@@ -66,12 +66,6 @@ public class UserService {
     return ResponseEntity.ok().body("로그인 성공");
   }
 
-  @Transactional
-  public void logout(String token) {
-    TokenBlacklist tokenBlacklist = new TokenBlacklist(token);
-    tokenBlacklistRepository.save(tokenBlacklist);
-  }
-
   public UserResponseDto lookupUser(Long userId) {
     User user = findUser(userId);
     return new UserResponseDto(user);

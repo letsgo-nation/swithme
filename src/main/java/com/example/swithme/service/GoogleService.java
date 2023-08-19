@@ -7,6 +7,7 @@ import com.example.swithme.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -31,7 +32,7 @@ public class GoogleService {
     private final JwtUtil jwtUtil;
 
 
-    public String googleLogin(String code) throws JsonProcessingException {
+    public String googleLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
@@ -44,6 +45,7 @@ public class GoogleService {
 
         // 4. JWT 토큰 반환
         String createToken = jwtUtil.createToken(kakaoUser.getUsername());
+        jwtUtil.addJwtToCookie(createToken,response);
 
         //return createToken;
         return createToken;
@@ -71,7 +73,7 @@ public class GoogleService {
         body.add("grant_type", "authorization_code");
         body.add("client_id", "964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com");
         body.add("client_secret", "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");
-        body.add("redirect_uri","http://localhost:8080/api/user/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
+        body.add("redirect_uri","http://localhost:8080/api/users/google/callback"); // 애플리케이션 등록시 설정한 redirect_uri
         body.add("code",code); // 인가 코드
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity

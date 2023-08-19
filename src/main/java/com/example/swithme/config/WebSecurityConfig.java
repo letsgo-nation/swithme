@@ -60,8 +60,7 @@ public class WebSecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                         .permitAll() // resources 접근 허용 설정
                         .requestMatchers("/users/**").permitAll()
-                        .requestMatchers("/api/user/**").permitAll() // 로그인, 회원가입 누구나 가능.
-                        .requestMatchers("/api/view/user/**").permitAll()
+                        .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/board").authenticated()
 

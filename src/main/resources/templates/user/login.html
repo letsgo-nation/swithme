@@ -10,7 +10,7 @@
 <div th:replace="~{fragment/nav :: useNav}">insert</div>
 
 <div class="main">
-    <form action="/api/user/login" method="post" id="login">
+    <form action="/api/users/login" method="post" id="login">
         <fieldset>
             <legend>일반 로그인</legend>
             <label for="username">아이디</label><br>
@@ -27,7 +27,7 @@
                 <button type="button" onclick="redirectToGoogleLogin()">
                     Log in with Google
                 </button>
-            <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=7073cdcdc5d2c3f6193e4ab0db89ba84&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+            <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=7073cdcdc5d2c3f6193e4ab0db89ba84&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">
                 카카오로 로그인하기
             </button>
         </fieldset>
@@ -37,7 +37,7 @@
 <script>
     function redirectToGoogleLogin() {
         const clientId = "964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com";
-        const redirectUri = "http://localhost:8080/api/user/google/callback";
+        const redirectUri = "http://localhost:8080/api/users/google/callback";
 
         const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email%20profile`;
 

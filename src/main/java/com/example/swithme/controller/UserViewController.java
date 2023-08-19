@@ -19,12 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class UserViewController {
 
-    private final UserService userService;
 
-    @GetMapping("/users/login")
-    public String login() {
-        return "user/login";
-    }
+
 
     @ResponseBody
     @GetMapping("/board")

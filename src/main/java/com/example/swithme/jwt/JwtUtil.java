@@ -120,7 +120,7 @@ public class JwtUtil {
     // HttpServletRequest 에서 Cookie Value : JWT 가져오기
     public String getTokenFromRequest(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        if(cookies != null) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
                     try {
@@ -132,5 +132,13 @@ public class JwtUtil {
             }
         }
         return null;
+    }
+
+    public void expireCookie(HttpServletResponse response) {
+
+        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 }
