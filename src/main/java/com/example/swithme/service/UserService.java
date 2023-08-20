@@ -1,6 +1,7 @@
 package com.example.swithme.service;
 
 import com.example.swithme.dto.user.*;
+import com.example.swithme.entity.TokenBlacklist;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.repository.TokenBlacklistRepository;
@@ -26,6 +27,14 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
   private final TokenBlacklistRepository tokenBlacklistRepository;
+
+
+  // 로그아웃시 토큰 블랙리스트 추가
+  @Transactional
+  public void logout(String token) {
+    TokenBlacklist tokenBlacklist = new TokenBlacklist(token);
+    tokenBlacklistRepository.save(tokenBlacklist);
+  }
 
   //회원가입
   public void signup(SignupRequestDto signupRequestDto, BindingResult bindingResult) {
@@ -55,7 +64,7 @@ public class UserService {
     //에러 없을 때 회원가입 성공
     if (!bindingResult.hasErrors()) {
       String passwordEncode = passwordEncoder.encode(signupRequestDto.getPassword());
-      User user = new User(username, passwordEncode, email, nickName);
+      User user = new User(username, passwordEncode, nickName);
       userRepository.save(user);
     }
   }
@@ -98,25 +107,34 @@ public class UserService {
   }
 
   //비밀번호 변경
+  @Transactional
   public void updatePassword(PasswordRequestDto passwordRequestDto, User user, BindingResult bindingResult) {
     String username = user.getUsername();
     String password = passwordRequestDto.getPassword();
+    String newPassword = passwordRequestDto.getNewPassword();
+    System.out.println("newPassword = " + newPassword);
     String passwordCheck = passwordRequestDto.getCheckPassword();
 
-    //닉네임과 같은 값이 비밀번호에 포함된 경우 회원가입 실패
-    boolean usernameCheck = password.contains(username);
+    //현재 비밀번호와 입력한 비밀번호가 틀리면 비밀번호 변경 실패
+    if(!passwordEncoder.matches(password, user.getPassword())) {
+      bindingResult.addError(new FieldError("passwordRequestDto", "password", "비밀번호를 확인해주세요."));
+    }
+    //닉네임과 같은 값이 비밀번호에 포함된 경우 비밀번호 변경 실패
+    boolean usernameCheck = newPassword.contains(username);
     if (usernameCheck) {
-      bindingResult.addError(new FieldError("passwordRequestDto", "password", "비밀번호에 유저네임을 포함할 수 없습니다."));
+      bindingResult.addError(new FieldError("passwordRequestDto", "newPassword", "비밀번호에 유저네임을 포함할 수 없습니다."));
     }
 
     //비밀번호 일치여부 확인
-    if (!password.equals(passwordCheck)) {
-      bindingResult.addError(new FieldError("passwordRequestDto", "password", "비밀번호가 일치하지 않습니다."));
+    if (!newPassword.equals(passwordCheck)) {
+      bindingResult.addError(new FieldError("passwordRequestDto", "newPassword", "비밀번호가 일치하지 않습니다."));
     }
 
-    String encode = passwordEncoder.encode(password);
-    user.setPassword(encode);
-    userRepository.save(user);
+    if(!bindingResult.hasErrors()) {
+      User findUser = userRepository.findById(user.getUserId()).get();
+      String encode = passwordEncoder.encode(newPassword);
+      findUser.setPassword(encode);
+    }
   }
 
   //회원탈퇴

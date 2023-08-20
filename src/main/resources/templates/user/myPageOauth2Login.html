@@ -11,7 +11,7 @@
   <div class="main">
     <h3>회원정보 수정</h3>
 
-    <form action="/api/users/myPage" method="post" th:object="${userUpdateRequestDto}">
+    <form action="/api/users/Oauth2myPage" method="post" th:object="${userUpdateRequestDto}">
 
       <label for="username">아이디</label><br>
       <input type="text" id="username"  name="username" th:field= "*{username}" readonly><br>
@@ -21,6 +21,7 @@
       <input type="text" id="nickName" name="nickname" th:field = "*{nickname}" ><br>
       <p th th:errors="*{nickname}"></p>
 
+
 <!--      <label for="email">이메일</label><br>-->
 <!--      <input type="email" id="email" name="email" th:field = "*{email}"><br>-->
 <!--      <p th th:errors="*{email}"></p><br>-->
@@ -28,10 +29,6 @@
       <input class="btn btn-primary submit" type="submit" value="확인">
     </form>
     <br>
-    <div>
-      <a th:href="@{/users/updatePassword}">비밀번호 변경</a>
-      <a th:href="@{/users/delete}">회원탈퇴</a>
-    </div>
   </div>
 </div>
 </body>

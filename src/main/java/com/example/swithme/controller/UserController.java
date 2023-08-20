@@ -8,6 +8,7 @@ import com.example.swithme.service.GoogleService;
 import com.example.swithme.service.KakaoService;
 import com.example.swithme.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -61,7 +65,15 @@ public class UserController {
     //일반 로그인
     @PostMapping("/api/users/login")
     public String login(@ModelAttribute LoginRequestDto requestDto, HttpServletResponse response) {
-        userService.login(requestDto,response);
+
+        // 로그인 실패시
+        try {
+            userService.login(requestDto,response);
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+            return "redirect:/users/login?error=true";
+        }
+
         return "redirect:/";
     }
 
@@ -79,9 +91,11 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 로그아웃
+    //로그아웃
     @GetMapping("/users/logout")
-    public String logout(HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        String tokenValue = jwtUtil.getTokenFromRequest(request);
+        userService.logout(tokenValue);
         jwtUtil.expireCookie(response);
         return "redirect:/";
     }
@@ -90,14 +104,17 @@ public class UserController {
     @GetMapping("/users/myPage")
     public String myPage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();
+        if((user.getGoogleId() == null && user.getKakaoId() == null)) {
+            model.addAttribute("userUpdateRequestDto", new UserUpdateRequestDto(user));
+            return "user/myPage";
+        }
         model.addAttribute("userUpdateRequestDto", new UserUpdateRequestDto(user));
-        return "user/myPage";
+        return "user/myPageOauth2Login";
     }
 
-    //정보 수정(닉네임, 이메일)
+    //일반 로그인 정보 수정(닉네임, 이메일)
     @PostMapping("/api/users/myPage")
     public String updateUser(@Validated @ModelAttribute UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult, Model model) {
-
         if (bindingResult.hasErrors()) {
             log.info("bindingResult={}", bindingResult);
             return "user/myPage";
@@ -108,7 +125,20 @@ public class UserController {
         return "user/myPage";
     }
 
-    //비밀번호 변경 페이지 이동
+    //일반 로그인 정보 수정(닉네임, 이메일)
+    @PostMapping("/api/users/Oauth2myPage")
+    public String updateOauth2User(@Validated @ModelAttribute UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            return "user/myPageOauth2Login";
+        }
+
+        UserUpdateResponseDto userUpdateResponseDto = userService.updateUser(userUpdateRequestDto);
+        model.addAttribute("userUpdateRequestDto", userUpdateResponseDto);
+        return "user/myPageOauth2Login";
+    }
+
+    //일반 로그인 비밀번호 변경 페이지 이동
     @GetMapping("/users/updatePassword")
     public String updateMovePassword(Model model) {
         model.addAttribute("passwordRequestDto", new PasswordRequestDto());

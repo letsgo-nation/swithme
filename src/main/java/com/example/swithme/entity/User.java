@@ -29,12 +29,13 @@ public class User {
     private String nickname;
 
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private UserRoleEnum role = UserRoleEnum.USER;
 
     private Long kakaoId;
 
     private String googleId;
 
+    // 일반 회원가입
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
@@ -68,6 +69,7 @@ public class User {
     }
 
     public void update(UserUpdateRequestDto userUpdateRequestDto) {
+        this.nickname = userUpdateRequestDto.getNickname();
 
     }
 }

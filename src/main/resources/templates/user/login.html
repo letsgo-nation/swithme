@@ -35,6 +35,7 @@
 </div>
 
 <script>
+    // 구글 로그인 시도
     function redirectToGoogleLogin() {
         const clientId = "964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com";
         const redirectUri = "http://localhost:8080/api/users/google/callback";
@@ -43,6 +44,18 @@
 
         window.location.href = googleLoginUrl;
     }
+
+    // URL 매개변수에서 error 값을 읽어와서 경고창을 띄우는 함수
+    function showAlertFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+
+        if (error === 'true') {
+            alert('아이디 또는 비밀번호가 틀립니다.');
+        }
+    }
+    // 페이지 로드 시 showAlertFromUrl 함수 호출
+    window.onload = showAlertFromUrl;
 </script>
 
 </body>

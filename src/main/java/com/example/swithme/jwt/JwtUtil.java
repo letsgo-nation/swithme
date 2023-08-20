@@ -37,6 +37,9 @@ public class JwtUtil {
     // Token
     public static final String BEARER_PREFIX = "Bearer "; //식별자 한칸 띈다.
 
+    @Autowired
+    private TokenBlacklistRepository tokenBlacklistRepository;
+
     // 토큰 만료시간
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
 
@@ -73,6 +76,7 @@ public class JwtUtil {
         try {
             token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
             Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
+            cookie.setMaxAge(3600);
             cookie.setPath("/");
 
             // Response 객체에 Cookie 추가
@@ -140,5 +144,11 @@ public class JwtUtil {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
+    }
+
+    public boolean isTokenBlacklisted(String tokenValue) {
+        String token = BEARER_PREFIX + tokenValue;
+        TokenBlacklist tokenBlacklist = tokenBlacklistRepository.findByToken(token).orElse(null);
+        return tokenBlacklist != null;
     }
 }
