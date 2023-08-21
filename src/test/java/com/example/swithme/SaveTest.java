@@ -17,8 +17,13 @@ public class SaveTest {
 
     @Test
     void saveTest() {
-        String encodePassword = passwordEncoder.encode("1234");
-        User user = new User("spring", encodePassword, "스프링");
+
+        // 일반 로그인
+        User user = new User("spring", passwordEncoder.encode("1234"), "스프링");
         userRepository.save(user);
+
+        // 관리자 로그인
+        User admin = new User("admin", passwordEncoder.encode("1234"), "스프링");
+        userRepository.save(admin);
     }
 }
