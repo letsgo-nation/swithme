@@ -31,14 +31,14 @@ public class CommentService {
     private final MyStudyRepository myStudyRepository;
 
     // 댓글 작성
-    public CommentResponseDto createComment(Long myStudy_id, CommentRequestDto requestDto, User user) {
+    public ApiResponseDto createComment(Long myStudy_id, CommentRequestDto requestDto, User user) {
         // 게시글 유무 확인
         Optional<MyStudy> myStudy = myStudyRepository.findById(myStudy_id);
         // 게시글이 없을 경우
 //        myStudyRepository.findById(myStudy_id).orElseThrow(() -> new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."))
         if (!myStudy.isPresent()) {
             log.error("선택한 게시물이 존재하지 않습니다.");
-            return null;
+            return new ApiResponseDto("선택한 게시물이 존재하지 않습니다.", HttpStatus.BAD_REQUEST.value());
         }
             // 게시물이 있을 경우
         Comment comment = new Comment(requestDto, myStudy.get(), user);
@@ -46,7 +46,7 @@ public class CommentService {
         // DB 저장하기
         commentRepository.save(comment);
         log.info("댓글 저장 완료");
-        return new CommentResponseDto(comment);
+        return new ApiResponseDto("댓글이 저장되었습니다.", HttpStatus.OK.value());
     }
 
     // 댓글 조회
@@ -58,13 +58,13 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
+    public ApiResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
     // 댓글 확인
     Optional<Comment> findComment = commentRepository.findById(id);
     // 해당 댓글이 없을 경우
     if(!findComment.isPresent()) {
         log.error("댓글이 존재하지 않습니다.");
-        return null;
+        return new ApiResponseDto("댓글이 존재하지 않습니다.", HttpStatus.BAD_REQUEST.value());
     }
 
     // 작성자 확인
@@ -72,23 +72,23 @@ public class CommentService {
     Long commentUserId = comment.getUser().getUserId();
     if(!commentUserId.equals(user.getUserId())) {
         log.error("댓글의 작성자가 아니므로 수정이 불가합니다.");
-        return null;
+        return new ApiResponseDto("댓글의 작성자가 아니므로 수정이 불가합니다.", HttpStatus.BAD_REQUEST.value());
     }
 
     // 댓글 수정하기
     comment.update(requestDto);
     log.info("댓글 수정 완료");
-    return new CommentResponseDto(comment);
+    return new ApiResponseDto("댓글 수정이 완료되었습니다.", HttpStatus.OK.value());
     }
 
     // 댓글 삭제
-    public ResponseEntity<ApiResponseDto> deleteComment(Long id, User user) {
+    public ApiResponseDto deleteComment(Long id, User user) {
         // 댓글 확인
         Optional<Comment> findComment = commentRepository.findById(id);
         // 해당 댓글이 없을 경우
         if(!findComment.isPresent()) {
             log.error("댓글이 존재하지 않습니다.");
-            return null;
+            return new ApiResponseDto("댓글이 존재하지 않습니다.", HttpStatus.BAD_REQUEST.value());
         }
 
         // 작성자 확인
@@ -96,13 +96,12 @@ public class CommentService {
         Long commentUserId = comment.getUser().getUserId();
         if(!commentUserId.equals(user.getUserId())) {
             log.error("댓글의 작성자가 아니므로 삭제가 불가합니다.");
-            return null;
+            return new ApiResponseDto("댓글의 작성자가 아니므로 삭제가 불가합니다.", HttpStatus.BAD_REQUEST.value());
         }
 
         // 댓글 삭제하기
         commentRepository.delete(comment);
         log.info("댓글 삭제 완료");
-        return ResponseEntity.status(200).body(new ApiResponseDto("댓글 삭제 성공", HttpStatus.OK.value()));
-
+        return new ApiResponseDto("댓글 삭제가 완료되었습니다.", HttpStatus.OK.value());
     }
 }

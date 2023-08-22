@@ -22,11 +22,12 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping("/myStudy/comment/{id}") @ResponseBody // id는 myStudy id
-    public CommentResponseDto createComment(
+    public ResponseEntity <ApiResponseDto> createComment(
             @PathVariable Long id,
             @RequestBody CommentRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.createComment(id, requestDto, userDetails.getUser());
+        ApiResponseDto responseDto = commentService.createComment(id, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(responseDto);
 
     }
     // 댓글 조회
@@ -42,11 +43,12 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/myStudy/comment/{id}")
     @ResponseBody
-    public CommentResponseDto updateComment (
+    public ResponseEntity<ApiResponseDto> updateComment (
             @PathVariable Long id,
             @RequestBody CommentRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.updateComment(id, requestDto, userDetails.getUser());
+        ApiResponseDto responseDto = commentService.updateComment(id, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(responseDto);
     }
 
     // 댓글 삭제
@@ -55,6 +57,7 @@ public class CommentController {
     public ResponseEntity<ApiResponseDto> deleteComment (
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.deleteComment(id, userDetails.getUser());
+        ApiResponseDto responseDto = commentService.deleteComment(id, userDetails.getUser());
+        return ResponseEntity.ok().body(responseDto);
     }
 }
