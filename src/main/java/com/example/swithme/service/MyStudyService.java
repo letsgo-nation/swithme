@@ -29,7 +29,7 @@ public class MyStudyService {
 //    private final CommentRepository commentRepository;
 
     // 개인 스터디 게시물 생성
-    public MyStudyResponseDto createMyStudy(MyStudyRequestDto requestDto, User user) {
+    public ApiResponseDto createMyStudy(MyStudyRequestDto requestDto, User user) {
 
         Optional<Category> category = categoryRepository.findById(requestDto.getCategory_id());
         // RequestDto -> Entity
@@ -37,9 +37,7 @@ public class MyStudyService {
         // DB 저장
         MyStudy saveMyStudy = myStudyRepository.save(myStudy);
         // Entity -> ResponseDto
-        MyStudyResponseDto myStudyResponseDto = new MyStudyResponseDto(saveMyStudy);
-
-        return myStudyResponseDto;
+        return new ApiResponseDto(HttpStatus.OK.value(), "개인 스터디 게시물 생성 완료", saveMyStudy);
     }
 
     // 전체 개인 스터디 게시글 조회
@@ -71,6 +69,7 @@ public class MyStudyService {
 
         myStudy.get().update(myStudyRequestDto, category.get());
 
+//        return new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", new MyStudyResponseDto(myStudy.get()));
         return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", new MyStudyResponseDto(myStudy.get())));
     }
 

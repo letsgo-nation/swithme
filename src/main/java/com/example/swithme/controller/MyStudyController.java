@@ -23,25 +23,29 @@ public class MyStudyController {
     private final MyStudyService myStudyService;
     private final UserService userService;
 
-    // 개인 스터디 게시물 생성
     @PostMapping("/myStudy")
     @ResponseBody
-    public MyStudyResponseDto createMyStudy(@RequestBody MyStudyRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myStudyService.createMyStudy(requestDto, userDetails.getUser());
+    public ResponseEntity<ApiResponseDto> createMyStudy(
+            @RequestBody MyStudyRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ApiResponseDto responseDto = myStudyService.createMyStudy(requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(responseDto);
     }
-
     // 전체 개인 스터디 게시물 조회
     @GetMapping("/myStudies")
     @ResponseBody
-    public List<MyStudyResponseDto> getMyStudies() {
-        return myStudyService.getMyStudies();
+    public ResponseEntity<List<MyStudyResponseDto>> getMyStudies() {
+         List<MyStudyResponseDto> responseDto = myStudyService.getMyStudies();
+         return ResponseEntity.ok().body(responseDto);
     }
 
     // 개인 스터디 게시물 단건 조회
     @GetMapping("/myStudy/{id}")
     @ResponseBody
-    public MyStudyResponseDto lookupMyStudy(@PathVariable Long id) {
-        return myStudyService.lookupMyStudy(id);
+    public ResponseEntity<MyStudyResponseDto> lookupMyStudy(@PathVariable Long id) {
+        MyStudyResponseDto responseDto = myStudyService.lookupMyStudy(id);
+        return ResponseEntity.ok().body(responseDto);
+
     }
 
     // 개인 스터디 게시물 수정
