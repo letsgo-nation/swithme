@@ -19,7 +19,7 @@ import java.util.List;
 public class MyStudy extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long myStudyId;
 
     @Column(nullable = false)
     private String title;
@@ -46,10 +46,6 @@ public class MyStudy extends Timestamped {
         this.user = user;
         this.category = category;
     }
-
-//    public void addComment(Comment comment) {
-//        this.commentList.add(comment);
-//    }
 
     public void update(MyStudyRequestDto postRequestDto, Category category) {
         this.title = postRequestDto.getTitle();
