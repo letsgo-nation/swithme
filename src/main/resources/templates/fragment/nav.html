@@ -4,22 +4,22 @@
 <body>
 
 <div th:fragment="useNav">
-  <div class="header-SWM">
-    <h2><a th:href="@{/}">StudyWithMe</a></h2>
+    <div class="header-SWM">
+        <h2><a th:href="@{/}">StudyWithMe</a></h2>
 
-    <div class="nav-SWM">
-      <ul>
-<!--        <li><a href="#" th:if="${nickName}"><p> <span th:text="${nickName}"></span>님의 접속을 환영합니다.</p></a></li>-->
-        <li><a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()">마이페이지</a></li>
-        <li><a th:href="@{/users/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
+        <div class="nav-SWM">
+            <ul>
+                <!--        <li><a href="#" th:if="${nickName}"><p> <span th:text="${nickName}"></span>님의 접속을 환영합니다.</p></a></li>-->
+                <li><a th:href="@{/chat/category}" sec:authorize="isAuthenticated()">채팅</a></li>
+                <li><a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a th:href="@{/users/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
 
-        <li><a th:href="@{/users/login}" sec:authorize="!isAuthenticated()">로그인</a></li>
-        <li><a th:href="@{/users/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
-      </ul>
+                <li><a th:href="@{/users/login}" sec:authorize="!isAuthenticated()">로그인</a></li>
+                <li><a th:href="@{/users/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
-
 
 
 </body>

@@ -64,7 +64,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
 
 
         );
