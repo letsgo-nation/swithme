@@ -1,5 +1,9 @@
 'use strict';
 
+// 카테고리 주소를 읽어옴.
+const urlParams= new URLSearchParams(window.location.search);
+const category= urlParams.get("category");
+
 // Html에서 특정 부분을 선택하는 코드
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
@@ -44,10 +48,10 @@ function connect(event) {
 // 최초 연결시 실행되는 함수
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    stompClient.subscribe(`/topic/public/${category}`, onMessageReceived); // 수정
 
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send(`/app/chat.addUser/${category}`,  // 수정
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
@@ -70,7 +74,7 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send(`/app/chat.sendMessage/${category}`, {}, JSON.stringify(chatMessage)); // 수정
         messageInput.value = '';
     }
     event.preventDefault();

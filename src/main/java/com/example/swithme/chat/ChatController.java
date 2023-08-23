@@ -22,14 +22,14 @@ public class ChatController {
         return "chat/room";
     }
 
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
+    @MessageMapping("/chat.sendMessage/{category}")
+    @SendTo("/topic/public/{category}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
+    @MessageMapping("/chat.addUser/{category}")
+    @SendTo("/topic/public/{category}")
     public ChatMessage addUser(
             @Payload ChatMessage chatMessage,
             SimpMessageHeaderAccessor headerAccessor  // 이 부분은 나중에 로그인 사용자로 변환하면 될듯.
