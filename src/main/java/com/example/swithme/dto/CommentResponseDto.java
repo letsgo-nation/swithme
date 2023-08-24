@@ -35,6 +35,6 @@ public class CommentResponseDto {
             for (Reply reply : comment.getReplyList()) {
                 this.replyResponseDtoList.add(new ReplyResponseDto(reply));
             }
-        }// getCommentList if() 끝
+        }// getReplyList if() 끝
     }
 }
