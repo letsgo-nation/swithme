@@ -3,6 +3,7 @@ package com.example.swithme.controller;
 import com.example.swithme.dto.ApiResponseDto;
 import com.example.swithme.dto.MyStudyRequestDto;
 import com.example.swithme.dto.MyStudyResponseDto;
+import com.example.swithme.exception.TokenNotValidateException;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.MyStudyService;
 import com.example.swithme.service.UserService;
@@ -28,6 +29,7 @@ public class MyStudyController {
     public ResponseEntity<ApiResponseDto> createMyStudy(
             @RequestBody MyStudyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = myStudyService.createMyStudy(requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
@@ -51,6 +53,7 @@ public class MyStudyController {
     // 개인 스터디 게시물 수정
     @PutMapping("/myStudy/{id}")
     public ResponseEntity<ApiResponseDto> updateMyStudy(@PathVariable Long id, @RequestBody MyStudyRequestDto myStudyRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
         return myStudyService.updateMyStudy(id, myStudyRequestDto, userDetails.getUser());
     }
 
@@ -58,6 +61,7 @@ public class MyStudyController {
     @DeleteMapping("/myStudy/{id}")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> deleteMyStudy(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
         return myStudyService.deleteMyStudy(id, userDetails.getUser());
     }
 
@@ -65,5 +69,12 @@ public class MyStudyController {
     @GetMapping("/myStudies/category/{category_id}")
     public ResponseEntity<ApiResponseDto> getCategoryMyStudies(@PathVariable Long category_id) {
         return myStudyService.getCategoryMyStudies(category_id);
+    }
+    public void tokenValidate(UserDetailsImpl userDetails) {
+        try{
+            userDetails.getUser();
+        }catch (Exception ex){
+            throw new TokenNotValidateException("토큰이 유효하지 않습니다.");
+        }
     }
 }
