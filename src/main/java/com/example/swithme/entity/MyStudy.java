@@ -39,7 +39,6 @@ public class MyStudy extends Timestamped {
 
     @OneToMany(mappedBy = "myStudy", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
-
     public MyStudy(MyStudyRequestDto requestDto, User user, Category category) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();

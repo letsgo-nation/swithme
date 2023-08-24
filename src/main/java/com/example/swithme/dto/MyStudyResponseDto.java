@@ -2,6 +2,7 @@ package com.example.swithme.dto;
 
 import com.example.swithme.entity.Comment;
 import com.example.swithme.entity.MyStudy;
+import com.example.swithme.entity.Reply;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,6 @@ public class MyStudyResponseDto {
             for (Comment comment : myStudy.getCommentList()) {
                 this.commentResponseDtoList.add(new CommentResponseDto(comment));
             }
-        }// end of the if()
+        }// getCommentList if() 끝
     }// end of constructor method()
 }
