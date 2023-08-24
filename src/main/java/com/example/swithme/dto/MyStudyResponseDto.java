@@ -22,12 +22,12 @@ public class MyStudyResponseDto {
     private List<CommentResponseDto> commentResponseDtoList;
 
     public MyStudyResponseDto(MyStudy myStudy) {
-        this.id = myStudy.getMyStudyId();
+        this.id = myStudy.getId();
         this.title = myStudy.getTitle();
         this.content = myStudy.getContent();
         this.createdAt = myStudy.getCreatedAt();
         this.modifiedAt = myStudy.getModifiedAt();
-        this.category_id = myStudy.getCategory().getCategoryId();
+        this.category_id = myStudy.getCategory().getId();
         this.user_id = myStudy.getUser().getUserId(); // MyStudy ->  User -> userId
         this.username = myStudy.getUser().getUsername(); // MyStudy ->  User -> username
         this.userNickname = myStudy.getUser().getNickname();

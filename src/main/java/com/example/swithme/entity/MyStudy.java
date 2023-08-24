@@ -19,7 +19,7 @@ import java.util.List;
 public class MyStudy extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long myStudyId;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
