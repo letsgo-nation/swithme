@@ -1,15 +1,11 @@
-package com.example.swithme.dto;
+package com.example.swithme.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SignupRequestDto {
-
+public class LoginRequestDto {
     private String username;
-
     private String password;
-
-    private String nickname;
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
+    <title>메인 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+</head>
+
+<body>
+<!--네이게이션바-->
+<div th:replace="~{fragment/nav :: useNav}">insert</div>
+
+
+
+</body>
+</html>
