@@ -14,12 +14,17 @@ public class AccumulatedTime {
     private Long id;
 
     @Column(name = "accumulated_time")
-    private Long accumulatedTime;
+    private Long accumulatedMinutes;
 
-    // @JsonIgnore
-    @OneToOne
-    @JoinColumn(name ="user_id", nullable = false)
-    private User user;
+//    // @JsonIgnore
+//    @OneToOne
+//    @JoinColumn(name ="user_id", nullable = false)
+//    private User user;
+
+//    public AccumulatedTime(Long accumulatedMinutes) {
+//        this.accumulatedMinutes = accumulatedMinutes;
+//
+//    }
 
 
 }
