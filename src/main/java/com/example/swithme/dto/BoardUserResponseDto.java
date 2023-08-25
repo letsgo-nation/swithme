@@ -1,5 +1,6 @@
 package com.example.swithme.dto;
 
+import com.example.swithme.dto.user.UserUpdateResponseDto;
 import com.example.swithme.entity.Group;
 import com.example.swithme.entity.GroupUser;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class BoardUserResponseDto {
   private Long id; // 보드 번호
   private String groupName; // 보드 이름
   private String description; // 보드 설명
-  private Set<UserResponseDto> users; // 유저정보
+  private Set<UserUpdateResponseDto> users; // 유저정보
 //  private List<UserResponseDto> userList = new ArrayList<>();
 
   public BoardUserResponseDto(Group group) {
@@ -23,7 +24,7 @@ public class BoardUserResponseDto {
     this.groupName = group.getGroupName();
     this.description = group.getDescription();
     this.users = group.getGroupUsers().stream()
-            .map(user -> new UserResponseDto(user.getUser()))
+            .map(user -> new UserUpdateResponseDto(user.getUser()))
             .collect(Collectors.toSet());
 
 //    if (group.getGroupUsers().size() > 0) {
