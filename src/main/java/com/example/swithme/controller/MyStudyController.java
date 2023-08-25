@@ -3,6 +3,7 @@ package com.example.swithme.controller;
 import com.example.swithme.dto.ApiResponseDto;
 import com.example.swithme.dto.MyStudyRequestDto;
 import com.example.swithme.dto.MyStudyResponseDto;
+import com.example.swithme.exception.TokenNotValidateException;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.MyStudyService;
 import com.example.swithme.service.UserService;
@@ -23,30 +24,36 @@ public class MyStudyController {
     private final MyStudyService myStudyService;
     private final UserService userService;
 
-    // 개인 스터디 게시물 생성
     @PostMapping("/myStudy")
     @ResponseBody
-    public MyStudyResponseDto createMyStudy(@RequestBody MyStudyRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myStudyService.createMyStudy(requestDto, userDetails.getUser());
+    public ResponseEntity<ApiResponseDto> createMyStudy(
+            @RequestBody MyStudyRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
+        ApiResponseDto responseDto = myStudyService.createMyStudy(requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(responseDto);
     }
-
     // 전체 개인 스터디 게시물 조회
     @GetMapping("/myStudies")
     @ResponseBody
-    public List<MyStudyResponseDto> getMyStudies() {
-        return myStudyService.getMyStudies();
+    public ResponseEntity<List<MyStudyResponseDto>> getMyStudies() {
+         List<MyStudyResponseDto> responseDto = myStudyService.getMyStudies();
+         return ResponseEntity.ok().body(responseDto);
     }
 
     // 개인 스터디 게시물 단건 조회
     @GetMapping("/myStudy/{id}")
     @ResponseBody
-    public MyStudyResponseDto lookupMyStudy(@PathVariable Long id) {
-        return myStudyService.lookupMyStudy(id);
+    public ResponseEntity<MyStudyResponseDto> lookupMyStudy(@PathVariable Long id) {
+        MyStudyResponseDto responseDto = myStudyService.lookupMyStudy(id);
+        return ResponseEntity.ok().body(responseDto);
+
     }
 
     // 개인 스터디 게시물 수정
     @PutMapping("/myStudy/{id}")
     public ResponseEntity<ApiResponseDto> updateMyStudy(@PathVariable Long id, @RequestBody MyStudyRequestDto myStudyRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
         return myStudyService.updateMyStudy(id, myStudyRequestDto, userDetails.getUser());
     }
 
@@ -54,6 +61,7 @@ public class MyStudyController {
     @DeleteMapping("/myStudy/{id}")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> deleteMyStudy(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.tokenValidate(userDetails);
         return myStudyService.deleteMyStudy(id, userDetails.getUser());
     }
 
@@ -61,5 +69,12 @@ public class MyStudyController {
     @GetMapping("/myStudies/category/{category_id}")
     public ResponseEntity<ApiResponseDto> getCategoryMyStudies(@PathVariable Long category_id) {
         return myStudyService.getCategoryMyStudies(category_id);
+    }
+    public void tokenValidate(UserDetailsImpl userDetails) {
+        try{
+            userDetails.getUser();
+        }catch (Exception ex){
+            throw new TokenNotValidateException("토큰이 유효하지 않습니다.");
+        }
     }
 }
