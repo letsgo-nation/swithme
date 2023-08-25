@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class MyStudyRequestDto {
+public class PostRequestDto {
     private String title;
     private String content;
     private Long category_id;
