@@ -180,4 +180,9 @@ public class UserController {
         model.addAttribute("error", "비밀번호를 확인해주세요");
         return "user/deleteUser";
     }
+    @GetMapping("/user/accumulated_id")
+    public String getaccumulatedtime() {
+
+        return null;
+    }
 }
