@@ -28,16 +28,16 @@ public class Comment extends Timestamped{
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "myStudy_id", nullable = false)
-    private MyStudy myStudy;
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Reply> replyList = new ArrayList<>();
 
-    public Comment(CommentRequestDto requestDto, MyStudy myStudy, User user) {
+    public Comment(CommentRequestDto requestDto, Post post, User user) {
         this.content = requestDto.getContent();
         this.user = user;
-        this.myStudy = myStudy;
+        this.post = post;
     }
 
     public void update(CommentRequestDto requestDto) {

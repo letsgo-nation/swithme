@@ -1,24 +1,19 @@
 package com.example.swithme.service;
 
 import com.example.swithme.dto.ApiResponseDto;
-import com.example.swithme.dto.CategoryResponseDto;
 import com.example.swithme.dto.CommentRequestDto;
 import com.example.swithme.dto.CommentResponseDto;
-import com.example.swithme.entity.Category;
 import com.example.swithme.entity.Comment;
-import com.example.swithme.entity.MyStudy;
+import com.example.swithme.entity.Post;
 import com.example.swithme.entity.User;
 import com.example.swithme.repository.CommentRepository;
-import com.example.swithme.repository.MyStudyRepository;
-import com.example.swithme.security.UserDetailsImpl;
+import com.example.swithme.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,20 +23,19 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final MyStudyRepository myStudyRepository;
+    private final PostRepository postRepository;
 
     // 댓글 작성
-    public ApiResponseDto createComment(Long myStudy_id, CommentRequestDto requestDto, User user) {
+    public ApiResponseDto createComment(Long post_id, CommentRequestDto requestDto, User user) {
         // 게시글 유무 확인
-        Optional<MyStudy> myStudy = myStudyRepository.findById(myStudy_id);
+        Optional<Post> post = postRepository.findById(post_id);
         // 게시글이 없을 경우
-//        myStudyRepository.findById(myStudy_id).orElseThrow(() -> new IllegalArgumentException("선택한 게시물이 존재하지 않습니다."))
-        if (!myStudy.isPresent()) {
+        if (!post.isPresent()) {
             log.error("선택한 게시물이 존재하지 않습니다.");
             return new ApiResponseDto("선택한 게시물이 존재하지 않습니다.", HttpStatus.BAD_REQUEST.value());
         }
             // 게시물이 있을 경우
-        Comment comment = new Comment(requestDto, myStudy.get(), user);
+        Comment comment = new Comment(requestDto, post.get(), user);
 
         // DB 저장하기
         commentRepository.save(comment);
@@ -51,7 +45,7 @@ public class CommentService {
 
     // 댓글 조회
     public List<CommentResponseDto> commentList(Long id) {
-        List<Comment> getCommentList = commentRepository.findAllByMyStudyIdOrderByCreatedAt(id);
+        List<Comment> getCommentList = commentRepository.findAllByPostIdOrderByCreatedAt(id);
         List<CommentResponseDto> newCommentList = getCommentList.stream().map(CommentResponseDto::new).toList();
         return newCommentList;
     }

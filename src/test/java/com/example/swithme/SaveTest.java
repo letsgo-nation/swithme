@@ -1,6 +1,6 @@
 package com.example.swithme;
 
-import com.example.swithme.dto.MyStudyRequestDto;
+import com.example.swithme.dto.PostRequestDto;
 import com.example.swithme.entity.*;
 import com.example.swithme.enumType.UserRole;
 import com.example.swithme.repository.*;
@@ -18,7 +18,7 @@ public class SaveTest {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    MyStudyRepository myStudyRepository;
+    PostRepository postRepository;
     @Autowired
     CategoryRepository categoryRepository;
 
@@ -53,12 +53,12 @@ public class SaveTest {
 
         //글 작성
         for (int i = 0; i < 10; i++) {
-            MyStudyRequestDto myStudyRequestDto = new MyStudyRequestDto();
-            myStudyRequestDto.setTitle("title" + i);
-            myStudyRequestDto.setContent("content" + i);
-            MyStudy myStudy = new MyStudy(myStudyRequestDto,user, category1);
+            PostRequestDto postRequestDto = new PostRequestDto();
+            postRequestDto.setTitle("title" + i);
+            postRequestDto.setContent("content" + i);
+            Post post = new Post(postRequestDto,user, category1);
 
-            myStudyRepository.save(myStudy);
+            postRepository.save(post);
         }
     }
 
