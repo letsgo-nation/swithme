@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
+  <title>로그인</title>
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<div class="container-eagle">
+  <div th:replace="~{fragment/nav :: useNav}">insert</div>
+  <div class="main">
+    <h3>회원탈퇴</h3>
+    <p> 비밀번호 입력시 탈퇴되며 취소할 수 없습니다.</p>
+    <form action="/api/users/delete" method="post">
+
+      <label for="username">아이디</label><br>
+      <input type="text" id="username"  name="username" th:value= "${username}" readonly><br>
+
+      <label for="password">비밀번호</label><br>
+      <input type="password" id="password" name="password" required><br><br>
+      <p th:if="${error}" th:text="${error}"></p>
+      <input class="btn btn-primary submit" type="submit" value="확인">
+    </form>
+  </div>
+</div>
+</body>
+</html>
