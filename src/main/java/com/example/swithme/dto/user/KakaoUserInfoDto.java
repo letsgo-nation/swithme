@@ -1,4 +1,4 @@
-package com.example.swithme.dto;
+package com.example.swithme.dto.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

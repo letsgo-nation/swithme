@@ -1,12 +1,13 @@
 package com.example.swithme.service;
 
-import com.example.swithme.dto.KakaoUserInfoDto;
+import com.example.swithme.dto.user.KakaoUserInfoDto;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -31,18 +32,19 @@ public class KakaoService {
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
-    public String kakaoLogin(String code) throws JsonProcessingException {
+    public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
+
         // 3. 필요시 회원가입
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. Jwt 토큰 반환
         String createToken = jwtUtil.createToken(kakaoUser.getUsername());
-        return createToken;
+        jwtUtil.addJwtToCookie(createToken,response);
     }
 
     private String getToken(String code) throws JsonProcessingException {
@@ -62,8 +64,8 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "fb03738e1b9fc1c6411d877846d5a6b0");
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("client_id", "7073cdcdc5d2c3f6193e4ab0db89ba84");
+        body.add("redirect_uri", "http://localhost:8080/api/users/kakao/callback");
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
@@ -124,7 +126,7 @@ public class KakaoService {
         User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
 
         if (kakaoUser == null) {
-            // 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
+            // 카카오 사용자 유저네임과 동일한 유저네임을 가진 회원이 있는지 확인
             String kakaoUsername = kakaoUserInfo.getUsername();
             User sameUsername = userRepository.findByUsername(kakaoUsername).orElse(null);
             if (sameUsername != null) {
@@ -142,7 +144,6 @@ public class KakaoService {
 
                 kakaoUser = new User(username, encodedPassword, kakaoUserInfo.getNickname(), kakaoId);
             }
-
             userRepository.save(kakaoUser);
         }
         return kakaoUser;
