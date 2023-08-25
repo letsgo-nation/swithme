@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -36,7 +38,12 @@ public class User {
 
     private String googleId;
 
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<GroupUser> groupUsers;
+
     // 일반 회원가입
+
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;

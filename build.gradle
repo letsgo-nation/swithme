@@ -22,7 +22,13 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.webjars:fullcalendar:5.9.0' // 캘린더
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web' // sse 알림기능 의존성
+	implementation 'io.projectreactor:reactor-core:3.4.10' // Reactor Core 의존성 추가
+
 	implementation 'org.springframework.boot:spring-boot-starter-websocket' //웹소켓
+
 
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
