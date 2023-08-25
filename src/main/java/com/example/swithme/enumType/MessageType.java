@@ -1,4 +1,4 @@
-package com.example.swithme.chat;
+package com.example.swithme.enumType;
 
 public enum MessageType {
     CHAT,

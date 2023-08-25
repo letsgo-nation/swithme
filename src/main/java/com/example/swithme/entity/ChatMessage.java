@@ -1,5 +1,6 @@
-package com.example.swithme.chat;
+package com.example.swithme.entity;
 
+import com.example.swithme.enumType.MessageType;
 import lombok.*;
 
 @Getter

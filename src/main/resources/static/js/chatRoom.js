@@ -2,7 +2,7 @@
 
 // 카테고리 주소를 읽어옴.
 const urlParams= new URLSearchParams(window.location.search);
-const category= urlParams.get("category");
+const url= urlParams.get("url");
 
 // Html에서 특정 부분을 선택하는 코드
 var usernamePage = document.querySelector('#username-page');
@@ -25,6 +25,7 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+// 채팅 연결
 function connect(event) {
     username = document.querySelector('#name').value.trim();
 
@@ -33,7 +34,6 @@ function connect(event) {
         // 화면 보여지고 안 보여지는 것 부분 조작
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
-
 
         // ockJS와 같이 웹 소켓을 지원하지 않는 환경에서 SockJS 기반으로 STOMP 클라이언트를 생성하는데 사용됩니다. 웹 소켓을 지원하는 환경에서는 Stomp.client를 사용하여 STOMP 클라이언트를 생성하는 것이 보다 직관적입니다.
         var socket = new SockJS('/ws');
@@ -48,10 +48,10 @@ function connect(event) {
 // 최초 연결시 실행되는 함수
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe(`/topic/public/${category}`, onMessageReceived); // 수정
+    stompClient.subscribe(`/topic/public/${url}`, onMessageReceived); // 수정
 
     // Tell your username to the server
-    stompClient.send(`/app/chat.addUser/${category}`,  // 수정
+    stompClient.send(`/app/chat.addUser/${url}`,  // 수정
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
@@ -66,6 +66,7 @@ function onError(error) {
 }
 
 
+// 메시지 전송
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
     if(messageContent && stompClient) {
@@ -74,13 +75,13 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send(`/app/chat.sendMessage/${category}`, {}, JSON.stringify(chatMessage)); // 수정
+        stompClient.send(`/app/chat.sendMessage/${url}`, {}, JSON.stringify(chatMessage)); // 수정
         messageInput.value = '';
     }
     event.preventDefault();
 }
 
-
+// 메시지 받기
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 

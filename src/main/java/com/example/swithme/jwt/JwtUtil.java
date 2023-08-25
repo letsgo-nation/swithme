@@ -1,7 +1,6 @@
 package com.example.swithme.jwt;
 
 import com.example.swithme.entity.TokenBlacklist;
-import com.example.swithme.entity.UserRoleEnum;
 import com.example.swithme.repository.TokenBlacklistRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

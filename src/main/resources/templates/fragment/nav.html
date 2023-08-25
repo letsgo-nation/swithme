@@ -21,6 +21,14 @@
     </div>
 </div>
 
+<h3 th:fragment="useNavChat">
+    <a th:href="@{/chat/category}"><span>전체</span></a>
+    <span>|</span>
+    <a th:href="@{/chat/personal}"><span>개인</span></a>
+    <button class="btn btn-primary"><a th:href="@{/chat/personal}"><span>채팅 생성</span></a></button>
+
+</h3>
+
 
 </body>
 </html>

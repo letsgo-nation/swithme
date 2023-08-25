@@ -1,6 +1,7 @@
 package com.example.swithme.entity;
 
 import com.example.swithme.dto.user.UserUpdateRequestDto;
+import com.example.swithme.enumType.UserRole;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class User {
     private String nickname;
 
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role = UserRoleEnum.USER;
+    private UserRole role = UserRole.USER;
 
     private Long kakaoId;
 

@@ -1,7 +1,7 @@
 package com.example.swithme.config.chatConfig;
 
-import com.example.swithme.chat.ChatMessage;
-import com.example.swithme.chat.MessageType;
+import com.example.swithme.entity.ChatMessage;
+import com.example.swithme.enumType.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -20,13 +20,15 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
+        String disconnectUrl = (String) headerAccessor.getSessionAttributes().get("disconnectUrl");
+
         if (username != null) {
             log.info("user disconnected: {}", username);
             var chatMessage = ChatMessage.builder()
                     .type(MessageType.LEAVE)
                     .sender(username)
                     .build();
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            messagingTemplate.convertAndSend("/topic/public/" + disconnectUrl, chatMessage);
         }
     }
 }

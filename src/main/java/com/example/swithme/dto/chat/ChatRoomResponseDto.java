@@ -4,6 +4,8 @@ import com.example.swithme.entity.ChatRoom;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class ChatRoomResponseDto {
@@ -16,10 +18,13 @@ public class ChatRoomResponseDto {
 
     private String img; // 이미지 고민
 
+    private UUID url;
+
     public ChatRoomResponseDto(ChatRoom chatRoom) {
         this.title = chatRoom.getTitle();
         this.content = chatRoom.getContent();
         this.category = chatRoom.getCategory();
         this.img = chatRoom.getImg();
+        this.url = chatRoom.getUrl();
     }
 }

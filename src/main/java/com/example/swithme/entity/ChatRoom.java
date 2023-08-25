@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
 
 
 @Getter
@@ -22,13 +23,16 @@ public class ChatRoom {
 
     private String content;
 
-    private String category; // 카테고리에 따라 들어가는 방 주소가 변경됨
+    private String category;
+
+    private UUID url; // 채팅방 입장 주소
 
     private String img; // 이미지 고민
 
-    public ChatRoom(String title, String content, String category) {
+    public ChatRoom(String title, String content, String category, UUID url) {
         this.title = title;
         this.content = content;
         this.category = category;
+        this.url = url;
     }
 }

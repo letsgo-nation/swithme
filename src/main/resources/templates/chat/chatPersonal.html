@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="~{layout/head :: common_header(~{::title},~{})}">
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
     <title>채팅 </title>
-    <link rel="stylesheet" th:href="@{/css/chatRoom.css}">
+    <link rel="stylesheet" th:href="@{/css/chatPersonal.css}">
 </head>
 <body>
 
@@ -13,6 +13,11 @@
 <div class="container text-center">
     <div th:replace="~{fragment/nav :: useNavChat}">insert</div>
     <div class=" row row-cols-1 row-cols-md-5 g-4">
+        <div class="col">
+            <div class="card h-100 chat-create">
+                <span> + </span>
+            </div>
+        </div>
         <div class="col" th:each="chatRoom : ${chatRooms}">
             <div class="card h-100">
                 <img src="/image/study_computer.jpg" class="card-img-top" alt="...">
