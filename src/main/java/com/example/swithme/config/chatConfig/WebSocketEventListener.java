@@ -1,6 +1,6 @@
 package com.example.swithme.config.chatConfig;
 
-import com.example.swithme.entity.ChatMessage;
+import com.example.swithme.entity.chat.ChatMessage;
 import com.example.swithme.enumType.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

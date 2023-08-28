@@ -1,3 +1,10 @@
-.chat-create span{
+
+.chat-create {
+    display: flex;
+    height: 100px;
+}
+
+.chat-create a i{
+    align-items: center; /* 수직 가운데 정렬 */
     font-size: 100px;
 }

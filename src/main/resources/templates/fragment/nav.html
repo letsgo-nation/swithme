@@ -21,13 +21,43 @@
     </div>
 </div>
 
-<h3 th:fragment="useNavChat">
-    <a th:href="@{/chat/category}"><span>전체</span></a>
-    <span>|</span>
-    <a th:href="@{/chat/personal}"><span>개인</span></a>
-    <button class="btn btn-primary"><a th:href="@{/chat/personal}"><span>채팅 생성</span></a></button>
+<!--<div class = nav2 th:fragment="useNavChat">-->
+<!--    <h4>-->
+<!--    <a th:href="@{/chat/category}"><span>전체</span></a>-->
+<!--    <span>|</span>-->
+<!--    <a th:href="@{/chat/personal}"><span>그룹</span></a>-->
+<!--    </h4>-->
+<!--</div>-->
 
-</h3>
+<!-- 네비게이션 바 -->
+<nav th:fragment="useNavChat" class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+<!--        <a class="navbar-brand" href="#">Navbar</a>-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/chat/category}">전체</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/chat/personal}">그룹</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/chat/alert}">초대</a>
+                </li>
+            </ul>
+
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+
+        </div>
+    </div>
+</nav>
 
 
 </body>
