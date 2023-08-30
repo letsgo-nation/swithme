@@ -50,7 +50,7 @@ button:active {
     right: 100px;
     top: 10vh;
     height: 30vh;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 #stopwatch-records {
