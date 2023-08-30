@@ -17,11 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -32,6 +31,26 @@ public class UserController {
     private final KakaoService kakaoService;
     private final GoogleService googleService;
     private final JwtUtil jwtUtil;
+
+    //회원 가입 -> 인증 선택 (이메일, 카카오톡, 구글)
+    @GetMapping("/users/signup/authentication")
+    public String authentication(){
+        return "user/authentication";
+    }
+
+    //이메일 인증로 이동
+    @GetMapping("/email")
+    public String MoveEmail(){
+        return "user/email";
+    }
+
+    @ResponseBody
+    @PostMapping("/email")
+    public String emailAuthentication(@RequestBody EmailRequestDto emailRequestDto){
+        System.out.println("emailRequestDto = " + emailRequestDto.getEmail());
+        UUID uuid = userService.sendMail(emailRequestDto);
+        return "ok";
+    }
 
     // 회원가입 페이지 이동
     @GetMapping("/users/signup")
@@ -185,4 +204,6 @@ public class UserController {
 
         return null;
     }
+
+
 }

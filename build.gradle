@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
+
 	implementation 'org.webjars:fullcalendar:5.9.0' // 캘린더
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web' // sse 알림기능 의존성

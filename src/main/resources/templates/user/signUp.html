@@ -28,13 +28,22 @@
       <input type="text" id="nickName" name="nickName" th:field="*{nickName}"><br>
       <p th:errors="*{nickName}"></p>
 
-      <label for="email">이메일</label><br>
-      <input type="email" id="email" name="email" th:field="*{email}"><br>
-      <p th:errors="*{email}"></p><br>
+      <label for="emailRequestDto">이메일</label><br>
+      <input type="emailRequestDto" id="emailRequestDto" name="emailRequestDto" th:field="*{emailRequestDto}"><br>
+      <p th:errors="*{emailRequestDto}"></p><br>
 
       <input class="btn btn-primary submit" type="submit" value="확인">
     </form>
   </div>
+
+<!-- 테스트 -->
+  <form method="post" action="/mail">
+    <input type="text" name="receiver" placeholder="받는 사람 입력"><br>
+    <input type="text" name="title" placeholder="제목"><br>
+    <textarea name= "content" cols="10" rows="10"></textarea><br>
+    <input type="submit" value="전송">
+  </form>
+
 </div>
 </body>
 </html>

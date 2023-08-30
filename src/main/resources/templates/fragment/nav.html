@@ -15,7 +15,7 @@
                 <li><a th:href="@{/users/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
 
                 <li><a th:href="@{/users/login}" sec:authorize="!isAuthenticated()">로그인</a></li>
-                <li><a th:href="@{/users/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
+                <li><a th:href="@{/users/signup/authentication}" sec:authorize="!isAuthenticated()">회원가입</a></li>
             </ul>
         </div>
     </div>
