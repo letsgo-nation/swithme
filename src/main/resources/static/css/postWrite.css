@@ -44,11 +44,19 @@
     --more-list-shadow: rgba(195, 207, 244, 0.1);
     --message-btn: rgba(195, 207, 244, 0.1);
 }
+html::-webkit-scrollbar {
+    display: none; /*Chrome, Safari, Opera*/
+    width: 0px;
+}
 
 html, body {
     width: 100%;
-    height: 100vh;
+    /*height: 100vh; 스크롤 멈추게 함 */
     margin: 0;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none; /*IE, Edge*/
+    scrollbar-width: none;
 }
 
 body {
@@ -524,13 +532,23 @@ button, a {
     order: 3;
     flex: 1;
 }
+/*Firefox*/
+.project-box ::-webkit-scrollbar {
+    display: none; /*Chrome, Safari, Opera*/
+    width: 0px;
+}
 
-.project-box {
+.project-box{
     --main-color-card: #dbf6fd;
     border-radius: 30px;
     padding: 16px;
     background-color: var(--main-color-card);
+
+    overflow-y: scroll;
+    -ms-overflow-style: none; /*IE, Edge*/
+    scrollbar-width: none;
 }
+
 .project-box-header {
     display: flex;
     align-items: center;
@@ -863,7 +881,7 @@ button, a {
 
  .write {
      width : auto;
-     min-width: 568px;
+     min-width: 100px;
      margin: 100px 200px;
  }
 

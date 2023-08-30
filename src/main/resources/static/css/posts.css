@@ -44,11 +44,19 @@
     --more-list-shadow: rgba(195, 207, 244, 0.1);
     --message-btn: rgba(195, 207, 244, 0.1);
 }
+html::-webkit-scrollbar {
+    display: none; /*Chrome, Safari, Opera*/
+    width: 0px;
+}
 
 html, body {
     width: 100%;
-    height: 100vh;
+    /*height: 100vh;*/
     margin: 0;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none; /*IE, Edge*/
+    scrollbar-width: none;
 }
 
 body {
@@ -61,6 +69,12 @@ body {
 
 button, a {
     cursor: pointer;
+}
+
+button.btn.btn-outline-secondary {
+    margin-right: 30px;
+    float: left;
+    padding: 15px;
 }
 
 .app-container {
@@ -270,6 +284,7 @@ button, a {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 32px;
+    padding-left: 10%;
 }
 .projects-section-header {
     display: flex;
@@ -474,7 +489,7 @@ button, a {
     flex-wrap: wrap;
 }
 .project-boxes.jsGridView .project-box-wrapper {
-    width: 100%;
+    width: 33.3%;
 }
 .project-boxes.jsListView .project-box {
     display: flex;
