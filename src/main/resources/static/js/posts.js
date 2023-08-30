@@ -54,23 +54,21 @@ function setPosts() {
             for (let i = 0; i < response.length; i++) {
                 let post_title = response[i]['title'];
                 let post_nickname = response[i]['userNickname'];
-                let post_createdDate = response[i]['modifiedAt']
+                let post_date = response[i]['modifiedAt']
                 let post_id = response[i]['id'];
 
-                setHtml(post_title, post_id, post_nickname, post_createdDate);
+                setHtml(post_title, post_id, post_nickname, post_date);
             }
         }
     });
 }
 
-function setHtml(post_title, post_id, post_nickname, post_createdDate) {
-    console.log(post_createdDate)
-    console.log(post_nickname)
+function setHtml(post_title, post_id, post_nickname, post_date) {
     let html = `
 <div class="project-box-wrapper" onclick="location.href='/api/post-page/' + ${post_id}">
 <div class="project-box" style="background-color: #e9e7fd;">
                         <div class="project-box-header">
-                            <span>${post_createdDate}</span>
+                            <span>${post_date}</span>
                             <div class="more-wrapper">
                                 <button class="project-btn-more">
                                 </button>
@@ -89,15 +87,18 @@ function setCategory(category_id) {
 // 카테고리별 조회
     $.ajax({
         type: 'GET',
-        url: `/api/posts/${category_id}`,
+        url: `/api/posts/category/${category_id}`,
         success: function (response) {
             $('#post-cards').empty();
             let data = response['data']
             for (let i = 0; i < data.length; i++) {
                 let post = data[i]
+                console.log(data)
                 let post_title = post['title'];
                 let post_id = post['id'];
-                setHtml(post_title, post_id);
+                let post_nickname = post['userNickname'];
+                let post_date = post['modifiedAt']
+                setHtml(post_title, post_id, post_nickname, post_date);
             }
         }
     });
