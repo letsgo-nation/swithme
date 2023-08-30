@@ -169,7 +169,7 @@ button, a {
     background-color: var(--search-area-bg);
     color: var(--main-color);
 }
-.search-input:placeholder {
+.search-input::placeholder {
     color: var(--main-color);
     opacity: 0.6;
 }
@@ -474,7 +474,7 @@ button, a {
     flex-wrap: wrap;
 }
 .project-boxes.jsGridView .project-box-wrapper {
-    width: 33.3%;
+    width: 100%;
 }
 .project-boxes.jsListView .project-box {
     display: flex;
@@ -552,6 +552,7 @@ button, a {
     margin: 0;
 }
 .project-box-wrapper {
+    float: left;
     padding: 8px;
     transition: 0.2s;
 }
