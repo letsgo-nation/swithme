@@ -24,13 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
         projectsList.classList.add('jsGridView');
     });
 
-    document.querySelector('.messages-btn').addEventListener('click', function () {
-        document.querySelector('.messages-section').classList.add('show');
-    });
-
-    document.querySelector('.messages-close').addEventListener('click', function() {
-        document.querySelector('.messages-section').classList.remove('show');
-    });
+    // document.querySelector('.messages-btn').addEventListener('click', function () {
+    //     document.querySelector('.messages-section').classList.add('show');
+    // });
+    //
+    // document.querySelector('.messages-close').addEventListener('click', function() {
+    //     document.querySelector('.messages-section').classList.remove('show');
+    // });
 });
 
 $(document).ready(function () {
@@ -53,21 +53,22 @@ function setPosts() {
             $('#post-cards').empty();
             for (let i = 0; i < response.length; i++) {
                 let post_title = response[i]['title'];
-                let post_nickname = response[i]['nickname'];
-                let post_createdDate = response[i]['createdAt']
+                let post_nickname = response[i]['userNickname'];
+                let post_createdDate = response[i]['modifiedAt']
                 let post_id = response[i]['id'];
-                setHtml(post_title, post_id);
+
+                setHtml(post_title, post_id, post_nickname, post_createdDate);
             }
         }
     });
 }
 
-function setHtml(post_title, post_nickname, post_createdDate, post_id) {
+function setHtml(post_title, post_id, post_nickname, post_createdDate) {
     console.log(post_createdDate)
     console.log(post_nickname)
     let html = `
 <div class="project-box-wrapper" onclick="location.href='/api/post-page/' + ${post_id}">
-<div class="project-box" style="background-color: #fee4cb;">
+<div class="project-box" style="background-color: #e9e7fd;">
                         <div class="project-box-header">
                             <span>${post_createdDate}</span>
                             <div class="more-wrapper">
