@@ -47,10 +47,11 @@ function writePost() {
             // {status: 200, message: '개인 스터디 게시물 생성 완료', data: {…}}
             console.log(data)
             // {title: '', content: '', category_id: '1'}
-            alert("게시글 등록 성공");
+            alert("게시글 등록이 완료되었습니다");
             window.location.href = "/";
         }, error: function(req,status,error) {
-            alert("게시글 등록 실패");
+            alert("게시글 등록이 실패하였습니다");
         }
     })
 }
+
