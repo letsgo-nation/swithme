@@ -137,6 +137,16 @@ public class UserService {
     }
   }
 
+  // user 찾기
+  public UserUpdateResponseDto lookupUser(Long id) {
+    User user = findUser(id);
+    return new UserUpdateResponseDto(user);
+  }
+
+  private User findUser(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+  }
+
   //회원탈퇴
   @Transactional
   public void delete(User user) {
