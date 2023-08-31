@@ -58,7 +58,7 @@ function setPosts() {
 
 function setHtml(post_title, post_id, post_nickname, post_date, category_name) {
     let html = `
-<div class="project-box-wrapper" onclick="location.href='/api/post-page/' + ${post_id}">
+<div class="project-box-wrapper" onclick="location.href='/view/post/detail/' + ${post_id}">
 <div class="project-box" style="background-color: #e9e7fd;">
                         <div class="project-box-header">
                             <span>${post_date}</span>
@@ -87,82 +87,82 @@ function setCategory(category_id) {
             let data = response['data']
             for (let i = 0; i < data.length; i++) {
                 let post = data[i]
-                console.log(data)
                 let post_title = post['title'];
                 let post_id = post['id'];
                 let post_nickname = post['userNickname'];
+                let category_name = post['category_name']
                 let post_date = post['modifiedAt']
-                setHtml(post_title, post_id, post_nickname, post_date);
+                setHtml(post_title, post_id, post_nickname, post_date, category_name);
             }
         }
     });
 }
 
-function getUsername() {
-    let auth = getToken();
-    return getUsernameFromToken(auth);
-}
-
-function setUserType() {
-    let username = getUsername();
-
-    if (username == 'Guest') {
-        $('button.login').removeClass('inactive');
-        $('button.signup').removeClass('inactive');
-        $('button.logout').addClass('inactive');
-        $('button.mypage').addClass('inactive');
-    } else {
-        $('button.login').addClass('inactive');
-        $('button.signup').addClass('inactive');
-        $('button.logout').removeClass('inactive');
-        $('button.mypage').removeClass('inactive');
-
-        $('.welcome-msg').text(username + '님, 환영합니다.');
-    }
-
-}
-
-function getToken() {
-    let auth = Cookies.get('Authorization');
-
-    if (auth === undefined) {
-        return '';
-    }
-    return auth;
-}
-
-function getUsernameFromToken(auth) {
-    if (auth === '') {
-        return 'Guest';
-    }
-    let token = auth.substring(7);
-    let base64Payload = token.split('.')[1];
-    let payload = atob(base64Payload);
-    let result = JSON.parse(payload.toString())
-
-    return result['sub']
-}
-
-function upload() {
-    let username = getUsername();
-
-    if (username == 'Guest') {
-        alert("로그인이 필요합니다.");
-        return;
-    }
-    window.location.href = '/api/post/write';
-}
-
-$(document).ready(function(){
-    var currentPosition = parseInt($(".category").css("top"));
-    $(window).scroll(function() {
-        var position = $(window).scrollTop();
-        $(".category").stop().animate({"top":position+currentPosition+"px"},1000);
-    });
-});
-
-function logout() {
-// 토큰 삭제
-    Cookies.remove('Authorization', {path: '/'});
-    window.location.href = host;
-}
+// function getUsername() {
+//     let auth = getToken();
+//     return getUsernameFromToken(auth);
+// }
+//
+// function setUserType() {
+//     let username = getUsername();
+//
+//     if (username == 'Guest') {
+//         $('button.login').removeClass('inactive');
+//         $('button.signup').removeClass('inactive');
+//         $('button.logout').addClass('inactive');
+//         $('button.mypage').addClass('inactive');
+//     } else {
+//         $('button.login').addClass('inactive');
+//         $('button.signup').addClass('inactive');
+//         $('button.logout').removeClass('inactive');
+//         $('button.mypage').removeClass('inactive');
+//
+//         $('.welcome-msg').text(username + '님, 환영합니다.');
+//     }
+//
+// }
+//
+// function getToken() {
+//     let auth = Cookies.get('Authorization');
+//
+//     if (auth === undefined) {
+//         return '';
+//     }
+//     return auth;
+// }
+//
+// function getUsernameFromToken(auth) {
+//     if (auth === '') {
+//         return 'Guest';
+//     }
+//     let token = auth.substring(7);
+//     let base64Payload = token.split('.')[1];
+//     let payload = atob(base64Payload);
+//     let result = JSON.parse(payload.toString())
+//
+//     return result['sub']
+// }
+//
+// function upload() {
+//     let username = getUsername();
+//
+//     if (username == 'Guest') {
+//         alert("로그인이 필요합니다.");
+//         return;
+//     }
+//     window.location.href = '/api/post/write';
+// }
+//
+// $(document).ready(function(){
+//     var currentPosition = parseInt($(".category").css("top"));
+//     $(window).scroll(function() {
+//         var position = $(window).scrollTop();
+//         $(".category").stop().animate({"top":position+currentPosition+"px"},1000);
+//     });
+// });
+//
+// function logout() {
+// // 토큰 삭제
+//     Cookies.remove('Authorization', {path: '/'});
+//     window.location.href = host;
+// }
