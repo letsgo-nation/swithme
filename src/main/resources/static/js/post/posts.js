@@ -23,14 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
         projectsList.classList.remove('jsListView');
         projectsList.classList.add('jsGridView');
     });
-
-    // document.querySelector('.messages-btn').addEventListener('click', function () {
-    //     document.querySelector('.messages-section').classList.add('show');
-    // });
-    //
-    // document.querySelector('.messages-close').addEventListener('click', function() {
-    //     document.querySelector('.messages-section').classList.remove('show');
-    // });
 });
 
 $(document).ready(function () {
@@ -56,14 +48,15 @@ function setPosts() {
                 let post_nickname = response[i]['userNickname'];
                 let post_date = response[i]['modifiedAt']
                 let post_id = response[i]['id'];
+                let category_name = response[i]['category_name']
 
-                setHtml(post_title, post_id, post_nickname, post_date);
+                setHtml(post_title, post_id, post_nickname, post_date, category_name);
             }
         }
     });
 }
 
-function setHtml(post_title, post_id, post_nickname, post_date) {
+function setHtml(post_title, post_id, post_nickname, post_date, category_name) {
     let html = `
 <div class="project-box-wrapper" onclick="location.href='/api/post-page/' + ${post_id}">
 <div class="project-box" style="background-color: #e9e7fd;">
@@ -75,9 +68,10 @@ function setHtml(post_title, post_id, post_nickname, post_date) {
                             </div>
                         </div>
         <p class="box-content-header">${post_title}</p>
-        <p class="box-content-subheader">${post_nickname}</p>
-<!--        post_nickname이 post id로 찍힘, 왜?-->
+        <div class="project-box-footer">
+        <div class="box-content-subheader">${post_nickname}</div> <div class="days-left" style="color: #4f3ff0;">${category_name}</div>
         <span hidden="hidden">${post_id}</span>
+        </div>
 </div>
 </div>`;
     $('#post-cards').append(html);
