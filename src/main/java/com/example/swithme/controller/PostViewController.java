@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,20 +32,23 @@ public class PostViewController {
         return "post/postWrite";
     }
 
-    // 게시글 상세 페이지
+    // 게시물 상세 조회 - 게시물, 댓글, 대댓글 조회 / 게시물 삭제
     @GetMapping("/post/detail/{id}")
     public String postDetailPage(@PathVariable Long id, Model model) {
         PostResponseDto result = postService.lookupPost(id);
         model.addAttribute("post", result);
+        model.addAttribute("commentList", result.getCommentResponseDtoList());
         return "post/postDetail";
     }
-//
-//    // 게시글 수정 페이지
-//    @GetMapping("/post/modify/{id}")
-//    public String modifyPost(Model model,  @PathVariable Long id)
-//            throws JsonProcessingException {
-//        model.addAttribute("info_post",postService.getPost(id));
-//        return "postModify";
-//    }
-
+    // 게시글 수정 페이지
+    @GetMapping("/post/update/{id}")
+    public String updatePostView(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(!userService.lookupUser(postService.lookupPost(id).getUser_id()).getUsername().equals(userDetails.getUsername())) {
+            /* 게시글 작성자가 아닐 시, id에 해당하는 게시글 페이지로 이동 */
+            return "redirect:/view/post/detail/"+id;
+        }
+        model.addAttribute("username",userDetails.getUser().getUsername());
+        model.addAttribute("post",postService.lookupPost(id));
+        return "post/postUpdate";
+    }
 }
