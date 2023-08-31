@@ -63,12 +63,18 @@ public class WebSecurityConfig {
                         .permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() //메인페이지 접근 허용
                         .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/view/post/write").authenticated()
+                        .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .anyRequest().permitAll() //개발 단계에서 모든 접근 허용
 
         );
-        http.formLogin(AbstractHttpConfigurer::disable);
-
+//        http.formLogin(AbstractHttpConfigurer::disable);
+        http.formLogin((formLogin) ->
+                        formLogin
+// 로그인 처리 (POST /api/user/login)
+                                .loginPage("/users/login").permitAll()
+        );
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
