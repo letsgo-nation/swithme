@@ -48,7 +48,7 @@ function writePost() {
             console.log(data)
             // {title: '', content: '', category_id: '1'}
             alert("게시글 등록이 완료되었습니다");
-            window.location.href = "/";
+            window.location.href = "/view/posts";
         }, error: function(req,status,error) {
             alert("게시글 등록이 실패하였습니다");
         }
