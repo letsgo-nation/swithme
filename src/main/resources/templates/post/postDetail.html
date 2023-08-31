@@ -2,7 +2,7 @@
 <html lang="en">
 <head th:replace="layout/head :: common_header(~{::title},~{::link})">
     <title>게시물 상세 페이지</title>
-    <link rel="stylesheet" th:href="@{/css/post/postWrite.css}"/>
+    <link rel="stylesheet" th:href="@{/css/post/postDetail.css}"/>
 </head>
 <body>
 
@@ -127,7 +127,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                                        <button type="button" class="btn btn-primary">예</button>
+                                        <button type="button" class="btn btn-primary" id="deleteButton" th:attr="data-postid=${post.id}" >예</button>
                                     </div>
                                 </div>
                             </div>
@@ -144,6 +144,6 @@
         </div>
     </div>
 </div>
-<script src="/js/post/postWrite.js"></script>
+<script src="/js/post/postDetail.js"></script>
 </body>
 </html>
