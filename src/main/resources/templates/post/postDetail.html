@@ -92,10 +92,9 @@
                             <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
                         <!-- Button to trigger the modal -->
-                        <!--삭제버튼-->
-                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">수정</button>
+                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updateModal">수정</button>
                         <!-- Modal -->
-                        <div class="modal fade" id="myModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -107,12 +106,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                                        <button type="button" class="btn btn-primary">예</button>
+<!--                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+id">예</button>-->
+                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+lastPart">예</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--수정버튼-->
+                        <!--삭제버튼-->
                         <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">삭제</button>
                         <!-- Modal -->
                         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -144,6 +144,14 @@
         </div>
     </div>
 </div>
+<script>
+    // URL을 "/"로 분할하여 배열로 저장합니다.
+    let currentURL = window.location.href;
+    let urlParts = currentURL.split("/");
+
+    // 배열에서 마지막 요소를 가져옵니다.
+    let lastPart = urlParts[urlParts.length - 1];
+</script>
 <script src="/js/post/postDetail.js"></script>
 </body>
 </html>
