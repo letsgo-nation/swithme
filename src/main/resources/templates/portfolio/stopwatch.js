@@ -46,6 +46,13 @@ btn_record.addEventListener("click", () => {
         .then(response => {
             if (response.ok) {
                 // 성공적으로 저장되었을 때의 처리
+                refreshText(document.querySelector("#stopwatch-clock"), div_record);
+                clearInterval(clockInterval);
+                btn_start.innerText = "시작";
+                btn_start.hidden = false;
+                btn_pause.hidden = true;
+                btn_record.hidden = true;
+                btn_restart.hidden = true;
             } else {
                 // 오류 처리
             }
