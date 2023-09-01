@@ -1,7 +1,7 @@
 package com.example.swithme.controller;
 
-import com.example.swithme.entity.Study;
-import com.example.swithme.repository.StudyRepository;
+import com.example.swithme.entity.Calendar;
+import com.example.swithme.repository.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,41 +14,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class StudyController {
+public class CalendarController {
     @Autowired
-    private StudyRepository studyRepository;
+    private CalendarRepository studyRepository;
 
     @GetMapping("/studies")
     public String listStudies(Model model) {
-        List<Study> studies = studyRepository.findAll();
+        List<Calendar> studies = studyRepository.findAll();
         model.addAttribute("studies", studies);
         return "study/list";
     }
 
     @GetMapping("/studies/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("study", new Study());
+        model.addAttribute("study", new Calendar());
         return "study/createForm";
     }
 
     @PostMapping("/studies")
-    public String createStudy(@ModelAttribute Study study) {
+    public String createStudy(@ModelAttribute Calendar study) {
         studyRepository.save(study);
         return "redirect:/studies";
     }
 
     @GetMapping("/studies/calendar")
     public String showCalendar(Model model) {
-        List<Study> studies = studyRepository.findAll();
+        List<Calendar> studies = studyRepository.findAll();
         model.addAttribute("studies", studies);
         return "study/calendar";
     }
 
     @GetMapping("/studies/details/{id}")
     public String showStudyDetails(@PathVariable Long id, Model model) {
-        Optional<Study> optionalStudy = studyRepository.findById(id);
+        Optional<Calendar> optionalStudy = studyRepository.findById(id);
         if (optionalStudy.isPresent()) {
-            Study study = optionalStudy.get();
+            Calendar study = optionalStudy.get();
             model.addAttribute("study", study);
             return "study/details";
         }
@@ -57,9 +57,9 @@ public class StudyController {
 
     @GetMapping("/studies/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Optional<Study> optionalStudy = studyRepository.findById(id);
+        Optional<Calendar> optionalStudy = studyRepository.findById(id);
         if (optionalStudy.isPresent()) {
-            Study study = optionalStudy.get();
+            Calendar study = optionalStudy.get();
             model.addAttribute("study", study);
             return "study/editForm";
         }
@@ -67,7 +67,7 @@ public class StudyController {
     }
 
     @PostMapping("/studies/update")
-    public String updateStudy(@ModelAttribute Study study) {
+    public String updateStudy(@ModelAttribute Calendar study) {
         studyRepository.save(study);
         return "redirect:/studies/calendar";
     }
