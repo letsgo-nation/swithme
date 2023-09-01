@@ -42,6 +42,11 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<GroupUser> groupUsers;
 
+    // // User : AccumulatedTime 간에 1:1 관계 설정 방법 2 이걸로
+    // 이게 더 자연스러움
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AccumulatedTime accumulatedTime;
+
     // 일반 회원가입
 
     public User(String username, String password, String nickname) {

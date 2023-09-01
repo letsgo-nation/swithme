@@ -1,8 +1,10 @@
 package com.example.swithme.controller;
 
+import com.example.swithme.dto.AccumulatedTimeDto;
 import com.example.swithme.dto.user.*;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
+import com.example.swithme.repository.AccumulatedTimeRepository;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.GoogleService;
 import com.example.swithme.service.KakaoService;
@@ -12,15 +14,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -32,6 +34,7 @@ public class UserController {
     private final KakaoService kakaoService;
     private final GoogleService googleService;
     private final JwtUtil jwtUtil;
+    private final AccumulatedTimeRepository accumulatedTimeRepository;
 
     // 회원가입 페이지 이동
     @GetMapping("/users/signup")
@@ -184,5 +187,22 @@ public class UserController {
     public String getaccumulatedtime() {
 
         return null;
+    }
+
+    // 특정 사용자의 누적 시간 조회 엔드포인트
+    // 이것도 서비스단으로 내려야함
+    // 하지만 RecordController 에서 Get매핑으로 조회할땐 서비스단에서 구성하여 호출하기
+    // 이 부분을 RecordService 로 만들어서 Record 컨트롤러에서 조회로 사용하기
+    @GetMapping("/{userId}/accumulated-time")
+    public ResponseEntity<AccumulatedTimeDto> getAccumulatedTime(@PathVariable Long userId) {
+        try {
+            // UserService를 사용하여 특정 사용자의 누적 시간을 조회
+            AccumulatedTimeDto accumulatedTimeDto = userService.getAccumulatedTimeByUserId(userId);
+            return ResponseEntity.ok(accumulatedTimeDto);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
