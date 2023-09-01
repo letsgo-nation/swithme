@@ -7,11 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class GroupController {
@@ -19,7 +20,7 @@ public class GroupController {
     private final GroupService groupService;
 
     // 그룹보더 전제 조회
-    @GetMapping("/group")
+    @GetMapping("/groups")
     public ResponseEntity<List<BoardResponseDto>> getGroups() {
         List<BoardResponseDto> boardResponseDto = groupService.getGroups();
         return ResponseEntity.ok().body(boardResponseDto);
@@ -34,6 +35,7 @@ public class GroupController {
     
     // 그룹 보더 생성
     @PostMapping("/group")
+    @ResponseBody
     public ResponseEntity<BoardResponseDto> createBoard(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardResponseDto boardResponseDto = groupService.createBoard(boardRequestDto, userDetails.getUser());
 
