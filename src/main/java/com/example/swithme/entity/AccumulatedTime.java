@@ -17,9 +17,9 @@ public class AccumulatedTime {
     private Long accumulatedMinutes;
 
     // User : AccumulatedTime 간에 1:1 관계 설정 방법 1
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", unique = true)
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
     public AccumulatedTime(Long accumulatedMinutes) {
         this.accumulatedMinutes = accumulatedMinutes;
