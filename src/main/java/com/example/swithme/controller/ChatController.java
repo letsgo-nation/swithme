@@ -6,6 +6,7 @@ import com.example.swithme.dto.chat.ChatRoomResponseDto;
 import com.example.swithme.dto.chat.ChatUserResponseDto;
 import com.example.swithme.entity.chat.ChatMessage;
 import com.example.swithme.entity.User;
+import com.example.swithme.enumType.MessageType;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,12 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage/{chatUrl}")
     @SendTo("/topic/public/{chatUrl}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+
+//        var chatMessage = ChatMessage.builder()
+//                .type(MessageType.JOIN)
+//                .sender(userDetails.getUser().getNickname())
+//                .build();
+
         return chatMessage;
     }
 
@@ -43,13 +50,20 @@ public class ChatController {
     @SendTo("/topic/public/{chatUrl}")
     public ChatMessage addUser(
             @Payload ChatMessage chatMessage,
-            SimpMessageHeaderAccessor headerAccessor, @DestinationVariable String chatUrl  // 이 부분은 나중에 로그인 사용자로 변환하면 될듯.
+            SimpMessageHeaderAccessor headerAccessor, @DestinationVariable String chatUrl,@AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         // 유저이름을 웹소켓에 추가합니다. 채팅이 끊길 때 사용합니다.
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        headerAccessor.getSessionAttributes().put("username", userDetails.getUser().getNickname());
 
         // 채탱 URL을 웹소켓에 추가합니다. 채팅이 끊길 때 사용합니다.
         headerAccessor.getSessionAttributes().put("disconnectUrl", chatUrl);
+
+//        var chatMessage = ChatMessage.builder()
+//                .type(MessageType.JOIN)
+//                .sender(userDetails.getUser().getNickname())
+//                .build();
+
+
         return chatMessage;
     }
 
@@ -67,7 +81,7 @@ public class ChatController {
         User user = userDetails.getUser();
         List<ChatRoomResponseDto> findAllChatRoom = chatRoomService.findAllById(user);
         model.addAttribute("chatRooms", findAllChatRoom);
-        return "chat/chatPersonal";
+        return "chat/personal";
     }
 
     // 개인 알림 조회 페이지 이동
@@ -84,9 +98,6 @@ public class ChatController {
     public String chat() {
         return "chat/chatRoom";
     }
-
-
-
 
 
     //채팅룸 생성
@@ -150,6 +161,7 @@ public class ChatController {
         return "chat/chat_invite_alert";
     }
 
+    // 채팅룸 멤버 삭제
     @DeleteMapping("/room/member")
     @ResponseBody
     public String deleteMember(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -158,6 +170,7 @@ public class ChatController {
         return "ok";
     }
 
+    // 채팅룸 삭제
     @DeleteMapping("/chatroom")
     @ResponseBody
     public String deleteChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {

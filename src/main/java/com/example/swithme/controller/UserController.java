@@ -32,36 +32,16 @@ public class UserController {
     private final GoogleService googleService;
     private final JwtUtil jwtUtil;
 
-    //회원 가입 -> 인증 선택 (이메일, 카카오톡, 구글)
-    @GetMapping("/users/signup/authentication")
-    public String authentication(){
-        return "user/authentication";
-    }
-
-    //이메일 인증로 이동
-    @GetMapping("/email")
-    public String MoveEmail(){
-        return "user/email";
-    }
-
-    @ResponseBody
-    @PostMapping("/email")
-    public String emailAuthentication(@RequestBody EmailRequestDto emailRequestDto){
-        System.out.println("emailRequestDto = " + emailRequestDto.getEmail());
-        UUID uuid = userService.sendMail(emailRequestDto);
-        return "ok";
-    }
-
-    // 회원가입 페이지 이동
-    @GetMapping("/users/signup")
-    public String signUp(Model model) {
+    // 회원가입, 로그인 페이지 이동
+    @GetMapping("/users/login")
+    public String loginPage(Model model) {
         model.addAttribute("signupRequestDto", new SignupRequestDto());
-        return "user/signUp";
+        return "user/login";
     }
 
     //회원가입
     @PostMapping("/api/users/signup")
-    public String signup(@Validated @ModelAttribute SignupRequestDto signupRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String signup(@Validated @ModelAttribute SignupRequestDto signupRequestDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         //검증 오류 확인 후 에러 발생시 리턴
         if (bindingResult.hasErrors()) {
             log.info("bindingResult={}", bindingResult);
@@ -72,13 +52,15 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user/signUp";
         }
-        return "user/login";
+
+        return "redirect:/users/login?content=email";
     }
 
-    // 로그인 페이지 이동
-    @GetMapping("/users/login")
-    public String loginPage() {
-        return "/user/login";
+    //이메일 인증 요청
+    @GetMapping("/api/users/email/{mail}")
+    public String authenticateEmail(@PathVariable String mail) {
+            userService.authenticateEmail(mail);
+        return "redirect:/users/login";
     }
 
     //일반 로그인
@@ -90,7 +72,7 @@ public class UserController {
             userService.login(requestDto,response);
         } catch (IllegalArgumentException e) {
             e.getMessage();
-            return "redirect:/users/login?error=true";
+            return "redirect:/users/login?content=loginFail";
         }
 
         return "redirect:/";
@@ -101,8 +83,8 @@ public class UserController {
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         kakaoService.kakaoLogin(code, response); // 쿠키 생성
         return "redirect:/";
-
     }
+
     //구글 로그인
     @GetMapping("/api/users/google/callback")
     public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
@@ -131,7 +113,7 @@ public class UserController {
         return "user/myPageOauth2Login";
     }
 
-    //일반 로그인 정보 수정(닉네임, 이메일)
+    //일반 로그인 정보 수정(닉네임)
     @PostMapping("/api/users/myPage")
     public String updateUser(@Validated @ModelAttribute UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -144,7 +126,7 @@ public class UserController {
         return "user/myPage";
     }
 
-    //일반 로그인 정보 수정(닉네임, 이메일)
+    //구글, 카카오 로그인 정보 수정(닉네임)
     @PostMapping("/api/users/Oauth2myPage")
     public String updateOauth2User(@Validated @ModelAttribute UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -199,11 +181,4 @@ public class UserController {
         model.addAttribute("error", "비밀번호를 확인해주세요");
         return "user/deleteUser";
     }
-    @GetMapping("/user/accumulated_id")
-    public String getaccumulatedtime() {
-
-        return null;
-    }
-
-
 }
