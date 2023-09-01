@@ -26,5 +26,10 @@ public class AccumulatedTime {
 
     }
 
+    public AccumulatedTime() {
+        this.accumulatedMinutes = accumulatedMinutes;
+    }
+
+
 
 }
