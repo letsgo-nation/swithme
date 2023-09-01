@@ -1,10 +1,13 @@
 package com.example.swithme.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Component
+
+//@Component
+// 엔티티를 컴포넘트로 등록하면 안된다.
 public class TokenBlacklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
