@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Component
 public class TokenBlacklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
