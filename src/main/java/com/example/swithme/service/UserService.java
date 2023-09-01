@@ -1,6 +1,8 @@
 package com.example.swithme.service;
 
+import com.example.swithme.dto.AccumulatedTimeDto;
 import com.example.swithme.dto.user.*;
+import com.example.swithme.entity.AccumulatedTime;
 import com.example.swithme.entity.TokenBlacklist;
 import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,11 +182,22 @@ public class UserService {
     }
   }
 
+  // user 찾기
+  public UserUpdateResponseDto lookupUser(Long id) {
+    User user = findUser(id);
+    return new UserUpdateResponseDto(user);
+  }
+
+  private User findUser(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+  }
+
   //회원탈퇴
   @Transactional
   public void delete(User user) {
     userRepository.delete(user);
   }
+
 
 
   @Transactional
@@ -194,5 +208,19 @@ public class UserService {
     } else {
       throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
     }
+
+  public AccumulatedTimeDto getAccumulatedTimeByUserId(Long userId) {
+    // 사용자 아이디로 사용자를 조회
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+    // 사용자의 누적 시간을 가져와서 AccumulatedTimeDTO로 변환
+    AccumulatedTime accumulatedTime = user.getAccumulatedTime();
+
+    AccumulatedTimeDto accumulatedTimeDto = new AccumulatedTimeDto();
+    accumulatedTimeDto.setAccumulatedMinutes(accumulatedTime.getAccumulatedMinutes());
+
+    return accumulatedTimeDto;
+
   }
 }

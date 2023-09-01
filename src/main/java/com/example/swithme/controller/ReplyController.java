@@ -3,7 +3,6 @@ package com.example.swithme.controller;
 import com.example.swithme.dto.ApiResponseDto;
 import com.example.swithme.dto.ReplyRequestDto;
 import com.example.swithme.dto.ReplyResponseDto;
-import com.example.swithme.exception.TokenNotValidateException;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class ReplyController {
             @PathVariable Long id,
             @RequestBody ReplyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = replyService.createReply(id, requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
@@ -49,7 +47,6 @@ public class ReplyController {
             @PathVariable Long id,
             @RequestBody ReplyRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = replyService.updateReply(id,requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
@@ -60,17 +57,7 @@ public class ReplyController {
     public ResponseEntity<ApiResponseDto> deleteReply(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = replyService.deleteReply(id, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
-
-    // tokenValidate
-//    public void tokenValidate(UserDetailsImpl userDetails) {
-//        try{
-//            userDetails.getUser();
-//        }catch (Exception ex){
-//            throw new TokenNotValidateException("토큰이 유효하지 않습니다.");
-//        }
-//    }
 }

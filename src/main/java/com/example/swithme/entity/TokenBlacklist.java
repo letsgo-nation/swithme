@@ -1,6 +1,7 @@
 package com.example.swithme.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Entity

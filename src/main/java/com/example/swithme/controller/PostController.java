@@ -3,7 +3,6 @@ package com.example.swithme.controller;
 import com.example.swithme.dto.ApiResponseDto;
 import com.example.swithme.dto.PostRequestDto;
 import com.example.swithme.dto.PostResponseDto;
-import com.example.swithme.exception.TokenNotValidateException;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.PostService;
 import com.example.swithme.service.UserService;
@@ -29,7 +28,6 @@ public class PostController {
     public ResponseEntity<ApiResponseDto> createPost(
             @RequestBody PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
@@ -61,7 +59,6 @@ public class PostController {
     @DeleteMapping("/post/{id}")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         return postService.deletePost(id, userDetails.getUser());
     }
 
@@ -70,11 +67,4 @@ public class PostController {
     public ResponseEntity<ApiResponseDto> getCategoryPosts(@PathVariable Long category_id) {
         return postService.getCategoryPosts(category_id);
     }
-//    public void tokenValidate(UserDetailsImpl userDetails) {
-//        try{
-//            userDetails.getUser();
-//        }catch (Exception ex){
-//            throw new TokenNotValidateException("토큰이 유효하지 않습니다.");
-//        }
-//    }
 }

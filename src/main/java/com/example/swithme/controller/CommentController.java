@@ -26,7 +26,6 @@ public class CommentController {
             @PathVariable Long id,
             @RequestBody CommentRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = commentService.createComment(id, requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
 
@@ -47,7 +46,6 @@ public class CommentController {
             @PathVariable Long id,
             @RequestBody CommentRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = commentService.updateComment(id, requestDto, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
@@ -58,15 +56,7 @@ public class CommentController {
     public ResponseEntity<ApiResponseDto> deleteComment (
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
         ApiResponseDto responseDto = commentService.deleteComment(id, userDetails.getUser());
         return ResponseEntity.ok().body(responseDto);
     }
-//    public void tokenValidate(UserDetailsImpl userDetails) {
-//        try{
-//            userDetails.getUser();
-//        }catch (Exception ex){
-//            throw new TokenNotValidateException("토큰이 유효하지 않습니다.");
-//        }
-//    }
 }

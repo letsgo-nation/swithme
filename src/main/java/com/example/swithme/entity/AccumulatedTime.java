@@ -16,15 +16,20 @@ public class AccumulatedTime {
     @Column(name = "accumulated_time")
     private Long accumulatedMinutes;
 
-//    // @JsonIgnore
-//    @OneToOne
-//    @JoinColumn(name ="user_id", nullable = false)
-//    private User user;
+    // User : AccumulatedTime 간에 1:1 관계 설정 방법 1
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
-//    public AccumulatedTime(Long accumulatedMinutes) {
-//        this.accumulatedMinutes = accumulatedMinutes;
-//
-//    }
+    public AccumulatedTime(Long accumulatedMinutes) {
+        this.accumulatedMinutes = accumulatedMinutes;
+
+    }
+
+    public AccumulatedTime() {
+        this.accumulatedMinutes = accumulatedMinutes;
+    }
+
 
 
 }
