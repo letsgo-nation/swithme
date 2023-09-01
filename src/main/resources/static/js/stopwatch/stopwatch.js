@@ -1,4 +1,4 @@
-import { makeTime, makeSec, switchDisplay, refreshText, recordText } from "../stopwatch/modules/modules.js"
+import { makeTime, makeSec, switchDisplay, refreshText, recordText } from "./modules/modules.js"
 const btn_start = document.querySelector("#stopwatch-start")
 const btn_pause = document.querySelector("#stopwatch-pause")
 const btn_record = document.querySelector("#stopwatch-record")
