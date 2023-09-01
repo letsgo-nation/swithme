@@ -42,12 +42,8 @@ public class PostViewController {
     }
     // 게시글 수정 페이지
     @GetMapping("/post/update/{id}")
-    public String updatePostView(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if(!userService.lookupUser(postService.lookupPost(id).getUser_id()).getUsername().equals(userDetails.getUsername())) {
-            /* 게시글 작성자가 아닐 시, id에 해당하는 게시글 페이지로 이동 */
-            return "redirect:/view/post/detail/"+id;
-        }
-        model.addAttribute("username",userDetails.getUser().getUsername());
+    public String modifyPost(Model model,  @PathVariable Long id)
+            throws JsonProcessingException {
         model.addAttribute("post",postService.lookupPost(id));
         return "post/postUpdate";
     }
