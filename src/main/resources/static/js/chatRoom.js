@@ -32,8 +32,8 @@ function connect(event) {
     if(username) {
 
         // 화면 보여지고 안 보여지는 것 부분 조작
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
+        // usernamePage.classList.add('hidden');
+        // chatPage.classList.remove('hidden');
 
         // ockJS와 같이 웹 소켓을 지원하지 않는 환경에서 SockJS 기반으로 STOMP 클라이언트를 생성하는데 사용됩니다. 웹 소켓을 지원하는 환경에서는 Stomp.client를 사용하여 STOMP 클라이언트를 생성하는 것이 보다 직관적입니다.
         var socket = new SockJS('/ws');
@@ -41,7 +41,7 @@ function connect(event) {
 
         stompClient.connect({}, onConnected, onError);
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
 
 

@@ -8,10 +8,13 @@ import com.example.swithme.entity.User;
 import com.example.swithme.jwt.JwtUtil;
 import com.example.swithme.repository.TokenBlacklistRepository;
 import com.example.swithme.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,12 @@ public class UserService {
   private final JwtUtil jwtUtil;
   private final TokenBlacklistRepository tokenBlacklistRepository;
 
+  //이메일
+  private final JavaMailSender javaMailSender;
+
+  private static final String senderEmail = "seed0335@gmail.com";
+  private static int number;
+
 
   // 로그아웃시 토큰 블랙리스트 추가
   @Transactional
@@ -39,12 +49,33 @@ public class UserService {
     tokenBlacklistRepository.save(tokenBlacklist);
   }
 
+  //이메일 인증
+  public MimeMessage CreateMail(String mail){
+    MimeMessage message = javaMailSender.createMimeMessage();
+
+    try {
+      message.setFrom(senderEmail);
+      message.setRecipients(MimeMessage.RecipientType.TO, mail);
+      message.setSubject("swithme 회원가입을 위한 인증안내 입니다. . ");
+      String body = "";
+      body += "<h3>" + "swithme 회원가입을 위한 이메일 인증을 안내드립니다.." + "</h3>";
+      body += "<h3>" + "아래 버튼을 누르시면 이메일 인증이 완료되며, 페이지로 이동합니다." + "</h3>";
+      body += "<a href=\"http://localhost:8080/api/users/email/" + mail + "\">버튼을 클릭하세요</a>";
+      body += "<h3>" + "감사합니다." + "</h3>";
+      message.setText(body,"UTF-8", "html");
+    } catch (MessagingException e) {
+      e.printStackTrace();
+    }
+
+    return message;
+  }
+
   //회원가입
+  @Transactional
   public void signup(SignupRequestDto signupRequestDto, BindingResult bindingResult) {
     String username = signupRequestDto.getUsername();
     String password = signupRequestDto.getPassword();
     String checkPassword = signupRequestDto.getCheckPassword();
-    String email = signupRequestDto.getEmail();
     String nickName = signupRequestDto.getNickName();
 
     //닉네임과 같은 값이 비밀번호에 포함된 경우 회원가입 실패
@@ -61,14 +92,19 @@ public class UserService {
     //회원 중복 확인
     Optional<User> checkUsername = userRepository.findByUsername(username);
     if (checkUsername.isPresent()) {
-      bindingResult.addError(new FieldError("signupRequestDto", "username", "중복된 사용자가 존재합니다."));
+      bindingResult.addError(new FieldError("signupRequestDto", "username", "이미 가입된 이메일입니다. 로그인 또는 이메일 인증을 진행해주세요."));
+      MimeMessage message = CreateMail(username);
+      javaMailSender.send(message);
     }
 
     //에러 없을 때 회원가입 성공
     if (!bindingResult.hasErrors()) {
       String passwordEncode = passwordEncoder.encode(signupRequestDto.getPassword());
-      User user = new User(username, passwordEncode, nickName);
+      User user = new User(username, passwordEncode, nickName, 0);
       userRepository.save(user);
+
+      MimeMessage message = CreateMail(username);
+      javaMailSender.send(message);
     }
   }
 
@@ -77,6 +113,12 @@ public class UserService {
     String password = requestDto.getPassword();
 
     Optional<User> checkUser = userRepository.findByUsername(username);
+    User user = checkUser.orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+
+
+    if (user.getStatus() == 0) {
+      throw new IllegalArgumentException("이메일 인증을 완료해주세요");
+    }
 
     if (!checkUser.isPresent() || !passwordEncoder.matches(password,
             checkUser.get().getPassword())) {
@@ -156,6 +198,17 @@ public class UserService {
     userRepository.delete(user);
   }
 
+
+
+  @Transactional
+  public void authenticateEmail(String mail) {
+    Optional<User> findUser = userRepository.findByUsername(mail);
+    if (findUser.isPresent()) {
+      findUser.get().setStatus(1);
+    } else {
+      throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+    }
+
   public AccumulatedTimeDto getAccumulatedTimeByUserId(Long userId) {
     // 사용자 아이디로 사용자를 조회
     User user = userRepository.findById(userId)
@@ -168,5 +221,6 @@ public class UserService {
     accumulatedTimeDto.setAccumulatedMinutes(accumulatedTime.getAccumulatedMinutes());
 
     return accumulatedTimeDto;
+
   }
 }

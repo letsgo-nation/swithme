@@ -6,25 +6,10 @@
     <link rel="stylesheet" th:href="@{/css/chatRoom.css}">
 </head>
 <body>
-<noscript>
-    <h2>Sorry! Your browser doesn't support Javascript</h2>
-</noscript>
-<div th:replace="~{fragment/nav :: useNav}">insert</div>
-<div id="username-page">
-    <div class="username-page-container">
-        <h1 class="title">Type your username to enter the Chatroom</h1>
-        <form id="usernameForm" name="usernameForm">
-            <div class="form-group">
-                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" /> <!--유저 네임 선택 부분-->
-            </div>
-            <div class="form-group">
-                <button type="submit" class="accent username-submit">Start Chatting</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<div id="chat-page" class="hidden">
+<div th:replace="~{fragment/nav :: useNav2}">insert</div>
+
+<div id="chat-page" >
     <div class="chat-container">
         <div class="chat-header">
             <h2>채팅 기능</h2>

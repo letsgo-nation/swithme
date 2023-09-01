@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
+    <title>채팅 </title>
+    <link rel="stylesheet" th:href="@{/css/chatPersonal.css}">
+</head>
+<body>
+
+<div th:replace="~{fragment/nav :: useNav}">insert</div>
+
+<!-- 수정 : 타이틀, 제목 -->
+<form action="/chat/room/edit" method="post" th:object="${chatRoom}">
+
+
+    <input type="hidden" id="id" name="id" th:field="*{id}" ><br>
+
+    <label for="title">제목</label><br>
+    <input type="text" id="title" name="title" th:field="*{title}" ><br>
+
+
+    <label for="content">내용</label><br>
+    <input type="text" id="content" name="content" th:field="*{content}"><br>
+
+    <input class="btn btn-primary submit" type="submit" value="확인">
+</form>
+<!-- 멤버 초대 -->
+<form action="/chat/room/invite" method="post" th:object="${chatRoom}">
+
+    <input type="hidden"  name="id" th:field="*{id}" ><br>
+
+    <label for="username">멤버 초대(이메일 입력)</label><br>
+    <input type="text" id = "username" name="username"><br>
+
+    <input class="btn btn-primary submit" type="submit" value="확인">
+
+</form>
+
+<!-- 멤버 조회 -->
+<table>
+    <tr>
+        <th>이름</th>
+        <th>수락 여부</th>
+        <th>삭제 버튼</th>
+    </tr>
+    <tr th:each="inviteUser : ${inviteUsers}">
+        <td th:text="${inviteUser.username}"></td>
+        <td th:text="${inviteUser.invite}"></td>
+        <td>
+            <button type="button" class="btn btn-outline-danger btn-sm"
+                    th:onclick="'deleteMember(' + ${inviteUser.id} + ')'" >Delete</button>
+        </td>
+    </tr>
+</table>
+
+
+<button type="button" class="btn btn-outline-danger btn-sm"
+        th:onclick="'deleteChatRoom(' + ${chatRoom.id} + ')'" >채팅룸 삭제</button>
+<!-- 멤버 삭제 -->
+<script>
+    function deleteMember(id) {
+        let data = {'id': id};
+
+        $.ajax({
+            method: 'Delete',
+            url: '/chat/room/member',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // 에러 시 처리할 코드
+                console.error(error);
+            }
+        });
+    }
+
+    function deleteChatRoom(id) {
+        let data = {'id': id};
+
+        $.ajax({
+            method: 'Delete',
+            url: '/chat/chatroom',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // 에러 시 처리할 코드
+                console.error(error);
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>

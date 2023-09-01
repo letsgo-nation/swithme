@@ -1,4 +1,4 @@
-package com.example.swithme.entity;
+package com.example.swithme.entity.chat;
 
 import com.example.swithme.enumType.MessageType;
 import lombok.*;

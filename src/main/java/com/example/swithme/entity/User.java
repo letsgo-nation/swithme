@@ -23,13 +23,15 @@ public class User {
     private Long userId;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    private String username; //유저네임 = 이메일로 받음
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", unique = true)
     private String nickname;
+
+    private int status;
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role = UserRole.USER;
@@ -49,10 +51,11 @@ public class User {
 
     // 일반 회원가입
 
-    public User(String username, String password, String nickname) {
+    public User(String username, String password, String nickname, int status) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.status = status;
     }
 
     // 카카오 로그인시 회원가입

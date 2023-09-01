@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+<div th:replace="~{fragment/nav :: useNav}">insert</div>
+
+<div class="main">
+
+        <fieldset>
+            <legend>이메일 인증</legend>
+            <button type="button" onclick="location.href='/emailRequestDto'">이메일 인증으로 가입하기</button>
+                <button type="button" onclick="redirectToGoogleLogin()">
+                    Log in with Google
+                </button>
+            <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=7073cdcdc5d2c3f6193e4ab0db89ba84&redirect_uri=http://localhost:8080/api/users/kakao/callback&response_type=code'">
+                카카오로 로그인하기
+            </button>
+        </fieldset>
+</div>
+
+<script>
+    // 구글 로그인 시도
+    function redirectToGoogleLogin() {
+        const clientId = "964296755360-5db3hsu4jhn7dvtsbig72f4r6316obf0.apps.googleusercontent.com";
+        const redirectUri = "http://localhost:8080/api/users/google/callback";
+
+        const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=emailRequestDto%20profile`;
+
+        window.location.href = googleLoginUrl;
+    }
+
+    // URL 매개변수에서 error 값을 읽어와서 경고창을 띄우는 함수
+    function showAlertFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+
+        if (error === 'true') {
+            alert('아이디 또는 비밀번호가 틀립니다.');
+        }
+    }
+    // 페이지 로드 시 showAlertFromUrl 함수 호출
+    window.onload = showAlertFromUrl;
+</script>
+
+</body>
+</html>

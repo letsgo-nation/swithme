@@ -12,6 +12,7 @@ public class TokenBlacklist {
     private Long id;
     private String token;
 
+
     public TokenBlacklist() {
     }
 

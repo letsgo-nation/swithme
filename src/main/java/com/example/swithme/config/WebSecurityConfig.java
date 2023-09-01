@@ -59,8 +59,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                        .permitAll() // resources 접근 허용 설정
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() //메인페이지 접근 허용
                         .requestMatchers("/users/**").permitAll()
 //                        .requestMatchers("/view/post/write").authenticated()
@@ -70,12 +69,12 @@ public class WebSecurityConfig {
                         .anyRequest().permitAll() //개발 단계에서 모든 접근 허용
 
         );
-//        http.formLogin(AbstractHttpConfigurer::disable);
+        // 인증필요한 페이지 이동시 기본 로그인 페이지
         http.formLogin((formLogin) ->
-                        formLogin
-// 로그인 처리 (POST /api/user/login)
-                                .loginPage("/users/login").permitAll()
+                formLogin
+                        .loginPage("/users/login").permitAll()
         );
+
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 

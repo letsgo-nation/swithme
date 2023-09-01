@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
+  <title>채팅 </title>
+  <link rel="stylesheet" th:href="@{/css/chatPersonal.css}">
+</head>
+<body>
+
+<div th:replace="~{fragment/nav :: useNav}">insert</div>
+
+<!--전체 채팅-->
+<div class="container text-center">
+  <nav th:replace="~{fragment/nav :: useNavChat}">insert</nav>
+  <div class=" row row-cols-1 row-cols-md-5 g-4">
+    <div class="col" th:each="chatRoom : ${chatRooms}">
+      <div class="card h-100">
+        <img src="/image/study_computer.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${chatRoom.title}">백엔드 개발</h5>
+          <p class="card-text" th:text="${chatRoom.content}">책 추천, 인강 추천 등 <br> 다양한 주제에 대한
+            정보를
+            나누세요.
+          </p>
+          <form method="post">
+
+            <input type="hidden"  name="id" th:value="${chatRoom.id}" ><br>
+
+            <input class="btn btn-primary submit" type="submit" value="확인" formaction="/chat/room/invite/accept">
+            <input class="btn btn-primary submit" type="submit" value="거절" formaction="/chat/room/invite/decline">
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

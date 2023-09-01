@@ -1,5 +1,6 @@
-package com.example.swithme.entity;
+package com.example.swithme.entity.chat;
 
+import com.example.swithme.dto.chat.ChatRoomRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,14 +26,19 @@ public class ChatRoom {
 
     private String category;
 
-    private UUID url; // 채팅방 입장 주소
+    private UUID chatUrl; // 채팅방 입장 주소
 
     private String img; // 이미지 고민
 
-    public ChatRoom(String title, String content, String category, UUID url) {
+    public ChatRoom(String title, String content, String category, UUID chatUrl) {
         this.title = title;
         this.content = content;
         this.category = category;
-        this.url = url;
+        this.chatUrl = chatUrl;
+    }
+
+    public void update(ChatRoomRequestDto chatRoomRequestDto) {
+        this.title = chatRoomRequestDto.getTitle();
+        this.content = chatRoomRequestDto.getContent();
     }
 }
