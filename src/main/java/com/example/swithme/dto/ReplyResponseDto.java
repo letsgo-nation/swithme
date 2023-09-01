@@ -13,15 +13,15 @@ public class ReplyResponseDto {
     private String content;
     private String userNickname;
     private String username;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private String createdAt;
+    private String modifiedAt;
 
     public ReplyResponseDto(Reply reply) {
         this.id = reply.getId();
         this.content = reply.getContent();
         this.userNickname = reply.getUser().getNickname();
-        this.createdAt = reply.getCreatedAt();
+        this.createdAt = reply.getCreatedAtFormatted();
         this.username = reply.getUser().getUsername();
-        this.modifiedAt = reply.getModifiedAt();
+        this.modifiedAt = reply.getModifiedAtFormatted();
     }
 }

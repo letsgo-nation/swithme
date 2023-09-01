@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layout/head :: common_header(~{::title},~{::link})">
+    <title>게시물 상세 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/post/postDetail.css}"/>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="app-header">
+        <div class="app-header-left">
+            <span class="app-icon"></span>
+            <p class="app-name">SWITHME</p>
+            <div class="search-wrapper">
+                <input class="search-input" type="text" placeholder="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-search" viewBox="0 0 24 24">
+                    <defs></defs>
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="app-header-right">
+            <button class="mode-switch" title="Switch Theme">
+                <svg class="moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="24" height="24" viewBox="0 0 24 24">
+                    <defs></defs>
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                </svg>
+            </button>
+            <button class="notification-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
+            </button>
+            <button class="profile-btn">
+                <img src="https://assets.codepen.io/3306515/IMG_2025.jpg" />
+                <span>nickname</span>
+                <!--                username 대체 -->
+            </button>
+        </div>
+    </div>
+    <div class="app-content">
+        <div class="app-sidebar">
+            <a href="" class="app-sidebar-link active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" /></svg>
+            </a>
+            <a href="" class="app-sidebar-link">
+                <svg class="link-icon feather feather-pie-chart" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <!--                <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-pie-chart" viewBox="0 0 24 24">-->
+                    <defs />
+                    <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
+                </svg>
+            </a>
+            <a href="" class="app-sidebar-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" /></svg>
+            </a>
+            <a href="" class="app-sidebar-link">
+                <svg class="link-icon feather feather-settings" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <!--                <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-settings" viewBox="0 0 24 24">-->
+                    <defs />
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg>
+            </a>
+        </div>
+        <div class="projects-section">
+            <div class="project-box" style="background-color: #e9e7fd;">
+                <!--                                                글쓰기 폼-->
+                <div class="write" id="write">
+                    <form>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-title">제목</span>
+                            <input type="text" id="title" class="form-control" aria-label="Sizing example input" th:value="${post.title}" aria-describedby="inputGroup-sizing" readonly>
+                        </div>
+                        <div class="input-group mb-3 g-2">
+                            <span class="input-group-text" id="inputGroup-username">작성자</span>
+                            <input type="text" id="username" class="form-control me-4" aria-label="Sizing example username" th:value="${post.userNickname}" aria-describedby="username-sizing" readonly>
+                            <span class="input-group-text" for="category">카테고리</span>
+                            <input type="text" id="category" class="form-control me-4" aria-label="Sizing example username" th:value="${post.category_name}" aria-describedby="username-sizing" readonly>
+                        </div>
+                        <div class="input-group-lg">
+                            <span class="input-group-text">게시글 내용</span>
+                            <span class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></span>
+                        </div>
+                            <!--수정, 삭제 버튼-->
+                        <div class="d-flex justify-content-center mt-3">
+                        <!-- Button to trigger the modal -->
+                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updateModal">수정</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel1">알림!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        게시물을 수정하시겠습니까?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+<!--                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+id">예</button>-->
+                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+lastPart">예</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--삭제버튼-->
+                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">삭제</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">알림!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        게시물을 삭제하시겠습니까?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                                        <button type="button" class="btn btn-primary" id="deleteButton" th:attr="data-postid=${post.id}">예</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!--                        <div class="d-flex justify-content-center mt-3">-->
+<!--                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="location.href=''" id="update">수정</button>-->
+<!--                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="location.href=''" id="delete">삭제</button>-->
+<!--                        </div>-->
+                    </form>
+                </div>
+                <!--                                                글쓰기 폼 끝-->
+            </div>
+            <div></div>
+            <div class="project-box" style="background-color: #e9e7fd;">
+                <!--                                                댓글 폼-->
+
+                <!--                                                댓글 폼 끝-->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // URL을 "/"로 분할하여 배열로 저장합니다.
+    let currentURL = window.location.href;
+    let urlParts = currentURL.split("/");
+
+    // 배열에서 마지막 요소를 가져옵니다.
+    let lastPart = urlParts[urlParts.length - 1];
+</script>
+<script src="/js/post/postDetail.js"></script>
+</body>
+</html>

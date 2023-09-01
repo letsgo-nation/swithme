@@ -19,8 +19,8 @@ public class CommentResponseDto {
     private String content;
     private String userNickname;
     private String username;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private String createdAt;
+    private String modifiedAt;
     private List<ReplyResponseDto> replyResponseDtoList;
 
     public CommentResponseDto(Comment comment) {
@@ -28,8 +28,8 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.userNickname = comment.getUser().getNickname();
         this.username = comment.getUser().getUsername();
-        this.createdAt = comment.getCreatedAt();
-        this.modifiedAt = comment.getModifiedAt();
+        this.createdAt = comment.getCreatedAtFormatted();
+        this.modifiedAt = comment.getModifiedAtFormatted();
         if (comment.getReplyList().size() > 0) {
             this.replyResponseDtoList = new ArrayList<>();
             for (Reply reply : comment.getReplyList()) {
