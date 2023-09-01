@@ -27,10 +27,34 @@ btn_pause.addEventListener("click", () => {
     switchDisplay([btn_start, btn_pause, btn_record])
 })
 
+// btn_record.addEventListener("click", () => {
+//     const recTime = document.querySelector("#stopwatch-clock").innerText
+//     recordText(recTime, div_record)
+// })
+
 btn_record.addEventListener("click", () => {
-    const recTime = document.querySelector("#stopwatch-clock").innerText
-    recordText(recTime, div_record)
-})
+    const recTime = document.querySelector("#stopwatch-clock").innerText;
+    const recordDto = { recordedTime: recTime };
+
+    fetch('/api/record', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(recordDto),
+    })
+        .then(response => {
+            if (response.ok) {
+                // 성공적으로 저장되었을 때의 처리
+            } else {
+                // 오류 처리
+            }
+        })
+        .catch(error => {
+            // 네트워크 오류 처리
+        });
+});
+
 
 btn_restart.addEventListener("click", () => {
     refreshText(document.querySelector("#stopwatch-clock"), div_record)
