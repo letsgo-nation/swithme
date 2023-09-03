@@ -31,7 +31,7 @@ public class CommentController {
 
     }
     // 댓글 조회
-    @GetMapping("/post/comment/{id}") // id는 user id
+    @GetMapping("/post/comment/{id}") // id는 post id
     @ResponseBody
     public List<CommentResponseDto> commentList(
             @PathVariable Long id,
