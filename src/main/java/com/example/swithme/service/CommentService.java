@@ -41,6 +41,7 @@ public class CommentService {
         commentRepository.save(comment);
         log.info("댓글 저장 완료");
         return new ApiResponseDto("댓글이 저장되었습니다.", HttpStatus.OK.value());
+//        return new ApiResponseDto(HttpStatus.OK.value(), "댓글이 저장되었습니다.", requestDto);
     }
 
     // 댓글 조회

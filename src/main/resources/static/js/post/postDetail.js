@@ -7,281 +7,281 @@ let lastPart = urlParts[urlParts.length - 1];
 
 // 삭제 버튼 클릭 시 게시물 삭제
 document.getElementById("deleteButton").addEventListener("click", function() {
-let postId = this.getAttribute("data-postid");
+    let postId = this.getAttribute("data-postid");
 
-fetch("/api/post/" + postId, {
-    method: "DELETE",
-    headers: {
-        "Content-Type": "application/json"
-    }
-})
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // 서버의 응답 데이터 처리
-        // 여기서 필요한 동작 수행 (예: 페이지 새로고침)
-        alert("게시글이 삭제되었습니다");
-        window.location.href = "/view/posts";
+    fetch("/api/post/" + postId, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
-    .catch(error => {
-        console.error("Error:", error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // 서버의 응답 데이터 처리
+            // 여기서 필요한 동작 수행 (예: 페이지 새로고침)
+            alert("게시글이 삭제되었습니다");
+            window.location.href = "/view/posts";
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
 });
 
-// 댓글, 대댓글
 $(document).ready(function () {
+    // const postId = $("#commentSubmitBtn").data("postid");
+
     // 댓글 작성
-    $("#comment-form").submit(function (event) {
-        event.preventDefault();
-        // let postId = this.getAttribute("data-postid");
-        // const postId = /* 게시물 ID를 가져오는 방법 */;
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const postId = urlParams.get('id'); // 'id'는 파라미터 이름에 맞게 수정
-        // console.log(postId)
-        console.log(lastPart)
-        const commentText = $("#comment-input").val();
-        console.log(commentText)
+    $("#commentSubmitBtn").click(function () {
+        const commentText = $("#commentText").val();
         if (commentText.trim() === "") {
             alert("댓글 내용을 입력하세요.");
             return;
         }
 
         const requestData = {
-            text: commentText,
+            content: commentText,
         };
-        console.log(requestData)
-        $.ajax({
-            type: "POST",
-            url: `/api/post/comment/`+lastPart,
-            // url: `/api/post/comment/` + postId,
-            data: JSON.stringify(requestData),
-            contentType: "application/json",
-            success: function (response) {
-                console.log(response)
+
+        fetch(`/api/post/comment/` + lastPart, {
+        // fetch(`/api/post/comment/${postId}` + lastPart, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
                 alert("댓글이 작성되었습니다.");
-                $("#comment-input").val("");
+                console.log(requestData)
+                $("#commentText").val("");
                 loadComments(lastPart);
-            },
-            error: function (error) {
-                console.log(error)
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log(requestData)
                 alert("댓글 작성 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
 
-    // 대댓글 생성
-    $(document).on("submit", ".reply-form", function (event) {
-        event.preventDefault();
-
-        const commentId = $(this).data("comment-id");
-        const replyText = $(this).find("input").val();
-
-        if (replyText.trim() === "") {
-            alert("대댓글 내용을 입력하세요.");
+    // 대댓글 작성 버튼 클릭
+    $(document).on("click", ".replyBtn", function () {
+        const commentId = $(this).data("comment");
+        const replyText = prompt("대댓글 내용을 입력하세요.");
+        if (replyText === null || replyText.trim() === "") {
             return;
         }
 
         const requestData = {
-            text: replyText,
+            content: replyText,
         };
 
-        $.ajax({
-            type: "POST",
-            url: `/api/post/comment/${commentId}/reply`,
-            data: JSON.stringify(requestData),
-            contentType: "application/json",
-            success: function (response) {
-                console.log(response)
+        fetch(`/api/post/comment/${commentId}/reply`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
                 alert("대댓글이 작성되었습니다.");
                 loadReplies(commentId);
-            },
-            error: function (error) {
-                console.log(error)
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("대댓글 작성 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
 
     // 댓글 조회
     function loadComments(lastPart) {
-        $.ajax({
-            type: "GET",
-            url: `/api/post/comment/`+ lastPart,
-            success: function (comments) {
+        // fetch(`/api/post/comment/${postId}`)
+        fetch(`/api/post/comment/`+ lastPart)
+            .then((response) => response.json())
+            .then((comments) => {
                 displayComments(comments);
-            },
-            error: function (error) {
-                console.log(error)
+                console.log(comments)
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("댓글을 불러오는 중 오류가 발생했습니다.");
-            },
-        });
+            });
     }
 
     // 대댓글 조회
     function loadReplies(commentId) {
-        $.ajax({
-            type: "GET",
-            url: `/api/post/comment/reply/${commentId}`,
-            success: function (replies) {
+        fetch(`/api/post/comment/reply/${commentId}`)
+            .then((response) => response.json())
+            .then((replies) => {
                 displayReplies(commentId, replies);
-            },
-            error: function (error) {
-                console.log(error)
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("대댓글을 불러오는 중 오류가 발생했습니다.");
-            },
-        });
+            });
     }
 
     // 댓글을 화면에 표시하는 함수
     function displayComments(comments) {
-        const commentsList = $("#comments-list");
-        commentsList.html(""); // 댓글 목록 초기화
+        const commentList = $("#commentList");
+        commentList.html(""); // 댓글 목록 초기화
 
         comments.forEach(function (comment) {
+            console.log(comment)
             const commentElement = document.createElement("div");
-            commentElement.classList.add("comment");
+            commentElement.id = `comment-${comment.id}`;
             commentElement.innerHTML = `
-                <p>${comment.text}</p>
-                <button class="edit-comment" data-id="${comment.id}">수정</button>
-                <button class="delete-comment" data-id="${comment.id}" th:attr="data-postid=${post.id}">삭제</button>
-                <form class="reply-form" data-comment-id="${comment.id}" style="display: none;">
-                    <input type="text" placeholder="대댓글 입력">
-                    <button type="submit">대댓글 작성</button>
-                </form>
-                <div class="replies"></div>
+                <p>${comment.content}</p>
+                <button class="replyBtn" data-comment="${comment.id}">대댓글 작성</button>
+                <button class="edit-comment" data-comment="${comment.id}">댓글 수정</button>
+                <button class="delete-comment" data-comment="${comment.id}">댓글 삭제</button>
+                <div id="replyList-${comment.id}">
+                    <!-- 대댓글이 여기에 동적으로 추가됩니다 -->
+                </div>
             `;
 
-            commentsList.append(commentElement);
+            commentList.append(commentElement);
         });
     }
 
     // 대댓글을 화면에 표시하는 함수
     function displayReplies(commentId, replies) {
-        const repliesContainer = $(`.comment[data-id="${commentId}"] .replies`);
-        repliesContainer.html(""); // 대댓글 목록 초기화
+        const replyList = $(`#replyList-${commentId}`);
+        replyList.html(""); // 대댓글 목록 초기화
 
         replies.forEach(function (reply) {
             const replyElement = document.createElement("div");
-            replyElement.classList.add("reply");
             replyElement.innerHTML = `
-                <p>${reply.text}</p>
-                <button class="edit-reply" data-id="${reply.id}">수정</button>
-                <button class="delete-reply" data-id="${reply.id}">삭제</button>
+                <p>${reply.content}</p>
+                <button class="edit-reply" data-reply="${reply.id}">대댓글 수정</button>
+                <button class="delete-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 삭제</button>
             `;
 
-            repliesContainer.append(replyElement);
+            replyList.append(replyElement);
         });
     }
 
     // 댓글 수정
     $(document).on("click", ".edit-comment", function () {
-        const commentId = $(this).data("id");
-        const editedText = /* 수정된 댓글 내용 가져오는 방법 */ $(this).closest(".comment").find("p").text(); // 댓글 내용을 가져옵니다.
+        const commentId = $(this).data("comment");
+        const editedText = prompt("수정된 댓글 내용을 입력하세요.");
 
-        // 댓글 수정 폼을 표시하고, 수정된 내용을 입력 필드에 채웁니다.
-        const commentForm = $(this).closest(".comment").find(".comment-form");
-        commentForm.find("textarea").val(editedText);
-        commentForm.show();
-
-        if (editedText.trim() === "") {
-            alert("댓글 내용을 입력하세요.");
+        if (editedText === null || editedText.trim() === "") {
             return;
         }
 
         const requestData = {
-            text: editedText,
+            content: editedText,
         };
 
-        $.ajax({
-            type: "PUT",
-            url: `/api/post/comment/${commentId}`,
-            data: JSON.stringify(requestData),
-            contentType: "application/json",
-            success: function (response) {
+        fetch(`/api/post/comment/${commentId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
                 alert("댓글이 수정되었습니다.");
                 loadComments(lastPart);
-            },
-            error: function (error) {
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("댓글 수정 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
 
     // 대댓글 수정
     $(document).on("click", ".edit-reply", function () {
-        const replyId = $(this).data("id");
-        const editedText = $(this).closest(".reply").find("p").text(); // 대댓글 내용을 가져옵니다.
+        const replyId = $(this).data("reply");
+        const editedText = prompt("수정된 대댓글 내용을 입력하세요.");
 
-        // 대댓글 수정 폼을 표시하고, 수정된 내용을 입력 필드에 채웁니다.
-        const replyForm = $(this).closest(".comment").find(".reply-form");
-        replyForm.find("input").val(editedText);
-        replyForm.show();
-
-        if (editedText.trim() === "") {
-            alert("대댓글 내용을 입력하세요.");
+        if (editedText === null || editedText.trim() === "") {
             return;
         }
 
         const requestData = {
-            text: editedText,
+            content: editedText,
         };
 
-        $.ajax({
-            type: "PUT",
-            url: `/api/post/comment/reply/${replyId}`,
-            data: JSON.stringify(requestData),
-            contentType: "application/json",
-            success: function (response) {
+        fetch(`/api/post/comment/reply/${replyId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
                 alert("대댓글이 수정되었습니다.");
+                const commentId = data.commentId; // 대댓글이 속한 댓글 ID 가져오기
+                console.log(commentId)
+                // const commentId = data.commentId; // 대댓글이 속한 댓글 ID 가져오기
                 loadReplies(commentId);
-            },
-            error: function (error) {
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("대댓글 수정 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
-
 
     // 댓글 삭제
     $(document).on("click", ".delete-comment", function () {
-        const commentId = $(this).data("id");
-        let postId = this.getAttribute("data-postid");
-        // const postId = /* 게시물 ID를 가져오는 방법 */;
+        const commentId = $(this).data("comment");
 
         if (!confirm("댓글을 삭제하시겠습니까?")) {
             return;
         }
 
-        $.ajax({
-            type: "DELETE",
-            url: `/api/post/comment/${commentId}`,
-            success: function (response) {
-                alert("댓글이 삭제되었습니다.");
-                loadComments(lastPart); // 댓글 목록 다시 로드
-            },
-            error: function (error) {
+        fetch(`/api/post/comment/${commentId}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    alert("댓글이 삭제되었습니다.");
+                    loadComments(lastPart);
+                } else {
+                    throw new Error("댓글 삭제 중 오류가 발생했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("댓글 삭제 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
+
     // 대댓글 삭제
     $(document).on("click", ".delete-reply", function () {
-        const replyId = $(this).data("id");
-        const commentId = $(this).data("id"); /* 댓글 ID를 가져오는 방법 */
+        const replyId = $(this).data("reply");
 
         if (!confirm("대댓글을 삭제하시겠습니까?")) {
             return;
         }
 
-        $.ajax({
-            type: "DELETE",
-            url: `/api/post/comment/reply/${replyId}`,
-            success: function (response) {
-                alert("대댓글이 삭제되었습니다.");
-                loadReplies(commentId); // 대댓글 목록 다시 로드
-            },
-            error: function (error) {
+        fetch(`/api/post/comment/reply/${replyId}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    alert("대댓글이 삭제되었습니다.");
+                    const commentId = $(this).data("comment"); // 댓글 ID 가져오기
+                    loadReplies(commentId);
+                } else {
+                    throw new Error("대댓글 삭제 중 오류가 발생했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
                 alert("대댓글 삭제 중 오류가 발생했습니다.");
-            },
-        });
+            });
     });
+
+    // 초기 댓글 로드
+    loadComments(lastPart);
 });

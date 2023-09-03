@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="layout/head :: common_header(~{::title},~{::link})">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시물 상세 페이지</title>
     <link rel="stylesheet" th:href="@{/css/post/postDetail.css}"/>
 </head>
@@ -89,48 +88,49 @@
                             <span class="input-group-text">게시글 내용</span>
                             <span class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></span>
                         </div>
-                            <!--수정, 삭제 버튼-->
+                        <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
-                        <!-- Button to trigger the modal -->
-                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updateModal">수정</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel1">알림!</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        게시물을 수정하시겠습니까?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+lastPart">예</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--삭제버튼-->
-                        <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">삭제</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">알림!</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        게시물을 삭제하시겠습니까?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                                        <button type="button" class="btn btn-primary" id="deleteButton" th:attr="data-postid=${post.id}">예</button>
+                            <!-- Button to trigger the modal -->
+                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updateModal">수정</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel1">알림!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            게시물을 수정하시겠습니까?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                                            <!--                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+id">예</button>-->
+                                            <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+lastPart">예</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <!--삭제버튼-->
+                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">삭제</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">알림!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            게시물을 삭제하시겠습니까?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                                            <button type="button" class="btn btn-primary" id="deleteButton" th:attr="data-postid=${post.id}">예</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -139,19 +139,37 @@
             <p></p>
             <div class="project-box" style="background-color: #e9e7fd;">
                 <!--                                                댓글 폼-->
+                <!-- 댓글 추가 폼 -->
+                <h4>댓글</h4>
 
-                <h3>댓글</h3>
-
-                <!-- 댓글 작성 폼 -->
-                <form id="comment-form">
-                    <label for="comment-input"></label>
-                    <input type="text" id="comment-input" placeholder="댓글을 입력하세요">
-                    <button type="submit">댓글 작성</button>
-                </form>
-
+                <!-- 댓글 작성 양식 -->
+                <div>
+                    <label for="commentText">댓글 작성:</label>
+                    <!--                    작성자 닉네임 추가-->
+                    <input id="commentText"></input>
+<!--                    <button id="commentSubmitBtn" th:attr="data-postid=${post.id}">댓글 작성</button>-->
+                    <button id="commentSubmitBtn">댓글 작성</button>
+                </div>
                 <!-- 댓글 목록 -->
-                <div id="comments-list"></div>
-
+                <div id="commentList">
+                    <!-- 댓글이 여기에 동적으로 추가됩니다 -->
+<!--                    <div id="comment-1">-->
+<!--                        <p>첫 번째 댓글</p>-->
+<!--                        <button class="replyBtn" data-comment="1">대댓글 작성</button>-->
+<!--                        &lt;!&ndash; 대댓글 목록 &ndash;&gt;-->
+<!--                        <div id="replyList-1">-->
+<!--                            &lt;!&ndash; 대댓글이 여기에 동적으로 추가됩니다 &ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <!--                    <div id="comment-2">-->
+                    <!--                        <p>두 번째 댓글</p>-->
+                    <!--                        <button class="replyBtn" data-comment="2">대댓글 작성</button>-->
+                    <!--                        &lt;!&ndash; 대댓글 목록 &ndash;&gt;-->
+                    <!--                        <div id="replyList-2">-->
+                    <!--                            &lt;!&ndash; 대댓글이 여기에 동적으로 추가됩니다 &ndash;&gt;-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                </div>
                 <!--                                                댓글 폼 끝-->
             </div>
         </div>
@@ -168,3 +186,38 @@
 <script src="/js/post/postDetail.js"></script>
 </body>
 </html>
+
+
+// 대댓글 수정
+$(document).on("click", ".edit-reply", function () {
+const replyId = $(this).data("reply");
+const editedText = prompt("수정된 대댓글 내용을 입력하세요.");
+
+if (editedText === null || editedText.trim() === "") {
+return;
+}
+
+const requestData = {
+content: editedText,
+};
+
+fetch(`/api/post/comment/reply/${replyId}`, {
+method: "PUT",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify(requestData),
+})
+.then((response) => response.json())
+.then((data) => {
+console.log(data);
+alert("대댓글이 수정되었습니다.");
+const commentId = data.commentId; // 대댓글이 속한 댓글 ID 가져오기
+console.log(commentId);
+loadReplies(commentId);
+})
+.catch((error) => {
+console.log(error);
+alert("대댓글 수정 중 오류가 발생했습니다.");
+});
+});
