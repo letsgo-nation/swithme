@@ -1,4 +1,4 @@
-import { makeTime, makeSec, switchDisplay, refreshText, recordText } from "../stopwatch/modules/modules.js"
+import { makeTime, makeSec, switchDisplay, refreshText, recordText } from "./modules/modules.js"
 const btn_start = document.querySelector("#stopwatch-start")
 const btn_pause = document.querySelector("#stopwatch-pause")
 const btn_record = document.querySelector("#stopwatch-record")
@@ -55,10 +55,12 @@ btn_record.addEventListener("click", () => {
                 btn_restart.hidden = true;
             } else {
                 // 오류 처리
+                throw new Error('Network response was not ok');
             }
         })
         .catch(error => {
             // 네트워크 오류 처리
+            console.error('Fetch error:', error);
         });
 });
 

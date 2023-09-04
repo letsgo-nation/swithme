@@ -37,11 +37,11 @@ public class SaveTest {
     @Test
     void saveTest() {
         //관리자 로그인
-        User admin = new User("admin@naver.com", passwordEncoder.encode("1234"), "관리자_채팅개설");
+        User admin = new User("admin@naver.com", passwordEncoder.encode("1234"), "관리자_채팅개설",1);
         userRepository.save(admin);
 
         //일반 로그인
-        User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링");
+        User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
         userRepository.save(user);
 
 
