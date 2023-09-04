@@ -13,6 +13,7 @@
 <div class="container text-center">
   <nav th:replace="~{fragment/nav :: useNavChat}">insert</nav>
   <div class=" row row-cols-1 row-cols-md-5 g-4">
+
     <div class="col" th:each="chatRoom : ${chatRooms}">
       <div class="card h-100">
         <img src="/image/study_computer.jpg" class="card-img-top" alt="...">
@@ -33,6 +34,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 </body>
