@@ -156,7 +156,7 @@ $(document).ready(function () {
             const replyElement = document.createElement("div");
             replyElement.innerHTML = `
                 <p>${reply.content}</p>
-                <button class="edit-reply" data-reply="${reply.id}">대댓글 수정</button>
+                <button class="edit-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 수정</button>
                 <button class="delete-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 삭제</button>
             `;
 
@@ -220,9 +220,8 @@ $(document).ready(function () {
             .then((data) => {
                 console.log(data);
                 alert("대댓글이 수정되었습니다.");
-                const commentId = data.commentId; // 대댓글이 속한 댓글 ID 가져오기
+                const commentId = $(this).data("comment"); // 댓글 ID 가져오기
                 console.log(commentId)
-                // const commentId = data.commentId; // 대댓글이 속한 댓글 ID 가져오기
                 loadReplies(commentId);
             })
             .catch((error) => {
