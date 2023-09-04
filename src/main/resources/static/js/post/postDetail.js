@@ -155,13 +155,18 @@ $(document).ready(function () {
         replies.forEach(function (reply) {
             const replyElement = document.createElement("div");
             replyElement.innerHTML = `
-                <p>${reply.content}</p>
-                <button class="edit-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 수정</button>
+                <p id="reply-${reply.id}">${reply.content} </p>
+                <button class="edit-reply" data-reply="${reply.id}">대댓글 수정</button>
                 <button class="delete-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 삭제</button>
             `;
 
             replyList.append(replyElement);
         });
+    }
+    // 대댓글 수정만 하는 방법
+    function updateReply(reply) {
+        const replyContent = $(`#reply-${reply.id}`);
+        replyContent.html(reply.content);
     }
 
     // 댓글 수정
@@ -222,7 +227,13 @@ $(document).ready(function () {
                 alert("대댓글이 수정되었습니다.");
                 const commentId = $(this).data("comment"); // 댓글 ID 가져오기
                 console.log(commentId)
-                loadReplies(commentId);
+                // loadReplies(commentId);
+                const reply = {
+                    id:replyId,
+                    content:editedText
+                }
+                // displayReplies(commentId, replies)
+                updateReply(reply)
             })
             .catch((error) => {
                 console.log(error);
