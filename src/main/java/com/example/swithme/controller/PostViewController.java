@@ -37,7 +37,7 @@ public class PostViewController {
     public String postDetailPage(@PathVariable Long id, Model model) {
         PostResponseDto result = postService.lookupPost(id);
         model.addAttribute("post", result);
-        model.addAttribute("commentList", result.getCommentResponseDtoList());
+//        model.addAttribute("commentList", result.getCommentResponseDtoList());
         return "post/postDetail";
     }
     // 게시글 수정 페이지

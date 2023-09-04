@@ -1,16 +1,26 @@
 package com.example.swithme.entity.chat;
 
-import com.example.swithme.enumType.MessageType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Entity
 public class ChatMessage {
 
-    private MessageType type;
-    private String content;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String sender;
+    private String content;
+
+    public ChatMessage(String sender, String content) {
+        this.sender = sender;
+        this.content = content;
+    }
 }

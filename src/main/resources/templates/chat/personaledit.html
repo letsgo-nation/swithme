@@ -104,55 +104,71 @@
 
 
             <div class="project-boxes jsGridView">
-                <div class="project-box-wrapper" th:each="chatRoom : ${chatRooms}">
-
-
+                <div class="project-box-wrapper" th:object="${chatRoom}">
                     <div class="project-box" style="background-color: #fee4cb;">
                         <div class="project-box-header">
                             <span></span>
 
-                            <a th:href="@{/chat/room/edit(id=${chatRoom.id},url=${chatRoom.chatUrl})}">
-                                <div class="more-wrapper">
-                                    <button class="project-btn-more">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round" class="feather feather-more-vertical">
-                                            <circle cx="12" cy="12" r="1"/>
-                                            <circle cx="12" cy="5" r="1"/>
-                                            <circle cx="12" cy="19" r="1"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </a>
+                        </div>
+                        <div class="project-box-content-header">
+                            <form action="/chat/room/edit" method="post" th:object="${chatRoom}">
+
+
+                                <input type="hidden" id="id" name="id" th:field="*{id}" ><br>
+
+                                <label for="title">제목</label><br>
+                                <input type="text" id="title" name="title" th:field="*{title}" ><br>
+
+
+                                <label for="content">내용</label><br>
+                                <input type="text" id="content" name="content" th:field="*{content}"><br>
+
+                                <button class="days-left" type="submit">확인</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  멤버 추가-->
+                <div class="project-box-wrapper" th:object="${chatRoom}">
+                    <div class="project-box" style="background-color: #fee4cb;">
+                        <div class="project-box-header">
+                            <span></span>
 
                         </div>
                         <div class="project-box-content-header">
-                            <p class="box-content-header" th:text="${chatRoom.title}"></p>
-                            <p class="box-content-subheader" th:text="${chatRoom.content}">Prototyping</p>
-                        </div>
-                        <!--                        진행 상태 바 -->
-                        <!--                        <div class="box-progress-wrapper">-->
-                        <!--                            <p class="box-progress-header">Progress</p>-->
-                        <!--                            <div class="box-progress-bar">-->
-                        <!--                                <span class="box-progress" style="width: 60%; background-color: #ff942e"></span>-->
-                        <!--                            </div>-->
-                        <!--                            <p class="box-progress-percentage">60%</p>-->
-                        <!--                        </div>-->
+                            <form action="/chat/room/invite" method="post" th:object="${chatRoom}">
 
-                        <div class="project-box-footer">
-                            <div class="participants">
-                            </div>
-                                <div class="days-left" style="color: #ff942e;">
-                                    <a th:href="@{/chat/personal(url=${chatRoom.chatUrl})}" >채팅</a>
-                                </div>
+                                <input type="hidden"  name="id" th:field="*{id}" ><br>
 
+                                <label for="username">멤버 초대(이메일 입력)</label><br>
+                                <input type="text" id = "username" name="username"><br>
 
+                                <input class="btn btn-primary submit" type="submit" value="확인">
+
+                            </form>
+
+                            <!-- 멤버 조회 -->
+                            <table>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>수락 여부</th>
+                                    <th>삭제 버튼</th>
+                                </tr>
+                                <tr th:each="inviteUser : ${inviteUsers}">
+                                    <td th:text="${inviteUser.username}"></td>
+                                    <td th:text="${inviteUser.invite}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                                th:onclick="'deleteMember(' + ${inviteUser.id} + ')'" >Delete</button>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-
-
                 </div>
+
+
             </div>
 
 
@@ -179,6 +195,7 @@
 
             </div>
             <!-- 채팅 내용 끝 -->
+
 
             <!-- 전송 버튼 -->
             <form id="messageForm" name="messageForm">
@@ -229,11 +246,11 @@
     var messageInput = document.querySelector('#message');
 
     window.onload = function connect() {
-            var socket = new SockJS('/swithme');
-            stompClient = Stomp.over(socket);
+        var socket = new SockJS('/swithme');
+        stompClient = Stomp.over(socket);
 
-            stompClient.connect({}, onConnected, onError);
-        }
+        stompClient.connect({}, onConnected, onError);
+    }
 
     function onConnected() {
         // Subscribe to the Public Topic
@@ -255,6 +272,7 @@
     messageForm.addEventListener('submit', sendMessage, true)
 
     function onError(error) {
+
     }
 
     function onMessageReceived(payload) {
@@ -291,6 +309,45 @@
 
         const chatContainer = document.getElementById('chat-container');
         chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+</script>
+
+<!-- 멤버 삭제 -->
+<script>
+    function deleteMember(id) {
+        let data = {'id': id};
+
+        $.ajax({
+            method: 'Delete',
+            url: '/chat/room/member',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+
+            },
+            error: function (xhr, status, error) {
+                // 에러 시 처리할 코드
+                console.error(error);
+            }
+        });
+    }
+
+    function deleteChatRoom(id) {
+        let data = {'id': id};
+
+        $.ajax({
+            method: 'Delete',
+            url: '/chat/chatroom',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // 에러 시 처리할 코드
+                console.error(error);
+            }
+        });
     }
 </script>
 

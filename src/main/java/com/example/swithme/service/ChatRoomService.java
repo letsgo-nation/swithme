@@ -1,16 +1,15 @@
 package com.example.swithme.service;
 
-import com.example.swithme.dto.chat.ChatRoomInviteRequestDTo;
-import com.example.swithme.dto.chat.ChatRoomRequestDto;
-import com.example.swithme.dto.chat.ChatRoomResponseDto;
-import com.example.swithme.dto.chat.ChatUserResponseDto;
+import com.example.swithme.dto.chat.*;
 import com.example.swithme.entity.chat.ChatGroup;
+import com.example.swithme.entity.chat.ChatMessage;
 import com.example.swithme.entity.chat.ChatRoom;
 import com.example.swithme.entity.User;
 import com.example.swithme.enumType.ChatRole;
 import com.example.swithme.enumType.Invite;
 import com.example.swithme.enumType.UserRole;
 import com.example.swithme.repository.ChatGroupRepository;
+import com.example.swithme.repository.ChatMessageRepository;
 import com.example.swithme.repository.ChatRoomRepository;
 import com.example.swithme.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatGroupRepository chatGroupRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
 
     //관리자가 설정 채팅방
@@ -141,8 +141,6 @@ public class ChatRoomService {
         List<ChatGroup> findChatGroup = chatGroupRepository.findAllByChatRoomAndChatRole(chatRoom, ChatRole.MEMBER);
 
 
-
-
         //유저이름, 초대여부(승낙, 대기)
         List<ChatUserResponseDto> ChatUsers = findChatGroup.stream()
                 .map(ChatUserResponseDto::new)
@@ -158,8 +156,19 @@ public class ChatRoomService {
 
     public void deleteChatRoom(Long id, User user) {
         Optional<ChatGroup> findChatGroup = chatGroupRepository.findByChatRoom_IdAndAndUser(id, user);
-        if(findChatGroup.isPresent() && (findChatGroup.get().getChatRole().equals("MANAGER"))) {
+        if (findChatGroup.isPresent() && (findChatGroup.get().getChatRole().equals("MANAGER"))) {
             chatGroupRepository.delete(findChatGroup.get());
         }
+    }
+
+    public void save(ChatMessage chatMessage) {
+        chatMessageRepository.save(chatMessage);
+    }
+
+    public List<ChatMessageResponseDto> findMessage() {
+        List<ChatMessageResponseDto> allMessage = chatMessageRepository.findAll().stream()
+                .map(ChatMessageResponseDto::new)
+                .collect(Collectors.toList());
+        return allMessage ;
     }
 }

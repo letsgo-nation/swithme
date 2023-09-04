@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                         .requestMatchers("view/post/**").authenticated()
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
+
+                        .requestMatchers("/chat/personal").authenticated() // 개인채팅 로그인 필요
                         .anyRequest().permitAll() //개발 단계에서 모든 접근 허용
 
         );

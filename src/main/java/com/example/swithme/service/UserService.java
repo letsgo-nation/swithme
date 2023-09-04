@@ -209,6 +209,7 @@ public class UserService {
       throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
     }
   }
+
   public AccumulatedTimeDto getAccumulatedTimeByUserId(Long userId) {
     // 사용자 아이디로 사용자를 조회
     User user = userRepository.findById(userId)

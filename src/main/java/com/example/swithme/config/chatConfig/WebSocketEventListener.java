@@ -15,20 +15,20 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
 
-    private final SimpMessageSendingOperations messagingTemplate;
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
-        String disconnectUrl = (String) headerAccessor.getSessionAttributes().get("disconnectUrl");
-
-        if (username != null) {
-            log.info("user disconnected: {}", username);
-            var chatMessage = ChatMessage.builder()
-                    .type(MessageType.LEAVE)
-                    .sender(username)
-                    .build();
-            messagingTemplate.convertAndSend("/topic/public/" + disconnectUrl, chatMessage);
-        }
-    }
+//    private final SimpMessageSendingOperations messagingTemplate;
+//    @EventListener
+//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+//        String username = (String) headerAccessor.getSessionAttributes().get("username");
+//        String disconnectUrl = (String) headerAccessor.getSessionAttributes().get("disconnectUrl");
+//
+//        if (username != null) {
+//            log.info("user disconnected: {}", username);
+//            var chatMessage = ChatMessage.builder()
+//                    .type(MessageType.LEAVE)
+//                    .sender(username)
+//                    .build();
+//            messagingTemplate.convertAndSend("/topic/public/" + disconnectUrl, chatMessage);
+//        }
+//    }
 }
