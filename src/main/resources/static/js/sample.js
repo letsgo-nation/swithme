@@ -34,12 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-window.addEventListener("load", function () {
-    // 요소 선택
-    var elementAll = document.querySelectorAll("app-sidebar-link");
-    var element = document.querySelector("fa-regular");
+window.addEventListener("load", function() {
 
-    // 클래스 추가
-    elementAll.classList.remove("active")
-    element.classList.add("active");
+// 네비게이션 항목을 선택
+const navItems = document.querySelectorAll(".app-sidebar-link");
+    for (let i = 0; i < navItems.length; i++) {
+        let element = navItems.item(i);
+        element.classList.remove('active')
+    }
+
+    const nav = document.querySelector(".nav-chat");
+    nav.classList.add('active')
 });
