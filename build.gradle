@@ -24,6 +24,8 @@ repositories {
 dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools' // 정적 html
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // S3
+
 	implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
 
 	implementation 'org.webjars:fullcalendar:5.9.0' // 캘린더
