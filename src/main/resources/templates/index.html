@@ -7,10 +7,12 @@
 <body>
 <!--<div th:replace="~{fragment/nav :: useNav2}">insert</div>-->
 <div class="options">
+
+    <!--  캘린더  -->
     <div class="option active" style="--optionBackground:url(https://images.pexels.com/photos/9052846/pexels-photo-9052846.jpeg?cs=srgb&dl=pexels-shvets-production-9052846.jpg&fm=jpg);">
-<!--        <div class="clicktoposts" onclick="location.href='/api/posts'">-->
-        <div class="shadow" onclick="location.href='/studies/calendar'"></div>
-        <div class="label" onclick="location.href='/studies/calendar'">
+        <a href="/studies/calendar">
+        <div class="shadow"></div>
+        <div class="label">
             <div class="icon">
                 <i class="fas fa-walking"></i>
             </div>
@@ -19,9 +21,12 @@
                 <div class="sub">중요한 일정과 데드라인을 기록하세요!</div>
             </div>
         </div>
-<!--        </div>-->
+        </a>
     </div>
+
+    <!--  스톱워치  -->
     <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/210528/pexels-photo-210528.jpeg?auto=compress&cs=tinysrgb&w=1600);">
+        <a href="/stopwatch">
         <div class="shadow"></div>
         <div class="label">
             <div class="icon">
@@ -32,10 +37,14 @@
                 <div class="sub">하루 공부 시간을 측정해보세요!</div>
             </div>
         </div>
+        </a>
     </div>
+
+    <!--  그룹스터디  -->
     <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <div class="shadow" onclick="location.href='/api/view/groups'"></div>
-        <div class="label" onclick="location.href='/api/view/groups'">
+        <a href="/api/view/groups">
+        <div class="shadow"></div>
+        <div class="label">
             <div class="icon">
                 <i class="fas fa-tree"></i>
             </div>
@@ -44,9 +53,10 @@
                 <div class="sub">친구들과 함께 공부해보세요!</div>
             </div>
         </div>
+        </a>
     </div>
     <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <a href="/chat/personal">
+        <a href="/sample">
         <div class="shadow"></div>
         <div class="label">
             <div class="icon">
@@ -60,7 +70,8 @@
         </a>
     </div>
     <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/12602990/pexels-photo-12602990.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <div class="clicktoposts" onclick="location.href='/view/posts'">
+        <a href="/view/posts">
+        <div class="clicktoposts">
         <div class="shadow"></div>
         <div class="label">
             <div class="icon">
@@ -72,6 +83,7 @@
             </div>
         </div>
         </div>
+        </a>
     </div>
 </div>
 
