@@ -23,11 +23,12 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public void recordTime(String recordedTime, UserDetails userDetails) {
         try {
+            // 현재 로그인된 사용자의 정보를 가져오는 부분
             String username = userDetails.getUsername();
             User currentUser = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-            // 기존 코드 (변경 없음)
+            // 해당 사용자의 누적 시간을 조회하거나 새로 생성
             AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
                     .orElseGet(() -> {
                         AccumulatedTime newAccumulatedTime = new AccumulatedTime();
@@ -53,7 +54,6 @@ public class RecordServiceImpl implements RecordService {
         // 예: "01:30" 형식의 문자열을 파싱하여 분 단위로 변환
         String[] parts = recordedTime.split(":");
         int minutes = Integer.parseInt(parts[0]);
-//        return minutes;
         int seconds = Integer.parseInt(parts[1]);
         return minutes * 60 + seconds;
     }
