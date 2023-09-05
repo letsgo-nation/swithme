@@ -53,9 +53,9 @@ public class RecordServiceImpl implements RecordService {
         // 예: "01:30" 형식의 문자열을 파싱하여 분 단위로 변환
         String[] parts = recordedTime.split(":");
         int minutes = Integer.parseInt(parts[0]);
-        return minutes;
-//        int seconds = Integer.parseInt(parts[1]);
-//        return minutes * 60 + seconds;
+//        return minutes;
+        int seconds = Integer.parseInt(parts[1]);
+        return minutes * 60 + seconds;
     }
 }
 
