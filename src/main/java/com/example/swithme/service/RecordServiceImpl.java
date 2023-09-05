@@ -1,35 +1,46 @@
 package com.example.swithme.service;
 
 import com.example.swithme.entity.AccumulatedTime;
+import com.example.swithme.entity.User;
 import com.example.swithme.exception.RecordTimeException;
 import com.example.swithme.repository.AccumulatedTimeRepository;
+import com.example.swithme.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j // 이것은 Lombok 라이브러리의 일부로, @Slf4j 애노테이션은 클래스에 log 자동으로 추가합니다.
+@RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
     private final AccumulatedTimeRepository accumulatedTimeRepository;
-
-    @Autowired
-    public RecordServiceImpl(AccumulatedTimeRepository accumulatedTimeRepository) {
-        this.accumulatedTimeRepository = accumulatedTimeRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
-    public void recordTime(String recordedTime) {
+    public void recordTime(String recordedTime, UserDetails userDetails) {
         try {
-            // 기존에 저장된 누적 시간을 조회
-            AccumulatedTime accumulatedTime = accumulatedTimeRepository.findById(1L)
-                    .orElse(new AccumulatedTime());
+            // 현재 로그인된 사용자의 정보를 가져오는 부분
+            String username = userDetails.getUsername();
+            User currentUser = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-            // 누적 시간 업데이트
+            // 해당 사용자의 누적 시간을 조회하거나 새로 생성
+            AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
+                    .orElseGet(() -> {
+                        AccumulatedTime newAccumulatedTime = new AccumulatedTime();
+                        newAccumulatedTime.setUser(currentUser);
+                        currentUser.setAccumulatedTime(newAccumulatedTime);
+                        return newAccumulatedTime;
+                    });
+
             long newAccumulatedMinutes = accumulatedTime.getAccumulatedMinutes() +
                     parseRecordedTime(recordedTime);
             accumulatedTime.setAccumulatedMinutes(newAccumulatedMinutes);
 
-            // 업데이트된 누적 시간 저장
             accumulatedTimeRepository.save(accumulatedTime);
         } catch (Exception e) {
             log.error("Error recording time", e);
@@ -43,9 +54,8 @@ public class RecordServiceImpl implements RecordService {
         // 예: "01:30" 형식의 문자열을 파싱하여 분 단위로 변환
         String[] parts = recordedTime.split(":");
         int minutes = Integer.parseInt(parts[0]);
-        return minutes;
-//        int seconds = Integer.parseInt(parts[1]);
-//        return minutes * 60 + seconds;
+        int seconds = Integer.parseInt(parts[1]);
+        return minutes * 60 + seconds;
     }
 }
 
