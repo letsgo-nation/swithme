@@ -18,6 +18,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app"); // controller에서 처리 후 전송
-        registry.enableSimpleBroker("/topic"); //특별한 처리가 없을 때
+        registry.enableSimpleBroker("/topic"); //특별한 처리가 없을 때 /app 없이 보냄
     }
 }
