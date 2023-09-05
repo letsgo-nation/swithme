@@ -8,7 +8,7 @@
 <body>
 
 <div class="app-container">
-    <div th:replace="~{fragment/nav :: useNav2}">insert</div>
+    <div th:replace="~{fragment/nav :: useNav}">insert</div>
     <div class="app-content">
         <div class="app-sidebar">
             <a href="" class="app-sidebar-link active">
@@ -64,6 +64,16 @@
                                     <span class="input-group-text">게시글 내용</span>
                                     <textarea class="form-control" id="content" aria-label="With textarea" rows="15"></textarea>
                                 </div>
+
+<!--                                사진 업로드-->
+                                <div class="imageUploadForm">
+<!--                                <form id="uploadForm" method="post" action="/upload_image">-->
+                                <form id="imageUploadForm" enctype="multipart/form-data">
+                                    <input type="file" id="imageInput" multiple="multiple" accept="image/*">
+                                    <button type="button" id="uploadButton">이미지 업로드</button>
+                                </form>
+                                </div>
+<!--                                사진 업로드 끝-->
                                 <div class="d-flex justify-content-center mt-3">
                                     <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="location.href='/view/posts'" id="cancel">취소</button>
                                     <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="writePost()" id="edit">저장</button>
@@ -75,6 +85,7 @@
         </div>
     </div>
 </div>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1201.0.min.js"></script> //
 <script src="/js/post/postWrite.js"></script>
 </body>
 </html>
