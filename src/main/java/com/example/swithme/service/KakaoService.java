@@ -101,6 +101,7 @@ public class KakaoService {
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
                 .post(uri)
                 .headers(headers)
+
                 .body(new LinkedMultiValueMap<>());
 
         // HTTP 요청 보내기

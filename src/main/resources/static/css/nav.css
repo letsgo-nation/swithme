@@ -1,0 +1,17 @@
+/*전체 링크*/
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/*상단 네비게이션 추가 코드*/
+
+.right_button {
+    font-size: 24px;
+    padding-left: 12px;
+}
+
+/*왼쪽 네비게이션 추가 코드*/
+.app-sidebar-link > i {
+    font-size: 24px;
+}

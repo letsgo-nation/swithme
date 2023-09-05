@@ -20,23 +20,15 @@ public class RecordServiceImpl implements RecordService {
     private final AccumulatedTimeRepository accumulatedTimeRepository;
     private final UserRepository userRepository;
 
-
     @Override
-    public void recordTime(String recordedTime) {
+    public void recordTime(String recordedTime, UserDetails userDetails) {
         try {
+            // 현재 로그인된 사용자의 정보를 가져오는 부분
+            String username = userDetails.getUsername();
+            User currentUser = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-            // 현재 로그인된 사용자의 정보를 가져오는 부분 (이 부분은 Spring Security 을 통해 구현)
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated()) {
-                throw new RuntimeException("사용자가 로그인되지 않았습니다.");
-            }
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();  // 혹은 이메일, 당신의 시스템에서 사용하는 것에 따라 달라집니다.
-
-            User currentUser = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
-
-            // 해당 사용자의 누적 시간을 조회하거나 새로 생성합니다.
+            // 해당 사용자의 누적 시간을 조회하거나 새로 생성
             AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
                     .orElseGet(() -> {
                         AccumulatedTime newAccumulatedTime = new AccumulatedTime();
@@ -45,12 +37,10 @@ public class RecordServiceImpl implements RecordService {
                         return newAccumulatedTime;
                     });
 
-            // 누적 시간을 업데이트합니다.
             long newAccumulatedMinutes = accumulatedTime.getAccumulatedMinutes() +
                     parseRecordedTime(recordedTime);
             accumulatedTime.setAccumulatedMinutes(newAccumulatedMinutes);
 
-            // 업데이트된 누적 시간을 저장합니다.
             accumulatedTimeRepository.save(accumulatedTime);
         } catch (Exception e) {
             log.error("Error recording time", e);
@@ -64,9 +54,8 @@ public class RecordServiceImpl implements RecordService {
         // 예: "01:30" 형식의 문자열을 파싱하여 분 단위로 변환
         String[] parts = recordedTime.split(":");
         int minutes = Integer.parseInt(parts[0]);
-        return minutes;
-//        int seconds = Integer.parseInt(parts[1]);
-//        return minutes * 60 + seconds;
+        int seconds = Integer.parseInt(parts[1]);
+        return minutes * 60 + seconds;
     }
 }
 
