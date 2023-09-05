@@ -38,6 +38,12 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final AccumulatedTimeRepository accumulatedTimeRepository;
 
+    //샘플페이지
+    @GetMapping("/sample")
+    public String sample() {
+        return "sample";
+    }
+
     // 회원가입, 로그인 페이지 이동
     @GetMapping("/users/login")
     public String loginPage(Model model) {
