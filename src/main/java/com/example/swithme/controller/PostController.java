@@ -23,6 +23,7 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
 
+    // 게시글 업로드
     @PostMapping("/post")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> createPost(

@@ -55,3 +55,47 @@ function writePost() {
     })
 }
 
+// S3
+// var inputFileList = new Array();     // 이미지 파일을 담아놓을 배열 (업로드 버튼 누를 때 서버에 전송할 데이터)
+//
+// // 파일 선택 이벤트
+// $('input[name=images]').on('change', function(e) {
+//     var files = e.target.files;
+//     var filesArr = Array.prototype.slice.call(files);
+//
+//     // 업로드 된 파일 유효성 체크
+//     if (filesArr.length > 3) {
+//         alert("이미지는 최대 3개까지 업로드 가능합니다.");
+//         $('input[name=images]')val();
+//         return;
+//     }
+//
+//     filesArr.forEach(function(f) {
+//         inputFileList.push(f);    // 이미지 파일을 배열에 담는다.
+//     });
+// });
+//
+// // 업로드 수행
+// $('#uploadBtn').on('click', function() {
+//     console.log("inputFileList: " + inputFileList);
+//     let formData = new FormData($('#uploadForm')[0]);  // 폼 객체
+//
+//     for (let i = 0; i < inputFileList.length; i++) {
+//         formData.append("images", inputFileList[i]);  // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
+//     }
+//
+//     $.ajax({
+//         type:'post'
+//         , enctype:"multipart/form-data"  // 업로드를 위한 필수 파라미터
+//         , url: '/upload_image'
+//         , data: formData
+//         , processData: false   // 업로드를 위한 필수 파라미터
+//         , contentType: false   // 업로드를 위한 필수 파라미터
+//         , success: function(data) {
+//             alert(data);
+//         }
+//         , error: function(e) {
+//             alert("error:" + e);
+//         }
+//     });
+// });
