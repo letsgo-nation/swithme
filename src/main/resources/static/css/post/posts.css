@@ -489,7 +489,7 @@ button.btn.btn-outline-secondary {
     flex-wrap: wrap;
 }
 .project-boxes.jsGridView .project-box-wrapper {
-    width: 100%;
+    width: 33.3%;
     float: left;
 }
 .project-boxes.jsListView .project-box {
@@ -800,10 +800,6 @@ button.btn.btn-outline-secondary {
 
     .search-input {
         max-width: 120px;
-    }
-
-    .project-boxes.jsGridView .project-box-wrapper {
-        width: 100%;
     }
 
     .projects-section {
