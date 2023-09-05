@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+	developmentOnly 'org.springframework.boot:spring-boot-devtools' // 정적 html
+
 	implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
 
 	implementation 'org.webjars:fullcalendar:5.9.0' // 캘린더
