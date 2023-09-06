@@ -30,7 +30,7 @@ public class PostController {
     public ResponseEntity<ApiResponseDto> createPost(
             @RequestPart("data") PostRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestPart(required = false) MultipartFile image) {
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser(), image);
         return ResponseEntity.ok().body(responseDto);
     }

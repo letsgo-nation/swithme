@@ -25,77 +25,123 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 });
 
-// 게시물 저장 버튼
-function writePost() {
-    const title = document.querySelector("#title").value;
-    const content = document.querySelector("#content").value;
-    const category_id = document.querySelector("#category").value;
+$(document).ready(function () {
+    $('#saveButton').click(function () {
+        const title = $('#title').val();
+        const category_id = $('#category').val();
+        const content = $('#content').val();
+        const imageFile = $('#image')[0].files[0];
 
-    const data = {
-        title : title,
-        content : content,
-        category_id : category_id
-    }
+        // 이미지 업로드를 위한 FormData 객체 생성
+        const imageFormData = new FormData();
+        imageFormData.append('image', imageFile);
 
-    $.ajax({
-        type:'POST',
-        url:'/api/post',
-        contentType: "application/json",
-        data: JSON.stringify(data),
-        success: function(response) {
-            console.log(response)
-            // {status: 200, message: '개인 스터디 게시물 생성 완료', data: {…}}
-            console.log(data)
-            // {title: '', content: '', category_id: '1'}
-            alert("게시글 등록이 완료되었습니다");
-            window.location.href = "/view/posts";
-        }, error: function(req,status,error) {
-            alert("게시글 등록이 실패하였습니다");
-        }
-    })
-}
+        // 데이터를 JSON 형식으로 생성
+        const jsonData = {
+            title: title,
+            category_id: category_id,
+            content: content
+        };
 
-// S3
-// var inputFileList = new Array();     // 이미지 파일을 담아놓을 배열 (업로드 버튼 누를 때 서버에 전송할 데이터)
+        // JSON 데이터를 문자열로 변환한 후 Blob으로 감싸기
+        const jsonDataBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+
+        // FormData 객체 생성하고 JSON 데이터 추가
+        const dataFormData = new FormData();
+        dataFormData.append('data', jsonDataBlob);
+
+        // 두 개의 FormData 객체를 합치기
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('data', jsonDataBlob);
+
+        // 서버로 데이터 전송 (Ajax)
+        $.ajax({
+            type: 'POST',
+            url: '/api/post',
+            data: formData,
+            contentType: false, // Content-Type 자동 설정 비활성화
+            processData: false, // 데이터 처리 비활성화
+            success: function (response) {
+                // 성공 처리
+                alert(response.message);
+                window.location.href = '/view/posts';
+            },
+            error: function () {
+                // 오류 처리
+                alert('게시글 등록이 실패하였습니다');
+            }
+        });
+    });
+});
+
+
+// $(document).ready(function () {
+//     $('#saveButton').click(function () {
+//         const title = $('#title').val();
+//         const category_id = $('#category').val();
+//         const content = $('#content').val();
+//         const imageFile = $('#image')[0].files[0];
 //
-// // 파일 선택 이벤트
-// $('input[name=images]').on('change', function(e) {
-//     var files = e.target.files;
-//     var filesArr = Array.prototype.slice.call(files);
+//         // FormData 객체 생성
+//         const formData = new FormData();
+//         formData.append('data', JSON.stringify({ title, category_id, content }));
+//         formData.append('image', imageFile);
+//         console.log('data')
+//         console.log(imageFile)
 //
-//     // 업로드 된 파일 유효성 체크
-//     if (filesArr.length > 3) {
-//         alert("이미지는 최대 3개까지 업로드 가능합니다.");
-//         $('input[name=images]')val();
-//         return;
-//     }
+//         //
+//         // const json = JSON.stringify({ title, category_id, content });
+//         // const blob = new Blob([json], { type: "application/json" });
+//         // fd.append("dto", blob);
 //
-//     filesArr.forEach(function(f) {
-//         inputFileList.push(f);    // 이미지 파일을 배열에 담는다.
+//
+//         // 서버로 데이터 전송 (Ajax)
+//         $.ajax({
+//             type: 'POST',
+//             url: '/api/post',
+//             data: formData,
+//             contentType: false, // Content-Type 자동 설정 비활성화
+//             processData: false, // 데이터 처리 비활성화
+//             success: function (response) {
+//                 // 성공 처리
+//                 alert(response.message);
+//                 window.location.href = '/view/posts';
+//             },
+//             error: function () {
+//                 // 오류 처리
+//                 alert('게시글 등록이 실패하였습니다');
+//             }
+//         });
 //     });
 // });
+// 게시물 저장 버튼
+// function writePost() {
+//     const title = document.querySelector("#title").value;
+//     const content = document.querySelector("#content").value;
+//     const category_id = document.querySelector("#category").value;
 //
-// // 업로드 수행
-// $('#uploadBtn').on('click', function() {
-//     console.log("inputFileList: " + inputFileList);
-//     let formData = new FormData($('#uploadForm')[0]);  // 폼 객체
-//
-//     for (let i = 0; i < inputFileList.length; i++) {
-//         formData.append("images", inputFileList[i]);  // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
+//     const data = {
+//         title : title,
+//         content : content,
+//         category_id : category_id
 //     }
 //
 //     $.ajax({
-//         type:'post'
-//         , enctype:"multipart/form-data"  // 업로드를 위한 필수 파라미터
-//         , url: '/upload_image'
-//         , data: formData
-//         , processData: false   // 업로드를 위한 필수 파라미터
-//         , contentType: false   // 업로드를 위한 필수 파라미터
-//         , success: function(data) {
-//             alert(data);
+//         type:'POST',
+//         url:'/api/post',
+//         contentType: "application/json",
+//         data: JSON.stringify(data),
+//         success: function(response) {
+//             console.log(response)
+//             // {status: 200, message: '개인 스터디 게시물 생성 완료', data: {…}}
+//             console.log(data)
+//             // {title: '', content: '', category_id: '1'}
+//             alert("게시글 등록이 완료되었습니다");
+//             window.location.href = "/view/posts";
+//         }, error: function(req,status,error) {
+//             alert("게시글 등록이 실패하였습니다");
 //         }
-//         , error: function(e) {
-//             alert("error:" + e);
-//         }
-//     });
-// });
+//     })
+// }
+
