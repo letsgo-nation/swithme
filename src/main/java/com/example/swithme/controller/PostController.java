@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
 
+    // 게시글 업로드
     @PostMapping("/post")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> createPost(
-            @RequestBody PostRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());
+            @RequestPart("data") PostRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser(), image);
         return ResponseEntity.ok().body(responseDto);
     }
     // 전체 개인 스터디 게시물 조회
@@ -50,9 +53,12 @@ public class PostController {
 
     // 개인 스터디 게시물 수정
     @PutMapping("/post/{id}")
-    public ResponseEntity<ApiResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
-        return postService.updatePost(id, postRequestDto, userDetails.getUser());
+    public ResponseEntity<ApiResponseDto> updatePost(
+            @PathVariable Long id,
+            @RequestPart("data") PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        return postService.updatePost(id, postRequestDto, userDetails.getUser(), image);
     }
 
     // 개인 스터디 게시물 삭제

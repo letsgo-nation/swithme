@@ -45,24 +45,24 @@ public class SaveTest {
         userRepository.save(user);
 
 
-        //카테고리 생성
-        Category category1 = new Category();
-        category1.setName("프론트");
-        categoryRepository.save(category1);
+//        //카테고리 생성
+//        Category category1 = new Category();
+//        category1.setName("프론트");
+//        categoryRepository.save(category1);
+//
+//        Category category2 = new Category();
+//        category2.setName("백엔드");
+//        categoryRepository.save(category2);
 
-        Category category2 = new Category();
-        category2.setName("백엔드");
-        categoryRepository.save(category2);
-
-        //글 작성
-        for (int i = 0; i < 10; i++) {
-            PostRequestDto postRequestDto = new PostRequestDto();
-            postRequestDto.setTitle("title" + i);
-            postRequestDto.setContent("content" + i);
-            Post post = new Post(postRequestDto,user, category1);
-
-            postRepository.save(post);
-        }
+//        //글 작성
+//        for (int i = 0; i < 10; i++) {
+//            PostRequestDto postRequestDto = new PostRequestDto();
+//            postRequestDto.setTitle("title" + i);
+//            postRequestDto.setContent("content" + i);
+//            Post post = new Post(postRequestDto,user, category1);
+//
+//            postRepository.save(post);
+//        }
     }
 
     // 채팅룸 생성 (DB에서 1번 사용자를 ADMIN으로 바꾸고 실행해야 함)

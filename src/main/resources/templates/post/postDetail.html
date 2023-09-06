@@ -7,7 +7,7 @@
 <body>
 
 <div class="app-container">
-    <div th:replace="~{fragment/nav :: useNav2}">insert</div>
+    <div th:replace="~{fragment/nav :: useNav}">insert</div>
     <div class="app-content">
         <div class="app-sidebar">
             <a href="" class="app-sidebar-link active">
@@ -55,7 +55,10 @@
                         </div>
                         <div class="input-group-lg">
                             <span class="input-group-text">게시글 내용</span>
-                            <span class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></span>
+                            <span class="form-control" id="content" th:text="${post.content}"aria-label="With textarea" style="padding:30px"></span>
+<!--                            <img class="form-control" id="image" th:src="${post.image}" aria-label="With textarea" style="padding:30px" alt="">-->
+                            <img class="form-control" id="image" th:src="${post.image}" th:alt="${post.title}" aria-label="With textarea" style="padding:30px" />
+
                         </div>
                         <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
@@ -153,5 +156,6 @@
 <!--    let lastPart = urlParts[urlParts.length - 1];-->
 <!--</script>-->
 <script src="/js/post/postDetail.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1199.0.min.js"></script>
 </body>
 </html>

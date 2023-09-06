@@ -27,6 +27,9 @@ public class Post extends Timestamped {
     @Column(nullable = false, length = 50000)
     private String content;
 
+    @Column
+    private String postImg;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -39,16 +42,31 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
-    public Post(PostRequestDto requestDto, User user, Category category) {
+
+    // 게시글 작성
+    public Post(PostRequestDto requestDto, User user, Category category, String postImg) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.user = user;
         this.category = category;
+        this.postImg = postImg;
     }
 
-    public void update(PostRequestDto postRequestDto, Category category) {
+    public void update(PostRequestDto postRequestDto, Category category, String postImg) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
         this.category = category;
+        this.postImg = postImg;
+        this.postImg = postImg;
+    }
+
+    //게시글 사진 수정시
+    public void updateImage(String postImg) {
+        this.postImg = postImg;
+    }
+
+    //게시글 사진 삭제 시
+    public void deleteImage(String postImg) {
+        this.postImg = null;
     }
 }

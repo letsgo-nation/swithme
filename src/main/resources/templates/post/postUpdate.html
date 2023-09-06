@@ -8,7 +8,7 @@
 <body>
 
 <div class="app-container">
-    <div th:replace="~{fragment/nav :: useNav2}">insert</div>
+    <div th:replace="~{fragment/nav :: useNav}">insert</div>
     <div class="app-content">
         <div class="app-sidebar">
             <a href="" class="app-sidebar-link active">
@@ -43,7 +43,7 @@
             <div class="project-box" style="background-color: #e9e7fd;">
                 <!--                                                글쓰기 폼-->
                 <div class="write" id="write">
-                    <form>
+                    <form id="postForm" enctype="multipart/form-data">
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="inputGroup-title">제목</span>
                             <input type="text" id="title" class="form-control" aria-label="Sizing example input" th:value="${post.title}" aria-describedby="inputGroup-sizing" >
@@ -63,9 +63,11 @@
                             <span class="input-group-text">게시글 내용</span>
                             <textarea class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></textarea>
                         </div>
+                        <!--                                이미지 업로드-->
+                        <input type="file" id="image" accept="image/*">
+                        <!--                                이미지 업로드 끝-->
                         <div class="d-flex justify-content-center mt-3">
                             <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="location.href='/view/posts'" id="cancel">취소</button>
-<!--                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" id="updateButton" th:attr="data-postid=${post.id}" >저장</button>-->
                             <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="updatePost()" id="edit">저장</button>
                         </div>
                     </form>
