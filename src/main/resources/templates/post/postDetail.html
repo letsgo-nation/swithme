@@ -55,7 +55,10 @@
                         </div>
                         <div class="input-group-lg">
                             <span class="input-group-text">게시글 내용</span>
-                            <span class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></span>
+                            <span class="form-control" id="content" th:text="${post.content}"aria-label="With textarea" style="padding:30px"></span>
+<!--                            <img class="form-control" id="image" th:src="${post.image}" aria-label="With textarea" style="padding:30px" alt="">-->
+                            <img class="form-control" id="image" th:src="${post.image}" th:alt="${post.title}" aria-label="With textarea" style="padding:30px" />
+
                         </div>
                         <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
@@ -101,14 +104,6 @@
                                 </div>
                             </div>
                         </div>
-<!--                        이미지 업로드 -->
-<!--                        <h1>게시물 이미지 업로드</h1>-->
-<!--                        <input type="file" id="imageInput">-->
-<!--                        <button onclick="uploadImage()">이미지 업로드</button>-->
-
-<!--                        <h1>게시물 이미지 조회</h1>-->
-<!--                        <div id="imageContainer"></div>-->
-<!--                        이미지 업로드 끝-->
                     </form>
                 </div>
                 <!--                                                글쓰기 폼 끝-->
