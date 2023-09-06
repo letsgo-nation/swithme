@@ -5,33 +5,15 @@
     <title>채팅 </title>
     <!--    <link rel="stylesheet" th:href="@{/css/chatPersonal.css}">-->
 </head>
-<body style="margin: 40px">
-
-<!-- 수정 : 타이틀, 제목 -->
-<form action="/chat/room/edit" method="post" th:object="${chatRoom}">
-
-
-
-            <input  type="hidden" id="id" name="id" th:field="*{id}"><br>
-
-            <label for="title">제목: </label>
-            <input class="form-control" type="text" id="title" name="title" th:field="*{title}" maxlength="10" width="100px"><br>
-
-            <label for="content">내용: </label>
-            <input class="form-control" type="text" id="content" name="content" th:field="*{content}" maxlength="10">
-
-            <input class="btn btn-primary btn-sm submit" type="submit" value="확인">
-
-</form>
-<br><br>
+<body style="margin: 20px">
 
 <!-- 멤버 초대 -->
 <form action="/chat/room/invite" method="post" th:object="${chatRoom}">
 
     <input type="hidden" name="id" th:field="*{id}"><br>
 
-    <label for="username">멤버 초대(이메일 입력)</label>
-    <input class="form-control" type="text" id="username" name="username"><br>
+    <label for="username">멤버 초대(이메일 입력)</label><br>
+    <input type="text" id="username" name="username"><br>
 
     <input class="btn btn-primary submit" type="submit" value="확인">
 
@@ -39,13 +21,10 @@
 
 <!-- 멤버 조회 -->
 <table>
-    <col style="width: 160px;">
-    <col style="width: 80px;">
-    <col style="width: 80px;">
     <tr>
-        <th>아이디</th>
+        <th>이름</th>
         <th>수락 여부</th>
-        <th>삭제</th>
+        <th>삭제 버튼</th>
     </tr>
     <tr th:each="inviteUser : ${inviteUsers}">
         <td th:text="${inviteUser.username}"></td>
@@ -57,11 +36,6 @@
         </td>
     </tr>
 </table>
-<br>
-<br>
-<button type="button" class="btn btn-outline-danger btn-sm"
-        th:onclick="'deleteChatRoom(' + ${chatRoom.id} + ')'">채팅룸 삭제
-</button>
 
 <!-- 멤버 삭제 -->
 <script>

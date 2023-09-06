@@ -15,3 +15,7 @@ a {
 .app-sidebar-link > i {
     font-size: 24px;
 }
+
+a:hover {
+    color: black;
+}

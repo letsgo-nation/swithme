@@ -74,3 +74,17 @@ btn_restart.addEventListener("click", () => {
     btn_record.hidden = true
     btn_restart.hidden = true
 })
+
+// 왼쪽 세로 네비게이션 버튼표시
+window.addEventListener("load", function() {
+
+// 네비게이션 항목을 선택
+    const navItems = document.querySelectorAll(".app-sidebar-link");
+    for (let i = 0; i < navItems.length; i++) {
+        let element = navItems.item(i);
+        element.classList.remove('active')
+    }
+
+    const nav = document.querySelector(".nav-stopwatch");
+    nav.classList.add('active')
+});
