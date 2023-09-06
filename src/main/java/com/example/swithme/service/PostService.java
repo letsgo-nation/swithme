@@ -1,5 +1,6 @@
 package com.example.swithme.service;
 
+import com.example.swithme.S3.S3UploadService;
 import com.example.swithme.dto.ApiResponseDto;
 import com.example.swithme.dto.PostRequestDto;
 import com.example.swithme.dto.PostResponseDto;
@@ -14,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,14 +29,26 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
+    private final S3UploadService s3UploadService;
 //    private final CommentRepository commentRepository;
 
     // 개인 스터디 게시물 생성
-    public ApiResponseDto createPost(PostRequestDto requestDto, User user) {
+    public ApiResponseDto createPost(PostRequestDto requestDto, User user, MultipartFile image) {
+
+        String postImg = null; //url받을 변수를 초기화
+
+        if (!image.isEmpty()) {//매개변수로 받은 값이 있으면
+            try {
+                postImg = s3UploadService.uploadFiles(image, "images");//post name : images에 mulipartfile을 올린다
+                System.out.println(postImg);// 확인하기
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         Optional<Category> category = categoryRepository.findById(requestDto.getCategory_id());
         // RequestDto -> Entity
-        Post post = new Post(requestDto, user, category.get());
+        Post post = new Post(requestDto, user, category.get(), postImg);
         // DB 저장
         Post savePost = postRepository.save(post);
         // Entity -> ResponseDto

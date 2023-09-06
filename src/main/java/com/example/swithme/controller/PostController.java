@@ -6,12 +6,14 @@ import com.example.swithme.dto.PostResponseDto;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.PostService;
 import com.example.swithme.service.UserService;
+import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,9 +29,10 @@ public class PostController {
     @PostMapping("/post")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> createPost(
-            @RequestBody PostRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());
+            @RequestPart("data") PostRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestPart(required = false) MultipartFile image) {
+        ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser(), image);
         return ResponseEntity.ok().body(responseDto);
     }
     // 전체 개인 스터디 게시물 조회

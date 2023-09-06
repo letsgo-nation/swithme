@@ -11,7 +11,7 @@
 //
 //@Component
 //@RequiredArgsConstructor
-//public class AwsS3UploadService {
+//public class AwsS3UploadService implements UploadService{
 //
 //    private final AmazonS3 amazonS3;
 //    private final S3Component component;
