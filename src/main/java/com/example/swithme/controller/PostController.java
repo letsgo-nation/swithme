@@ -56,10 +56,8 @@ public class PostController {
     public ResponseEntity<ApiResponseDto> updatePost(
             @PathVariable Long id,
             @RequestPart("data") PostRequestDto postRequestDto,
-//            @RequestBody PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestPart(required = false) MultipartFile image
-            ) {
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         return postService.updatePost(id, postRequestDto, userDetails.getUser(), image);
     }
 

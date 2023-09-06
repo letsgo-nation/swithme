@@ -83,13 +83,13 @@ public class PostService {
         }
 
         String postImg = post.get().getPostImg(); //일단 기존 사진 넣어주고
-        log.info("기존 사진" + postImg);
+        log.info("기존 사진 : " + postImg);
 
         if (!image.isEmpty()) { //매개변수로 받은 게 있다면
             try {
                 s3UploadService.fileDelete(postImg); // 기존사진을 S3에서 삭제하고
                 postImg = s3UploadService.uploadFiles(image, "images"); //새로 받은걸 업로드해주고
-                log.info("기존 사진" + postImg);
+                log.info("새로운 사진 : " + postImg);
                 System.out.println(postImg);
             } catch (IOException e) {
                 e.printStackTrace();

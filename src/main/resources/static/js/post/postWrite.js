@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(document).ready(function () {
-    $('#saveButton').click(function () {
+    $('#savePost').click(function () {
         const title = $('#title').val();
         const category_id = $('#category').val();
         const content = $('#content').val();
@@ -62,6 +62,7 @@ $(document).ready(function () {
             data: formData,
             contentType: false, // Content-Type 자동 설정 비활성화
             processData: false, // 데이터 처리 비활성화
+
             success: function (response) {
                 // 성공 처리
                 alert(response.message);
