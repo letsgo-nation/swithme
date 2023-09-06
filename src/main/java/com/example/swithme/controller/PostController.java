@@ -6,7 +6,6 @@ import com.example.swithme.dto.PostResponseDto;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.PostService;
 import com.example.swithme.service.UserService;
-import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -54,9 +53,14 @@ public class PostController {
 
     // 개인 스터디 게시물 수정
     @PutMapping("/post/{id}")
-    public ResponseEntity<ApiResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        this.tokenValidate(userDetails);
-        return postService.updatePost(id, postRequestDto, userDetails.getUser());
+    public ResponseEntity<ApiResponseDto> updatePost(
+            @PathVariable Long id,
+            @RequestPart("data") PostRequestDto postRequestDto,
+//            @RequestBody PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestPart(required = false) MultipartFile image
+            ) {
+        return postService.updatePost(id, postRequestDto, userDetails.getUser(), image);
     }
 
     // 개인 스터디 게시물 삭제

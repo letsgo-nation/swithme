@@ -52,9 +52,21 @@ public class Post extends Timestamped {
         this.postImg = postImg;
     }
 
-    public void update(PostRequestDto postRequestDto, Category category) {
+    public void update(PostRequestDto postRequestDto, Category category, String postImg) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
         this.category = category;
+        this.postImg = postImg;
+        this.postImg = postImg;
+    }
+
+    //게시글 사진 수정시
+    public void updateImage(String postImg) {
+        this.postImg = postImg;
+    }
+
+    //게시글 사진 삭제 시
+    public void deleteImage(String postImg) {
+        this.postImg = null;
     }
 }

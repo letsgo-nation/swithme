@@ -68,7 +68,7 @@ public class PostService {
 
     // 개인 스터디 게시물 수정
     @Transactional
-    public ResponseEntity<ApiResponseDto> updatePost(Long id, PostRequestDto postRequestDto, User user) {
+    public ResponseEntity<ApiResponseDto> updatePost(Long id, PostRequestDto postRequestDto, User user, MultipartFile image) {
         Optional<Post> post = postRepository.findById(id);
         Optional<Category> category = categoryRepository.findById(postRequestDto.getCategory_id());
 
@@ -82,8 +82,21 @@ public class PostService {
             return ResponseEntity.status(400).body(new ApiResponseDto( "게시글 수정 실패", HttpStatus.BAD_REQUEST.value()));
         }
 
-        post.get().update(postRequestDto, category.get());
+        String postImg = post.get().getPostImg(); //일단 기존 사진 넣어주고
+        log.info("기존 사진" + postImg);
 
+        if (!image.isEmpty()) { //매개변수로 받은 게 있다면
+            try {
+                s3UploadService.fileDelete(postImg); // 기존사진을 S3에서 삭제하고
+                postImg = s3UploadService.uploadFiles(image, "images"); //새로 받은걸 업로드해주고
+                log.info("기존 사진" + postImg);
+                System.out.println(postImg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // url도 바꿔서 db에 저장
+        post.get().update(postRequestDto, category.get(), postImg);
         return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", new PostResponseDto(post.get())));
     }
 

@@ -4,7 +4,6 @@ import com.example.swithme.entity.Comment;
 import com.example.swithme.entity.Post;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +19,14 @@ public class PostResponseDto {
     private String username;
     private String userNickname;
     private String category_name;
+    private String image;
     private List<CommentResponseDto> commentResponseDtoList;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
+        this.image = post.getPostImg();
         this.createdAt = post.getCreatedAtFormatted();
         this.modifiedAt = post.getModifiedAtFormatted();
         this.category_id = post.getCategory().getId();
