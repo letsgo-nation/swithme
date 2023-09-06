@@ -26,8 +26,6 @@ public class ChatRoomResponseDto {
         this.id = chatRoom.getId();
         this.title = chatRoom.getTitle();
         this.content = chatRoom.getContent();
-        this.category = chatRoom.getCategory();
-        this.img = chatRoom.getImg();
         this.chatUrl = chatRoom.getChatUrl();
     }
 }
