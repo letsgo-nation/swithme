@@ -1,5 +1,6 @@
 package com.example.swithme.S3;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -77,5 +78,18 @@ public class S3UploadService {
             return Optional.of(convertFile);
         }
         return Optional.empty();
+    }
+
+    // S3 delete file
+    public void fileDelete(String fileName) {
+        log.info("file name : " + fileName); //url
+        log.info("File : " + fileName.substring(53));
+
+        try {
+            amazonS3Client.deleteObject(this.bucket, fileName.substring(53));
+
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+        }
     }
 }

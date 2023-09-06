@@ -23,26 +23,16 @@ public class S3Config {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-//    @Bean
-    @Autowired // 의존성 주입
-    public AmazonS3 amazonS3() {
-        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        return AmazonS3ClientBuilder.standard()
+    @Bean
+    public AmazonS3Client amazonS3Client() {
+
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+        return (AmazonS3Client) AmazonS3ClientBuilder
+                .standard()
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
-    }
 
-//    @Autowired
-//    public AmazonS3Client amazonS3Client() {
-//
-//        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-//
-//        return (AmazonS3Client) AmazonS3ClientBuilder
-//                .standard()
-//                .withRegion(region)
-//                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-//                .build();
-//
-//    }
+    }
 }
