@@ -6,7 +6,7 @@
     <!-- 상단 네비게이션 왼쪽 -->
     <div class="app-header-left">
         <span class="app-icon"></span>
-        <p class="app-name">SWITHME</p>
+        <p class="app-name"><a href="/view/posts">SWITHME</a></p>
         <div class="search-wrapper">
             <input class="search-input" type="text" placeholder="Search">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
@@ -109,14 +109,13 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/chat/personal}">그룹</a>
+                <a class="nav-link" th:href="@{/chat}">그룹</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/chat/alert}">초대</a>
             </li>
         </ul>
     </div>
-
 </div>
 </body>
 </html>

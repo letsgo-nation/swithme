@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:insert="layout/head :: common_header(~{::title},~{::link})">
-    <title>샘플 페이지</title>
-    <link rel="stylesheet" th:href="@{/css/sample.css}"/>
+    <title>채팅</title>
+    <link rel="stylesheet" th:href="@{/css/chatgroup.css}"/>
     <link rel="stylesheet" th:href="@{/css/nav.css}"/>
 </head>
 <body>
@@ -22,26 +22,19 @@
 
             <!-- 메인 가운데 - 제목, 날짜 영역 -->
             <div class="projects-section-header">
-                <p>Projects</p>
-                <p class="time">December, 12</p>
+                <p>그룹 채팅</p>
+                <button class="add-btn" onclick="create_chat()">
+                    <svg class="btn-icon feather feather-plus" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" /></svg>
+                </button>
             </div>
 
 
             <div class="projects-section-line">
                 <!-- 메인 가운데 - 진행 영역(삭제 가능) -->
                 <div class="projects-status">
-                    <div class="item-status">
-                        <span class="status-number">45</span>
-                        <span class="status-type">In Progress</span>
-                    </div>
-                    <div class="item-status">
-                        <span class="status-number">24</span>
-                        <span class="status-type">Upcoming</span>
-                    </div>
-                    <div class="item-status">
-                        <span class="status-number">62</span>
-                        <span class="status-type">Total Projects</span>
-                    </div>
+                    <div th:replace="~{fragment/nav :: useNavChat}">insert</div>
                 </div>
 
                 <!-- 메인 가운데 - 3개 분할 버튼, 길게 보기 버튼 -->
@@ -68,16 +61,17 @@
 
             <!-- 메인 가운데 - 내용 영역 시작 -->
             <div class="project-boxes jsGridView"> <!-- 메인 전체 박스 -->
-                <div class="project-box-wrapper"> <!-- 메인 작은 네모 박스 -->
+                <div class="project-box-wrapper" th:each="chatRoom : ${chatRooms}"> <!-- 메인 작은 네모 박스 -->
                     <div class="project-box" style="background-color: #fee4cb;">
 
                         <!-- 네모영역 상단 -->
                         <div class="project-box-header">
 
                             <!-- 날짜 부분 -->
-                            <span>December 10, 2020</span>
+                            <span></span>
 
                             <!-- 점3개 부분 -->
+                            <a th:href="@{/chat/room/edit(id=${chatRoom.id})}" class="popup-link">
                             <div class="more-wrapper">
                                 <button class="project-btn-more">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
@@ -86,20 +80,16 @@
                                         <circle cx="12" cy="19" r="1" /></svg>
                                 </button>
                             </div>
+                            </a>
                         </div>
                         <!-- 제목, 소제목(본문)  -->
                         <div class="project-box-content-header">
-                            <p class="box-content-header">Web Designing</p>
-                            <p class="box-content-subheader">Prototyping</p>
+                            <p class="box-content-header" th:text="${chatRoom.title}">타이틀</p>
+                            <p class="box-content-subheader" th:text="${chatRoom.content}">소제목</p>
                         </div>
 
                         <!-- 진행바 - 퍼센트  -->
                         <div class="box-progress-wrapper">
-                            <p class="box-progress-header">Progress</p>
-                            <div class="box-progress-bar">
-                                <span class="box-progress" style="width: 60%; background-color: #ff942e"></span>
-                            </div>
-                            <p class="box-progress-percentage">60%</p>
                         </div>
 
                         <!-- 하얀선 아래  -->
@@ -107,18 +97,12 @@
 
                             <!-- 참가자 그림  -->
                             <div class="participants">
-                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-                                <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTB8fG1hbnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="participant">
-                                <button class="add-participant" style="color: #ff942e;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                        <path d="M12 5v14M5 12h14" />
-                                    </svg>
-                                </button>
+
                             </div>
 
                             <!-- 2 Days Left 버튼 모양  -->
                             <div class="days-left" style="color: #ff942e;">
-                                2 Days Left
+                                <a th:href="@{/chat(url=${chatRoom.chatUrl})}" onclick="changeChat()" >채팅</a>
                             </div>
                         </div>
                     </div>
@@ -139,38 +123,34 @@
             </button>
             <!-- 메시지 맨 위 타이틀(client Messages 부분) -->
             <div class="projects-section-header">
-                <p>Client Messages</p>
+                <p>채팅</p>
             </div>
 
             <!-- 메시지 시작 -->
-            <div class="messages">
-                <div class="message-box">
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="profile image">
-                    <div class="message-content">
-                        <div class="message-header">
-                            <div class="name">Stephanie</div>
-                            <div class="star-checkbox">
-                                <input type="checkbox" id="star-1">
-                                <label for="star-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
-                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-                                </label>
-                            </div>
-                        </div>
-                        <p class="message-line">
-                            I got your first assignment. It was quite good. 🥳 We can continue with the next assignment.
-                        </p>
-                        <p class="message-line time">
-                            Dec, 12
-                        </p>
+            <div class="messages" id="chat-container" style="height: 650px; overflow-y: scroll;">
+
+            </div>
+            <!-- 채팅 내용 끝 -->
+
+            <!-- 전송 버튼 -->
+            <form id="messageForm" name="messageForm">
+                <div class="form-group">
+                    <div class="input-group clearfix">
+                        <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                        <button type="submit" class="btn btn-light">Send</button>
                     </div>
                 </div>
-            </div>
+            </form>
             <!-- 메시지 끝 -->
 
         </div>
     </div>
 </div>
 <script src="/js/sample.js"></script>
+
+<!-- 채팅 관련 자바 스크립트-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/chatgroup.js"></script>
 </body>
 </html>
