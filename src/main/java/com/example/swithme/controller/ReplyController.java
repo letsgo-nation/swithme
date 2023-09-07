@@ -32,7 +32,7 @@ public class ReplyController {
     }
 
     // 대댓글  조회
-    @GetMapping("/post/comment/reply/{id}") // id는 user id
+    @GetMapping("/post/comment/reply/{id}") // id는 comment id
     @ResponseBody
     public List<ReplyResponseDto> replyList(
             @PathVariable Long id,

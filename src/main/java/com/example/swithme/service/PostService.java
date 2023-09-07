@@ -66,6 +66,7 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    // 게시글 nickname 가져오기
     public String lookupPostUserNickname(Long id) {
         Post post = findPost(id);
         String postUserNickname = post.getUser().getNickname();

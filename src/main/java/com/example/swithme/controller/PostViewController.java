@@ -38,10 +38,8 @@ public class PostViewController {
     @GetMapping("/post/detail/{id}")
     public String postDetailPage(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostResponseDto post = postService.lookupPost(id);
-
         // 게시물 작성자의 닉네임 가져오기
         String postAuthorNickname = postService.lookupPostUserNickname(id);
-
         // 현재 사용자와 게시물 작성자 닉네임 비교
         boolean isCurrentUserAuthor = userDetails != null && userDetails.getUser().getNickname().equals(postAuthorNickname);
 
