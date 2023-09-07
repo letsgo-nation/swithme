@@ -27,8 +27,8 @@ document.getElementById("deleteButton").addEventListener("click", function() {
         });
 });
 
+// 댓글, 대댓글 관련 JS
 $(document).ready(function () {
-    // const postId = $("#commentSubmitBtn").data("postid");
 
     // 댓글 작성
     $("#commentSubmitBtn").click(function () {

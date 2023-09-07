@@ -17,7 +17,6 @@
             </a>
             <a href="" class="app-sidebar-link">
                 <svg class="link-icon feather feather-pie-chart" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <!--                <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-pie-chart" viewBox="0 0 24 24">-->
                     <defs />
                     <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
                 </svg>
@@ -31,7 +30,6 @@
             </a>
             <a href="" class="app-sidebar-link">
                 <svg class="link-icon feather feather-settings" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <!--                <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-settings" viewBox="0 0 24 24">-->
                     <defs />
                     <circle cx="12" cy="12" r="3" />
                     <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
@@ -56,16 +54,15 @@
                         <div class="input-group-lg">
                             <span class="input-group-text">게시글 내용</span>
                             <span class="form-control" id="content" th:text="${post.content}"aria-label="With textarea" style="padding:30px"></span>
-<!--                            <img class="form-control" id="image" th:src="${post.image}" aria-label="With textarea" style="padding:30px" alt="">-->
                             <img class="form-control" id="image" th:src="${post.image}" th:alt="${post.title}" aria-label="With textarea" style="padding:30px" />
 
                         </div>
                         <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
                             <!-- Button to trigger the modal -->
-                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updateModal">수정</button>
+                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#updatePost" th:if="${isCurrentUserAuthor}">수정</button>
                             <!-- Modal -->
-                            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="updatePost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -77,16 +74,15 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                                            <!--                                        <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+id">예</button>-->
                                             <button type="button" class="btn btn-primary" onclick="location.href='/view/post/update/'+lastPart">예</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!--삭제버튼-->
-                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#myModal">삭제</button>
+                            <button type="button" class="btn btn-dark btn-lg me-5 w-25" data-bs-toggle="modal" data-bs-target="#deletePost" th:if="${isCurrentUserAuthor}">삭제</button>
                             <!-- Modal -->
-                            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deletePost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -119,7 +115,6 @@
                     <label for="commentText">댓글 작성:</label>
                     <!--                    작성자 닉네임 추가-->
                     <input id="commentText"></input>
-<!--                    <button id="commentSubmitBtn" th:attr="data-postid=${post.id}">댓글 작성</button>-->
                     <button id="commentSubmitBtn">댓글 작성</button>
                 </div>
                 <!-- 댓글 목록 -->
