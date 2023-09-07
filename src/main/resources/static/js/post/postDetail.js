@@ -98,11 +98,11 @@ $(document).ready(function () {
 
     // 댓글 조회
     function loadComments(lastPart) {
-        // fetch(`/api/post/comment/${postId}`)
         fetch(`/api/post/comment/`+ lastPart)
             .then((response) => response.json())
             .then((comments) => {
                 displayComments(comments);
+                loadInitialReplies();
                 console.log(comments)
             })
             .catch((error) => {
@@ -128,17 +128,53 @@ $(document).ready(function () {
     function displayComments(comments) {
         const commentList = $("#commentList");
         commentList.html(""); // 댓글 목록 초기화
-
+        console.log("comments : " , comments);
         comments.forEach(function (comment) {
-            console.log(comment)
+            console.log("comment : " , comment);
             const commentElement = document.createElement("div");
             commentElement.id = `comment-${comment.id}`;
+            // const replies = comment.replyResponseDtoList;
+            // const currentNickname = currentNickname;
+            //     console.log(replies);
+            //     console.log("comment.id :", comment.id);
+
+                // console.log("currentNickname :", currentNickname);
+
+                // if (replies!=null) {
+                // displayReplies(comment.id, replies);}
+            // if (comment.id == currentNickname) {
+            //     console.log(currentNickname);
+            //     commentElement.innerHTML = `
+            //     <p>${comment.userNickname}</p>
+            //     <p>${comment.content}</p>
+            //     <button class="replyBtn" data-comment="${comment.id}">대댓글 작성</button>
+            //     <button class="edit-comment" data-comment="${comment.id}">댓글 수정</button>
+            //     <button class="delete-comment" data-comment="${comment.id}">댓글 삭제</button>
+            //     <div id="replyList-${comment.id}" style="margin-left: 5%;">
+            //         <!-- 대댓글이 여기에 동적으로 추가됩니다 -->
+            //     </div>
+            //     <hr>
+            // `;
+            // } else {
+            //     commentElement.innerHTML = `
+            //     <p>${comment.userNickname}</p>
+            //     <p>${comment.content}</p>
+            //     <button class="replyBtn" data-comment="${comment.id}">대댓글 작성</button>
+            //     <div id="replyList-${comment.id}" style="margin-left: 5%;">
+            //         <!-- 대댓글이 여기에 동적으로 추가됩니다 -->
+            //     </div>
+            //     <hr>
+            // `;
+            // }
+
             commentElement.innerHTML = `
+                <hr>
+                <p>${comment.userNickname}</p>
                 <p>${comment.content}</p>
                 <button class="replyBtn" data-comment="${comment.id}">대댓글 작성</button>
                 <button class="edit-comment" data-comment="${comment.id}">댓글 수정</button>
                 <button class="delete-comment" data-comment="${comment.id}">댓글 삭제</button>
-                <div id="replyList-${comment.id}">
+                <div id="replyList-${comment.id}" style="margin-left: 5%;">
                     <!-- 대댓글이 여기에 동적으로 추가됩니다 -->
                 </div>
             `;
@@ -149,12 +185,18 @@ $(document).ready(function () {
 
     // 대댓글을 화면에 표시하는 함수
     function displayReplies(commentId, replies) {
+        if (replies==null) {
+            return;
+        }
         const replyList = $(`#replyList-${commentId}`);
         replyList.html(""); // 대댓글 목록 초기화
 
         replies.forEach(function (reply) {
+            console.log("reply : " , reply);
             const replyElement = document.createElement("div");
             replyElement.innerHTML = `
+                <hr>
+                <p>${reply.userNickname}</p>
                 <p id="reply-${reply.id}">${reply.content} </p>
                 <button class="edit-reply" data-reply="${reply.id}">대댓글 수정</button>
                 <button class="delete-reply" data-reply="${reply.id}" data-comment="${commentId}">대댓글 삭제</button>
@@ -294,4 +336,18 @@ $(document).ready(function () {
 
     // 초기 댓글 로드
     loadComments(lastPart);
+    console.log("lastPart;" , lastPart);
+
+    // 페이지 로드 시 대댓글 불러오기
+    loadInitialReplies();
+
+    // 페이지 로드 시 대댓글 불러오기 함수
+    function loadInitialReplies() {
+        const commentButtons = $(".replyBtn");
+        commentButtons.each(function () {
+            const commentId = $(this).data("comment");
+            console.log("const commentId = $(this).data(\"comment\");" , commentId);
+            loadReplies(commentId);
+        });
+    }
 });

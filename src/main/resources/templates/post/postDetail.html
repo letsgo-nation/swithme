@@ -3,12 +3,15 @@
 <head th:replace="layout/head :: common_header(~{::title},~{::link})">
     <title>게시물 상세 페이지</title>
     <link rel="stylesheet" th:href="@{/css/post/postDetail.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nav.css}"/>
 </head>
 <body>
 
 <div class="app-container">
     <div th:replace="~{fragment/nav :: useNav}">insert</div>
     <div class="app-content">
+        <!-- 왼쪽 메인 세로 네비게이션바 -->
+        <div th:replace="~{fragment/nav :: useNav-vertical}">insert</div>
         <div class="app-sidebar">
             <a href="" class="app-sidebar-link active">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">

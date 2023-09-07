@@ -31,7 +31,7 @@ public class ReplyController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    // 대댓글  조회
+    // 대댓글 조회
     @GetMapping("/post/comment/reply/{id}") // id는 comment id
     @ResponseBody
     public List<ReplyResponseDto> replyList(
