@@ -10,6 +10,7 @@ import com.example.swithme.service.GoogleService;
 import com.example.swithme.service.KakaoService;
 import com.example.swithme.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,8 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final AccumulatedTimeRepository accumulatedTimeRepository;
 
+    public static String url;
+
     //샘플페이지
     @GetMapping("/sample")
     public String sample() {
@@ -46,8 +49,11 @@ public class UserController {
 
     // 회원가입, 로그인 페이지 이동
     @GetMapping("/users/login")
-    public String loginPage(Model model) {
+    public String loginPage(Model model, HttpServletRequest request) {
         model.addAttribute("signupRequestDto", new SignupRequestDto());
+
+        url = request.getHeader("referer");
+
         return "user/login";
     }
 
@@ -87,21 +93,35 @@ public class UserController {
             return "redirect:/users/login?content=loginFail";
         }
 
-        return "redirect:/";
+        if(url == null) {
+            return "redirect:/";
+        }
+
+        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //카카오 로그인
     @GetMapping("/api/users/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         kakaoService.kakaoLogin(code, response); // 쿠키 생성
-        return "redirect:/";
+
+        if(url == null) {
+            return "redirect:/";
+        }
+
+        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //구글 로그인
     @GetMapping("/api/users/google/callback")
     public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         googleService.googleLogin(code, response); // 반환 값이 JWT 토큰
-        return "redirect:/";
+
+        if(url == null) {
+            return "redirect:/";
+        }
+
+        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //로그아웃

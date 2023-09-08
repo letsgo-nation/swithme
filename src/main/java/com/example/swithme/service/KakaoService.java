@@ -143,7 +143,11 @@ public class KakaoService {
                 // email: kakao email
                 String username = kakaoUserInfo.getUsername();
 
-                kakaoUser = new User(username, encodedPassword, kakaoUserInfo.getNickname(), kakaoId);
+                //@앞에 글자만 가져와서 닉네임
+                int location = username.indexOf("@");
+                String nickname = username.substring(0, location);
+
+                kakaoUser = new User(username, encodedPassword, nickname, kakaoId);
             }
             userRepository.save(kakaoUser);
         }

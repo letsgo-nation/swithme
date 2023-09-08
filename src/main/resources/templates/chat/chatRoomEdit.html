@@ -81,7 +81,7 @@
             }
         });
     }
-
+    // 채팅룸 삭제
     function deleteChatRoom(id) {
         let data = {'id': id};
 
@@ -91,7 +91,8 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                window.location.reload();
+                alert("삭제되었습니다. 새로고침해주세요")
+                window.close()
             },
             error: function (xhr, status, error) {
                 // 에러 시 처리할 코드

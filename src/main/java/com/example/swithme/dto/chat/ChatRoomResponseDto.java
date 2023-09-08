@@ -16,10 +16,6 @@ public class ChatRoomResponseDto {
 
     private String content;
 
-    private String category;
-
-    private String img; // 이미지 고민
-
     private UUID chatUrl; // 들어가는 방 주소가 변경됨
 
     public ChatRoomResponseDto(ChatRoom chatRoom) {
