@@ -39,11 +39,4 @@ public class AccumulatedTime {
 
     @Column(name = "today_accumulated_time")
     private Long todayAccumulatedMinutes = 0L;
-
-
-
-
-
-
-
 }

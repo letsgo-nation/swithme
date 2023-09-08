@@ -65,7 +65,16 @@ btn_record.addEventListener("click", () => {
         .then(minutes => {  // 이 부분 추가
             const displayTime = formatMinutesToDisplayTime(minutes);
             document.getElementById('display-today-time').textContent = displayTime;
+
+            return fetch('/api/record/total');
         })
+        .then(response => response.json()) // 이 부분 추가
+        .then(totalMinutes => { // 이 부분 추가
+            const displayTime = formatMinutesToDisplayTime(totalMinutes);
+            document.getElementById('display-total-time').textContent = displayTime;  // 'display-total-time'는 총 누적 시간을 표시하는 요소의 ID여야 합니다.
+        })
+
+
         .catch(error => {
             // 네트워크 오류 처리
             console.error('Fetch error:', error);
@@ -83,7 +92,7 @@ btn_restart.addEventListener("click", () => {
     btn_restart.hidden = true
 })
 
-// ... 중략 ...
+
 
 // 페이지가 로드되면 오늘의 누적 시간을 가져옵니다.
 document.addEventListener('DOMContentLoaded', function() {
@@ -95,6 +104,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error("Error fetching today's accumulated time:", error));
 });
+
+// 페이지가 로드되면 누적 시간을 가져옵니다.
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/record/total')
+        .then(response => response.json())
+        .then(minutes => {
+            const displayTime = formatMinutesToDisplayTime(minutes);
+            document.getElementById('display-total-time').textContent = displayTime;
+        })
+        .catch(error => console.error("Error fetching total's accumulated time:", error));
+});
+
+
 
 // 분을 "00:00" 형식으로 포맷팅하는 함수
 function formatMinutesToDisplayTime(minutes) {
