@@ -66,6 +66,13 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    // 게시글 nickname 가져오기
+    public String lookupPostUserNickname(Long id) {
+        Post post = findPost(id);
+        String postUserNickname = post.getUser().getNickname();
+        return postUserNickname;
+    }
+
     // 개인 스터디 게시물 수정
     @Transactional
     public ResponseEntity<ApiResponseDto> updatePost(Long id, PostRequestDto postRequestDto, User user, MultipartFile image) {
