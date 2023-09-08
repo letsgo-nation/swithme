@@ -2,6 +2,7 @@ package com.example.swithme.controller;
 
 import com.example.swithme.dto.PostResponseDto;
 import com.example.swithme.security.UserDetailsImpl;
+import com.example.swithme.service.CommentService;
 import com.example.swithme.service.PostService;
 import com.example.swithme.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostViewController {
 
     private final PostService postService;
-    private final UserService userService;
 
     // 전체 게시물 페이지
     @GetMapping("/posts")
@@ -51,14 +51,6 @@ public class PostViewController {
         return "post/postDetail";
     }
 
-
-//    @GetMapping("/post/detail/{id}")
-//    public String postDetailPage(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        PostResponseDto post = postService.lookupPost(id);
-//        model.addAttribute("post", post); // 게시물의 정보 반환 (userNickname 등)
-//        model.addAttribute("currentNickname", userDetails.getUser().getNickname()); // 현재 유저 반환
-//        return "post/postDetail";
-//    }
     // 게시글 수정 페이지
     @GetMapping("/post/update/{id}")
     public String modifyPost(Model model,  @PathVariable Long id)
