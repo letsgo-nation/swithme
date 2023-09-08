@@ -86,6 +86,6 @@ public class User {
 
     public void update(UserUpdateRequestDto userUpdateRequestDto) {
         this.nickname = userUpdateRequestDto.getNickname();
-
     }
+
 }

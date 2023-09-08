@@ -71,11 +71,11 @@ public class SaveTest {
         // 관리자가 1번에 있다고
         List<User> findAdmin = userRepository.findAllByRole(UserRole.ADMIN);
         User user = findAdmin.get(0);
-        ChatRoom chatRoom1 = new ChatRoom("프로그래밍", "프로그래밍에 대한 다양한 정보를 나눠요.", "front", UUID.randomUUID());
-        ChatRoom chatRoom2 = new ChatRoom("수능", "수능에 대한 다양한 정보를 나눠요.", "backend", UUID.randomUUID());
-        ChatRoom chatRoom3 = new ChatRoom("공무원시험", "공무원시험에 대한 다양한 정보를 나눠요.", "network", UUID.randomUUID());
-        ChatRoom chatRoom4 = new ChatRoom("어학", "어학에 대한 다양한 정보를 나눠요.", "game", UUID.randomUUID());
-        ChatRoom chatRoom5 = new ChatRoom("자격증", "자격증에 대한 다양한 정보를 나눠요.", "game", UUID.randomUUID());
+        ChatRoom chatRoom1 = new ChatRoom("프로그래밍", "프로그래밍에 대한 다양한 정보를 나눠요.", UUID.randomUUID());
+        ChatRoom chatRoom2 = new ChatRoom("수능", "수능에 대한 다양한 정보를 나눠요.", UUID.randomUUID());
+        ChatRoom chatRoom3 = new ChatRoom("공무원시험", "공무원시험에 대한 다양한 정보를 나눠요.",  UUID.randomUUID());
+        ChatRoom chatRoom4 = new ChatRoom("어학", "어학에 대한 다양한 정보를 나눠요.",  UUID.randomUUID());
+        ChatRoom chatRoom5 = new ChatRoom("자격증", "자격증에 대한 다양한 정보를 나눠요.", UUID.randomUUID());
 
         chatRoomRepository.save(chatRoom1);
         chatRoomRepository.save(chatRoom2);

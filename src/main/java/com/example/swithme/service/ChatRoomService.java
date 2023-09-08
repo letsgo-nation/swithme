@@ -1,13 +1,12 @@
 package com.example.swithme.service;
 
 import com.example.swithme.dto.chat.*;
+import com.example.swithme.entity.User;
 import com.example.swithme.entity.chat.ChatGroup;
 import com.example.swithme.entity.chat.ChatMessage;
 import com.example.swithme.entity.chat.ChatRoom;
-import com.example.swithme.entity.User;
 import com.example.swithme.enumType.ChatRole;
 import com.example.swithme.enumType.Invite;
-import com.example.swithme.enumType.UserRole;
 import com.example.swithme.repository.ChatGroupRepository;
 import com.example.swithme.repository.ChatMessageRepository;
 import com.example.swithme.repository.ChatRoomRepository;
@@ -30,23 +29,6 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-
-    //관리자가 설정 채팅방
-    public List<ChatRoomResponseDto>
-    findAll() {
-        // 규칙을 설정해야함, 관리를 위해서, 특정 관리자 계정만 채팅방 개설기능 가능
-        List<User> findAdmin = userRepository.findAllByRole(UserRole.ADMIN);
-
-        List<ChatRoom> findChatGroup =
-                chatGroupRepository.findAllByUser(findAdmin.get(0)).stream()
-                        .map(chatGroup -> chatGroup.getChatRoom())
-                        .collect(Collectors.toList());
-
-        List<ChatRoomResponseDto> findAllChatRoom = findChatGroup.stream()
-                .map(ChatRoomResponseDto::new)
-                .collect(Collectors.toList());
-        return findAllChatRoom;
-    }
 
     // 내가 가입된 채팅방 조회
     public List<ChatRoomResponseDto> findAllById(User user) {
@@ -75,7 +57,7 @@ public class ChatRoomService {
 
     //채팅룸 생성
     public void create(User user) {
-        ChatRoom chatRoom = new ChatRoom("제목", "내용", "", UUID.randomUUID());
+        ChatRoom chatRoom = new ChatRoom("제목", "내용", UUID.randomUUID());
         chatRoomRepository.save(chatRoom);
 
         ChatGroup chatGroup = new ChatGroup(user, chatRoom, ChatRole.MANAGER, Invite.YES);
@@ -150,17 +132,22 @@ public class ChatRoomService {
 
     }
 
+    //채팅멤버 삭제
     public void delete(Long chatGroupId, User user) {
         chatGroupRepository.deleteById(chatGroupId);
     }
 
+    @Transactional
+    //채팅방 삭제
     public void deleteChatRoom(Long id, User user) {
         Optional<ChatGroup> findChatGroup = chatGroupRepository.findByChatRoom_IdAndAndUser(id, user);
-        if (findChatGroup.isPresent() && (findChatGroup.get().getChatRole().equals("MANAGER"))) {
-            chatGroupRepository.delete(findChatGroup.get());
+        ChatGroup chatGroup = findChatGroup.get();
+        if (findChatGroup.isPresent() && (chatGroup.getChatRole().equals(ChatRole.MANAGER))) {
+            chatRoomRepository.delete(findChatGroup.get().getChatRoom());
         }
     }
 
+    //전체 채팅 메시지 저장
     public void save(ChatMessage chatMessage) {
         chatMessageRepository.save(chatMessage);
     }
