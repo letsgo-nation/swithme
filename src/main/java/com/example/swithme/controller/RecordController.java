@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/record")
@@ -31,6 +28,15 @@ public class RecordController {
         } catch (RecordTimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("시간을 기록하는 중에 오류가 발생했습니다.");
+        }
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<Long> getTodayAccumulatedTime(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            return ResponseEntity.ok(recordService.getTodayAccumulatedTime(userDetails));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0L);
         }
     }
 }
