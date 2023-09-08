@@ -73,5 +73,17 @@ public class RecordServiceImpl implements RecordService {
         int seconds = Integer.parseInt(parts[1]);
         return minutes * 60 + seconds;
     }
+
+    public Long getTodayAccumulatedTime(UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
+                .orElseThrow(() -> new RuntimeException("사용자의 누적 시간을 찾을 수 없습니다."));
+
+        return accumulatedTime.getTodayAccumulatedMinutes();
+    }
+
 }
 

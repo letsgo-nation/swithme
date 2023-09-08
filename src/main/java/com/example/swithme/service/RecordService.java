@@ -10,4 +10,5 @@ import org.springframework.stereotype.Service;
 
 public interface RecordService {
     void recordTime(String recordedTime, UserDetails userDetails);
+    Long getTodayAccumulatedTime(UserDetails userDetails);
 }
