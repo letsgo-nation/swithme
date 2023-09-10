@@ -34,6 +34,12 @@ function updatePost() {
     var categoryId = document.getElementById("category").value; // 카테고리 ID를 가져오는 코드
     var imageFile = document.getElementById("image").files[0]; // 파일 업로드
 
+    // 파일 크기 확인 (1MB 이상인 경우 처리)
+    if (imageFile && imageFile.size > 1048576) { // 1MB 이상인 경우
+        alert("파일 크기가 너무 큽니다. 1MB 보다 작은 파일을 선택해주세요.");
+        return; // 업로드 중단
+    }
+
     // AWS S3 업로드
     // (AWS SDK를 사용하여 이미지를 S3로 업로드하고 이미지의 S3 URL을 얻는 로직 필요)
 

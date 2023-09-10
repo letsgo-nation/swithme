@@ -25,12 +25,19 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 });
 
+// 게시글 업로드
 $(document).ready(function () {
     $('#savePost').click(function () {
         const title = $('#title').val();
         const category_id = $('#category').val();
         const content = $('#content').val();
         const imageFile = $('#image')[0].files[0];
+
+        // 파일 크기 확인 (1MB 이상인 경우 처리)
+        if (imageFile && imageFile.size > 1048576) { // 1MB 이상인 경우
+            alert("파일 크기가 너무 큽니다. 1MB 보다 작은 파일을 선택해주세요.");
+            return; // 업로드 중단
+        }
 
         // 이미지 업로드를 위한 FormData 객체 생성
         const imageFormData = new FormData();
