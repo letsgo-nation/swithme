@@ -24,7 +24,7 @@ document.getElementById("deleteButton").addEventListener("click", function() {
         .then(data => {
             console.log(data); // 서버의 응답 데이터 처리
             // 여기서 필요한 동작 수행 (예: 페이지 새로고침)
-            alert("게시글이 삭제되었습니다");
+            alert(data.message);
             window.location.href = "/view/posts";
         })
         .catch(error => {
