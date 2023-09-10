@@ -1,8 +1,12 @@
 package com.example.swithme.controller;
 
 import com.example.swithme.entity.Calendar;
+import com.example.swithme.entity.User;
 import com.example.swithme.repository.CalendarRepository;
+import com.example.swithme.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +18,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class CalendarController {
-    @Autowired
-    private CalendarRepository studyRepository;
+
+    private final CalendarRepository studyRepository;
 
     @GetMapping("/studies")
-    public String listStudies(Model model) {
-        List<Calendar> studies = studyRepository.findAll();
+    public String listStudies(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        List<Calendar> studies = studyRepository.findAllByUser(user);
         model.addAttribute("studies", studies);
         return "study/list";
     }
@@ -32,14 +38,18 @@ public class CalendarController {
     }
 
     @PostMapping("/studies")
-    public String createStudy(@ModelAttribute Calendar study) {
+    public String createStudy(@ModelAttribute Calendar study, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        study.setUser(user);
+
         studyRepository.save(study);
         return "redirect:/studies";
     }
 
     @GetMapping("/studies/calendar")
-    public String showCalendar(Model model) {
-        List<Calendar> studies = studyRepository.findAll();
+    public String showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        List<Calendar> studies = studyRepository.findAllByUser(user);
         model.addAttribute("studies", studies);
         return "study/calendar";
     }

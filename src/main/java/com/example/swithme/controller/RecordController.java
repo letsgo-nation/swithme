@@ -39,6 +39,15 @@ public class RecordController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0L);
         }
     }
+
+    @GetMapping("/total")
+    public ResponseEntity<Long> getAccumulatedTime(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            return ResponseEntity.ok(recordService.getAccumulatedTime(userDetails));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0L);
+        }
+    }
 }
 
 
