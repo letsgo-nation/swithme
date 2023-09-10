@@ -30,17 +30,16 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final S3UploadService s3UploadService;
-//    private final CommentRepository commentRepository;
 
     // 개인 스터디 게시물 생성
     public ApiResponseDto createPost(PostRequestDto requestDto, User user, MultipartFile image) {
 
         String postImg = null; //url받을 변수를 초기화
 
-        if (!image.isEmpty()) {//매개변수로 받은 값이 있으면
+        if (image != null && !image.isEmpty()) { // 이미지가 전달되었을 때만 처리
             try {
-                postImg = s3UploadService.uploadFiles(image, "images");//post name : images에 mulipartfile을 올린다
-                System.out.println(postImg);// 확인하기
+                postImg = s3UploadService.uploadFiles(image, "images"); // "images"라는 경로에 이미지 업로드
+                System.out.println(postImg); // 업로드된 이미지 확인
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,7 +51,7 @@ public class PostService {
         // DB 저장
         Post savePost = postRepository.save(post);
         // Entity -> ResponseDto
-        return new ApiResponseDto(HttpStatus.OK.value(), "개인 스터디 게시물 생성 완료", savePost);
+        return new ApiResponseDto(HttpStatus.OK.value(), "게시물이 생성되었습니다.", savePost);
     }
 
     // 전체 개인 스터디 게시글 조회
