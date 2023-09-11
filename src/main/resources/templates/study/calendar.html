@@ -10,15 +10,40 @@
 
     <link href="/webjars/fullcalendar/5.9.0/main.min.css" rel="stylesheet">
 </head>
+<style>
+    .modal-body {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    .projects-section-header {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        font-size: 30px;
+    }
+
+    .button-right {
+        align-items: center;
+        justify-content: right;
+        display: flex;
+        font-size: 30px;
+    }
+
+    #calendar {
+        height: 90%;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 로드 -->
 <script src="/webjars/fullcalendar/5.9.0/main.min.js"></script>
 <script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: studies.map(function(study) {
+            events: studies.map(function (study) {
                 return {
                     title: study.name,
                     start: study.startTime,
@@ -26,17 +51,17 @@
                     id: study.id
                 };
             }),
-            eventClick: function(info) {
+            eventClick: function (info) {
                 openStudyDetails(info.event.id);
             }
         });
-        calendar2.render();
+        calendar.render();
     });
 
     var studies = /*[[${studies}]]*/ [];
 
     function openStudyDetails(id) {
-        $.get('/studies/details/' + id, function(data) {
+        $.get('/studies/details/' + id, function (data) {
             $('#study-details-body').html(data);
             $('#edit-button').attr('onclick', 'openEditForm(' + id + ')');
             $('#delete-button').attr('onclick', 'deleteStudy(' + id + ')');
@@ -45,10 +70,14 @@
     }
 
     function openEditForm(id) {
-        window.location.href = '/studies/edit/' + id;
+        alert("경고");
+        // window.location.href = '/studies/edit/' + id
+        var url = '/studies/edit/' + id;
+        var popup = window.open(url, 'Edit Study', 'width=600,height=400');
     }
 
     function deleteStudy(id) {
+        alert("경고");
         if (confirm('일정을 삭제하시겠습니까?')) {
             window.location.href = '/studies/delete/' + id;
         }
@@ -68,50 +97,81 @@
         <div th:replace="~{fragment/nav :: useNav-vertical}">insert</div>
 
         <!-- 메인 가운데 영역 -->
-        <div class="projects-section">
+        <divfefefe class="projects-section">
 
             <!-- 메인 가운데 - 제목, 날짜 영역 -->
-<!--            <div class="projects-section-header">-->
-<!--                <p>Projects</p>-->
-<!--                <p class="time">December, 12</p>-->
-<!--            </div>-->
-
+            <!--            <div class="projects-section-header">-->
+            <!--                <p>Projects</p>-->
+            <!--                <p class="time">December, 12</p>-->
+            <!--            </div>-->
 
 
             <!-- 메인 가운데 - 내용 영역 시작 -->
-            <div>
-                <button type="button" class="btn btn-secondary" onclick="location.href='/studies/new'">일정 작성하기</button>
-            </div>
 
-            <div class="modal-body" id="study-details-body">
-                <!-- 상세 정보가 표시될 공간 -->
-            </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="edit-button">Edit</button>
-                <button class="btn btn-danger" id="delete-button">Delete</button>
-            </div>
 
-            <div id="calendar"></div>
-
-            <div class="modal fade" id="study-details-modal" tabindex="-1" role="dialog" aria-labelledby="study-details-modal-label" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="study-details-modal-label">Study Details</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="calendar-center">
+                <div id="calendar"></div>
                 <!-- 메인 가운데 - 내용 영역 끝  -->
 
             </div>
-        </div>
+        </divfefefe>
+
+        <!-- 메인 오른쪽 영역(채팅 메시지) -->
+        <div class="messages-section">
+
+
+            <!-- 화면 줄이면 나타나는 메시지 온오프 버튼(반응형) -->
+            <button class="messages-close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" /></svg>
+            </button>
+            <!-- 메시지 맨 위 타이틀(client Messages 부분) -->
+            <div class="projects-section-header">
+                <p>일정</p>
+            </div>
+
+            <!-- 메시지 시작 -->
+            <div class="messages">
+
+                <div class="button-right">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/studies/new'">일정 작성</button>
+                    <button class="btn btn-primary" id="edit-button">수정</button>
+                    <button class="btn btn-danger" id="delete-button">삭제</button>
+                </div>
+                <div class="message-box">
+                        <p class="message-line">
+                        <div class="modal-body" id="study-details-body">
+                            <!-- 상세 정보가 표시될 공간 -->
+                        </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- 메시지 끝 -->
+
+
     </div>
 </div>
+</div>
 <script src="/js/sample.js"></script>
+<script>
+    // 왼쪽 세로 네비게이션 버튼표시
+    window.addEventListener("load", function() {
+
+// 네비게이션 항목을 선택
+        const navItems = document.querySelectorAll(".app-sidebar-link");
+        for (let i = 0; i < navItems.length; i++) {
+            let element = navItems.item(i);
+            element.classList.remove('active')
+        }
+
+        const nav = document.querySelector(".nav-calender");
+        nav.classList.add('active')
+    });
+</script>
+
 </body>
 </html>

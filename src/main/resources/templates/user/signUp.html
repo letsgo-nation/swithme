@@ -3,12 +3,25 @@
 
 <head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
 
-  <title>로그인</title>
+  <title>회원정보 수정</title>
   <link rel="stylesheet" th:href="@{/css/signup.css}">
+  <link rel="stylesheet" th:href="@{/css/nav.css}">
 </head>
 
 
 <body>
+<div id="logo"><a href="/view/posts">SWITHME</a></div>
+<div id="nav-icon">
+  <a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-user"></i></a>
+
+  <a th:href="@{/users/logout}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-from-bracket"></i></a>
+
+  <a th:href="@{/users/login}" sec:authorize="!isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-to-bracket"></i></a>
+</div>
+
 <div class="container right-panel-active" id="container">
 
   <!-- 회원가입 -->

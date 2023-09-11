@@ -4,8 +4,20 @@
 <head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
   <title>회원가입</title>
   <link rel="stylesheet" th:href="@{/css/login.css}">
+  <link rel="stylesheet" th:href="@{/css/nav.css}">
 </head>
 <body>
+<div id="logo"><a href="/view/posts">SWITHME</a></div>
+<div id="nav-icon">
+  <a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-user"></i></a>
+
+  <a th:href="@{/users/logout}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-from-bracket"></i></a>
+
+  <a th:href="@{/users/login}" sec:authorize="!isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-to-bracket"></i></a>
+</div>
 
 <div class="container" id="container">
   <!-- 회원가입 -->
@@ -41,7 +53,8 @@
 
       <label for="nickName">닉네임</label>
       <input type="text" id="nickName" name="nickname" th:field = "*{nickname}" ><br>
-      <p th th:errors="*{nickname}"></p>
+      <p th:errors="*{nickname}"></p>
+      <p th:if="${message}" th:text="${message}" style="color: red"></p>
       <button type="submit">확인</button>
       <div>
         <a th:href="@{/users/updatePassword}">비밀번호 변경</a>
