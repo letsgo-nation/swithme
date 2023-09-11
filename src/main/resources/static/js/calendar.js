@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }),
         eventClick: function(info) {
             openStudyDetails(info.event.id);
+            console.log(info)
         }
     });
     calendar.render();
