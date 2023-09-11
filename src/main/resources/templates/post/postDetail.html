@@ -14,14 +14,12 @@
         <div th:replace="~{fragment/nav :: useNav-vertical}">insert</div>
         <div class="projects-section">
             <div class="project-box" style="background-color: #e9e7fd;">
-                <div id="currentNickname" th:text="${currentNickname}"></div>
-                <div>님 환영합니다!</div>
                 <!--                                                글쓰기 폼-->
                 <div class="write" id="write">
                     <form>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="inputGroup-title">제목</span>
-                            <input type="text" id="title" class="form-control" aria-label="Sizing example input" th:value="${post.title}" aria-describedby="inputGroup-sizing" readonly>
+                            <input type="text" id   ="title" class="form-control" aria-label="Sizing example input" th:value="${post.title}" aria-describedby="inputGroup-sizing" readonly>
                         </div>
                         <div class="input-group mb-3 g-2">
                             <span class="input-group-text" id="inputGroup-username">작성자</span>
@@ -87,6 +85,10 @@
             <div class="project-box" style="background-color: #e9e7fd;">
                 <!-- 댓글 폼 -->
                 <h4>댓글</h4>
+                <div>
+                    <span id="currentNickname" th:text="${currentNickname}"></span>
+                    님 환영합니다!
+                </div>
                 <!-- 댓글 작성 양식 -->
                 <div>
                     <label for="commentText">댓글 작성:</label>
@@ -97,24 +99,8 @@
                 <!-- 댓글 목록 -->
                 <div id="commentList">
                     <!-- 댓글이 여기에 동적으로 추가됩니다 -->
-<!--                    <div id="comment-1">-->
-<!--                        <p>첫 번째 댓글</p>-->
-<!--                        <button class="replyBtn" data-comment="1">대댓글 작성</button>-->
-<!--                        &lt;!&ndash; 대댓글 목록 &ndash;&gt;-->
-<!--                        <div id="replyList-1">-->
-<!--                            &lt;!&ndash; 대댓글이 여기에 동적으로 추가됩니다 &ndash;&gt;-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    <!--                    <div id="comment-2">-->
-                    <!--                        <p>두 번째 댓글</p>-->
-                    <!--                        <button class="replyBtn" data-comment="2">대댓글 작성</button>-->
-                    <!--                        &lt;!&ndash; 대댓글 목록 &ndash;&gt;-->
-                    <!--                        <div id="replyList-2">-->
-                    <!--                            &lt;!&ndash; 대댓글이 여기에 동적으로 추가됩니다 &ndash;&gt;-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
                 </div>
-                <!--                                                댓글 폼 끝-->
+                <!-- 댓글 폼 끝-->
             </div>
         </div>
     </div>

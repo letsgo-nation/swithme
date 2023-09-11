@@ -10,7 +10,10 @@ import com.example.swithme.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,21 +21,21 @@ import java.util.UUID;
 @SpringBootTest
 public class SaveTest {
 
+//    실제 데이터베이스에 데이터를 저장하는 JPA 리포지토리입니다.
     @Autowired
     UserRepository userRepository;
     @Autowired
     PostRepository postRepository;
     @Autowired
     CategoryRepository categoryRepository;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
     ChatRoomRepository chatRoomRepository;
-
     @Autowired
     ChatGroupRepository chatGroupRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     void saveTest() {
@@ -94,5 +97,13 @@ public class SaveTest {
         chatGroupRepository.save(chatGroup3);
         chatGroupRepository.save(chatGroup4);
         chatGroupRepository.save(chatGroup5);
+    }
+    @Test
+    @Transactional
+    public void insertDataIntoCategoryTable() {
+        jdbcTemplate.execute("insert into category values (1, '프로그래밍')");
+        jdbcTemplate.execute("insert into category values (2, '수능')");
+        jdbcTemplate.execute("insert into category values (3, '공무원시험')");
+        jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
     }
 }
