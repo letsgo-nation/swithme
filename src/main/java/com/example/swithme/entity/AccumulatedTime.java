@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -25,10 +27,16 @@ public class AccumulatedTime {
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;
+
+    // 이 필드를 통해 마지막으로 업데이트 된 날짜를 추적
+    // 매일 첫번째로 시간을 기록 할 때 오늘의 누적시간을 재설정 할 수 있음
+    @Column(name = "last_updated_date")
+    private LocalDate lastUpdatedDate;
+
     public AccumulatedTime() {
         this.accumulatedMinutes = 0L;
     }
 
-
-
+    @Column(name = "today_accumulated_time")
+    private Long todayAccumulatedMinutes = 0L;
 }

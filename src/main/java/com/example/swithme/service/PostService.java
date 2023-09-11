@@ -30,17 +30,16 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final S3UploadService s3UploadService;
-//    private final CommentRepository commentRepository;
 
-    // 개인 스터디 게시물 생성
+    // 게시물 생성
     public ApiResponseDto createPost(PostRequestDto requestDto, User user, MultipartFile image) {
 
         String postImg = null; //url받을 변수를 초기화
 
-        if (!image.isEmpty()) {//매개변수로 받은 값이 있으면
+        if (image != null && !image.isEmpty()) { // 이미지가 전달되었을 때만 처리
             try {
-                postImg = s3UploadService.uploadFiles(image, "images");//post name : images에 mulipartfile을 올린다
-                System.out.println(postImg);// 확인하기
+                postImg = s3UploadService.uploadFiles(image, "images"); // "images"라는 경로에 이미지 업로드
+                System.out.println(postImg); // 업로드된 이미지 확인
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,21 +51,28 @@ public class PostService {
         // DB 저장
         Post savePost = postRepository.save(post);
         // Entity -> ResponseDto
-        return new ApiResponseDto(HttpStatus.OK.value(), "개인 스터디 게시물 생성 완료", savePost);
+        return new ApiResponseDto(HttpStatus.OK.value(), "게시물이 생성되었습니다.", savePost);
     }
 
-    // 전체 개인 스터디 게시글 조회
+    // 전체 게시글 조회
     public List<PostResponseDto> getPosts() {
         return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 
-    // 개인 스터디 단건 조회
+    //게시물 단건 조회
     public PostResponseDto lookupPost(Long id) {
         Post post = findPost(id);
         return new PostResponseDto(post);
     }
 
-    // 개인 스터디 게시물 수정
+    // 게시글 nickname 가져오기
+    public String lookupPostUserNickname(Long id) {
+        Post post = findPost(id);
+        String postUserNickname = post.getUser().getNickname();
+        return postUserNickname;
+    }
+
+    // 게시물 수정
     @Transactional
     public ResponseEntity<ApiResponseDto> updatePost(Long id, PostRequestDto postRequestDto, User user, MultipartFile image) {
         Optional<Post> post = postRepository.findById(id);
@@ -85,22 +91,26 @@ public class PostService {
         String postImg = post.get().getPostImg(); //일단 기존 사진 넣어주고
         log.info("기존 사진 : " + postImg);
 
-        if (!image.isEmpty()) { //매개변수로 받은 게 있다면
+        if (image != null && !image.isEmpty()) { //매개변수로 받은 게 있다면 // 이미지가 전달되었을 때만 처리
             try {
                 s3UploadService.fileDelete(postImg); // 기존사진을 S3에서 삭제하고
-                postImg = s3UploadService.uploadFiles(image, "images"); //새로 받은걸 업로드해주고
+                postImg = s3UploadService.uploadFiles(image, "images"); //새로 받은걸 업로드해주고 // "images"라는 경로에 이미지 업로드
                 log.info("새로운 사진 : " + postImg);
-                System.out.println(postImg);
+                System.out.println(postImg);  // 업로드된 이미지 확인
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else {
+                postImg = "";
+                log.info("postImg = " + postImg);
+
         }
         // url도 바꿔서 db에 저장
         post.get().update(postRequestDto, category.get(), postImg);
-        return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", new PostResponseDto(post.get())));
+        return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글이 업데이트되었습니다.", new PostResponseDto(post.get())));
     }
 
-    // 개인 스터디 게시물 삭제
+    // 게시물 삭제
     @Transactional
     public ResponseEntity<ApiResponseDto> deletePost(Long id, User user) {
         Optional<Post> post = postRepository.findById(id);
@@ -111,7 +121,7 @@ public class PostService {
         }
 
         postRepository.delete(post.get());
-        return ResponseEntity.status(200).body(new ApiResponseDto("게시글 삭제 성공", HttpStatus.OK.value()));
+        return ResponseEntity.status(200).body(new ApiResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
     }
 
     // 카테고리별 게시물 조회

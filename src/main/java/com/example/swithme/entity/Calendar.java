@@ -2,6 +2,7 @@ package com.example.swithme.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Calendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +20,16 @@ public class Calendar {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+
+    public Calendar(String name, LocalDateTime startTime, LocalDateTime endTime, User user) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+    }
 }
 
 

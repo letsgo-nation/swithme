@@ -16,18 +16,12 @@ public class ChatRoomResponseDto {
 
     private String content;
 
-    private String category;
-
-    private String img; // 이미지 고민
-
     private UUID chatUrl; // 들어가는 방 주소가 변경됨
 
     public ChatRoomResponseDto(ChatRoom chatRoom) {
         this.id = chatRoom.getId();
         this.title = chatRoom.getTitle();
         this.content = chatRoom.getContent();
-        this.category = chatRoom.getCategory();
-        this.img = chatRoom.getImg();
         this.chatUrl = chatRoom.getChatUrl();
     }
 }

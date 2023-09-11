@@ -22,11 +22,10 @@ repositories {
 }
 
 dependencies {
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools' // 정적 html
 
-	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1'
-//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // S3
-//	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor" // Configuring the Annotation Processor
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1' // S3
 
 	implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
 

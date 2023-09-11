@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -24,16 +26,14 @@ public class ChatRoom {
 
     private String content;
 
-    private String category;
-
     private UUID chatUrl; // 채팅방 입장 주소
 
-    private String img; // 이미지 고민
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<ChatGroup> chatGroups = new ArrayList<>();
 
-    public ChatRoom(String title, String content, String category, UUID chatUrl) {
+    public ChatRoom(String title, String content, UUID chatUrl) {
         this.title = title;
         this.content = content;
-        this.category = category;
         this.chatUrl = chatUrl;
     }
 
