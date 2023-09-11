@@ -68,6 +68,7 @@ public class WebSecurityConfig {
                         //로그인 필요
                         // .requestMatchers("/view/post/write").authenticated()
                         .requestMatchers("view/post/**").authenticated()
+                        .requestMatchers("view/post/detail/**").authenticated()
                         .requestMatchers("/chat/**").authenticated() // 개인채팅 로그인 필요
                         .requestMatchers("/studies/calendar").authenticated()
 

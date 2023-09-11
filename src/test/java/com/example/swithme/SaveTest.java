@@ -10,61 +10,46 @@ import com.example.swithme.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
 public class SaveTest {
-//
-//    @Autowired
-//    UserRepository userRepository;
-//    @Autowired
-//    PostRepository postRepository;
-//    @Autowired
-//    CategoryRepository categoryRepository;
-//
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    ChatRoomRepository chatRoomRepository;
-//
-//    @Autowired
-//    ChatGroupRepository chatGroupRepository;
-//
-//    @Test
-//    void saveTest() {
-//        //관리자 로그인
-//        User admin = new User("admin@naver.com", passwordEncoder.encode("1234"), "관리자_채팅개설",1);
-//        userRepository.save(admin);
-//
-//        //일반 로그인
-//        User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
-//        userRepository.save(user);
-//
-//
-////        //카테고리 생성
-////        Category category1 = new Category();
-////        category1.setName("프론트");
-////        categoryRepository.save(category1);
-////
-////        Category category2 = new Category();
-////        category2.setName("백엔드");
-////        categoryRepository.save(category2);
-//
-////        //글 작성
-////        for (int i = 0; i < 10; i++) {
-////            PostRequestDto postRequestDto = new PostRequestDto();
-////            postRequestDto.setTitle("title" + i);
-////            postRequestDto.setContent("content" + i);
-////            Post post = new Post(postRequestDto,user, category1);
-////
-////            postRepository.save(post);
-////        }
-//    }
-//
+
+
+//    실제 데이터베이스에 데이터를 저장하는 JPA 리포지토리입니다.
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    ChatRoomRepository chatRoomRepository;
+    @Autowired
+    ChatGroupRepository chatGroupRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Test
+    void saveTest() {
+        //관리자 로그인
+        User admin = new User("admin@naver.com", passwordEncoder.encode("1234"), "관리자_채팅개설",1);
+        userRepository.save(admin);
+
+        //일반 로그인
+        User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
+        userRepository.save(user);
+       }
+    }
+
 //    // 채팅룸 생성 (DB에서 1번 사용자를 ADMIN으로 바꾸고 실행해야 함)
 //    @Test
 //    void saveTest2() {
@@ -95,4 +80,14 @@ public class SaveTest {
 //        chatGroupRepository.save(chatGroup4);
 //        chatGroupRepository.save(chatGroup5);
 //    }
+    }
+
+    @Test
+    @Transactional
+    public void insertDataIntoCategoryTable() {
+        jdbcTemplate.execute("insert into category values (1, '프로그래밍')");
+        jdbcTemplate.execute("insert into category values (2, '수능')");
+        jdbcTemplate.execute("insert into category values (3, '공무원시험')");
+        jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
+    }
 }
