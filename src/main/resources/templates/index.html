@@ -8,8 +8,42 @@
 <!--<div th:replace="~{fragment/nav :: useNav2}">insert</div>-->
 <div class="options">
 
+    <!--  게시글  -->
+    <div class="option active" style="--optionBackground:url(https://images.pexels.com/photos/12602990/pexels-photo-12602990.jpeg?auto=compress&cs=tinysrgb&w=800);">
+        <a href="/view/posts">
+            <div class="clicktoposts">
+                <div class="shadow"></div>
+                <div class="label">
+                    <div class="icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="info">
+                        <div class="main">게시판</div>
+                        <div class="sub">주제별 게시물을 확인해보세요!</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!--  그룹스터디  -->
+    <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=800);">
+        <a href="/api/view/groups">
+            <div class="shadow"></div>
+            <div class="label">
+                <div class="icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="info">
+                    <div class="main">그룹스터디</div>
+                    <div class="sub">친구들과 함께 공부해보세요!</div>
+                </div>
+            </div>
+        </a>
+    </div>
+
     <!--  캘린더  -->
-    <div class="option active" style="--optionBackground:url(https://images.pexels.com/photos/9052846/pexels-photo-9052846.jpeg?cs=srgb&dl=pexels-shvets-production-9052846.jpg&fm=jpg);">
+    <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/9052846/pexels-photo-9052846.jpeg?cs=srgb&dl=pexels-shvets-production-9052846.jpg&fm=jpg);">
         <a href="/studies/calendar">
         <div class="shadow"></div>
         <div class="label">
@@ -40,23 +74,9 @@
         </a>
     </div>
 
-    <!--  그룹스터디  -->
-    <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <a href="/api/view/groups">
-        <div class="shadow"></div>
-        <div class="label">
-            <div class="icon">
-                <i class="fas fa-tree"></i>
-            </div>
-            <div class="info">
-                <div class="main">그룹스터디</div>
-                <div class="sub">친구들과 함께 공부해보세요!</div>
-            </div>
-        </div>
-        </a>
-    </div>
+    <!--  채팅  -->
     <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <a href="/sample">
+        <a href="/chat">
         <div class="shadow"></div>
         <div class="label">
             <div class="icon">
@@ -69,22 +89,8 @@
         </div>
         </a>
     </div>
-    <div class="option" style="--optionBackground:url(https://images.pexels.com/photos/12602990/pexels-photo-12602990.jpeg?auto=compress&cs=tinysrgb&w=800);">
-        <a href="/view/posts">
-        <div class="clicktoposts">
-        <div class="shadow"></div>
-        <div class="label">
-            <div class="icon">
-                <i class="fas fa-sun"></i>
-            </div>
-            <div class="info">
-                <div class="main">게시판</div>
-                <div class="sub">주제별 게시물을 확인해보세요!</div>
-            </div>
-        </div>
-        </div>
-        </a>
-    </div>
+
+
 </div>
 
 <!--<a href="http://victorofvalencia-blog.tumblr.com" target="_blank" class="credit">Photos from Victor of Valencia on tumblr</a>-->
