@@ -15,7 +15,11 @@ public interface ChatGroupRepository extends JpaRepository<ChatGroup, Long> {
     List<ChatGroup> findAllByUser(User user);
 
     List<ChatGroup> findAllByChatRoomAndChatRole(ChatRoom chatRoom, ChatRole chatRole);
+    List<ChatGroup> findAllByChatRoom(ChatRoom chatRoom);
+
+
     List<ChatGroup> findAllByUserAndInvite(User user, Invite invite);
 
     Optional<ChatGroup> findByChatRoom_IdAndAndUser(Long id, User user);
+
 }

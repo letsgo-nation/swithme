@@ -178,8 +178,8 @@ public class ChatController {
     @ResponseBody
     public String deleteMember(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        chatRoomService.delete(chatRoomRequestDto.getId(), user);
-        return "ok";
+        String message = chatRoomService.delete(chatRoomRequestDto.getId(), user);
+        return message;
     }
 
     // 채팅룸 삭제
@@ -187,7 +187,13 @@ public class ChatController {
     @ResponseBody
     public String deleteChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        chatRoomService.deleteChatRoom(chatRoomRequestDto.getId(), user);
-        return "ok";
+
+        try {
+            chatRoomService.deleteChatRoom(chatRoomRequestDto.getId(), user);
+        } catch (Exception e) {
+            return "채팅룸 삭제 권한이 없습니다.";
+        }
+
+        return "삭제 되었습니다.";
     }
 }

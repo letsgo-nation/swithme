@@ -283,8 +283,8 @@
                             </div>
                         </div>
                         <div class="project-box-content-header">
-                            <p class="box-content-header">자격증시험</p>
-                            <p class="box-content-subheader">정보처리기사</p>
+                            <p class="box-content-header"  th:text="${group.getGroupName()}">자격증시험</p>
+                            <p class="box-content-subheader" th:text="${group.getDescription()}">정보처리기사</p>
                         </div>
                         <div class="box-progress-wrapper">
                             <p class="box-progress-header">공부 목표</p>
