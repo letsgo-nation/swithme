@@ -1,7 +1,7 @@
 package com.example.swithme.entity;
 
 
-import com.example.swithme.dto.BoardRequestDto;
+import com.example.swithme.dto.group.BoardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

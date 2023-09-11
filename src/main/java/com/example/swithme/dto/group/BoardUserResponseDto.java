@@ -1,5 +1,6 @@
-package com.example.swithme.dto;
+package com.example.swithme.dto.group;
 
+import com.example.swithme.dto.AccumulatedTimeDto;
 import com.example.swithme.dto.user.UserUpdateResponseDto;
 import com.example.swithme.entity.Group;
 import com.example.swithme.entity.GroupUser;
@@ -7,6 +8,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,7 +26,7 @@ public class BoardUserResponseDto {
     this.groupName = group.getGroupName();
     this.description = group.getDescription();
     this.users = group.getGroupUsers().stream()
-            .map(user -> new UserUpdateResponseDto(user.getUser()))
+            .map(user -> new UserUpdateResponseDto(user.getUser(),user.getUser().getAccumulatedTime()))
             .collect(Collectors.toSet());
 
 //    if (group.getGroupUsers().size() > 0) {
@@ -32,6 +34,10 @@ public class BoardUserResponseDto {
 //        this.getUserList().add(new UserResponseDto(groupUser.getUser()));
 //      }
 //    }
+  }
+
+  public Set<UserUpdateResponseDto> getUsers() {
+    return users;
   }
 
 }
