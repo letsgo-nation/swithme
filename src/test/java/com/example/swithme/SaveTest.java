@@ -1,22 +1,14 @@
 package com.example.swithme;
 
-import com.example.swithme.dto.PostRequestDto;
-import com.example.swithme.entity.*;
-import com.example.swithme.entity.chat.ChatGroup;
-import com.example.swithme.entity.chat.ChatRoom;
-import com.example.swithme.enumType.ChatRole;
-import com.example.swithme.enumType.UserRole;
+import com.example.swithme.entity.User;
 import com.example.swithme.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 public class SaveTest {
@@ -48,7 +40,17 @@ public class SaveTest {
         User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
         userRepository.save(user);
        }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void insertDataIntoCategoryTable() {
+        jdbcTemplate.execute("insert into category values (1, '프로그래밍')");
+        jdbcTemplate.execute("insert into category values (2, '수능')");
+        jdbcTemplate.execute("insert into category values (3, '공무원시험')");
+        jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
     }
+
 
 //    // 채팅룸 생성 (DB에서 1번 사용자를 ADMIN으로 바꾸고 실행해야 함)
 //    @Test
@@ -79,15 +81,8 @@ public class SaveTest {
 //        chatGroupRepository.save(chatGroup3);
 //        chatGroupRepository.save(chatGroup4);
 //        chatGroupRepository.save(chatGroup5);
-//    }
-    }
 
-    @Test
-    @Transactional
-    public void insertDataIntoCategoryTable() {
-        jdbcTemplate.execute("insert into category values (1, '프로그래밍')");
-        jdbcTemplate.execute("insert into category values (2, '수능')");
-        jdbcTemplate.execute("insert into category values (3, '공무원시험')");
-        jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
-    }
+
+
+
 }

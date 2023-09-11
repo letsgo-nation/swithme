@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }),
         eventClick: function(info) {
             openStudyDetails(info.event.id);
-            console.log(info)
         }
     });
     calendar.render();
@@ -28,7 +27,10 @@ function openStudyDetails(id) {
 }
 
 function openEditForm(id) {
-    window.location.href = '/studies/edit/' + id;
+    // window.location.href = '/studies/edit/' + id;
+
+    var url = '/studies/edit/' + id;
+    var popup = window.open(url, 'Edit Study', 'width=600,height=400');
 }
 
 function deleteStudy(id) {

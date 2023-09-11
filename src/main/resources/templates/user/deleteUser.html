@@ -2,10 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{layout/head :: common_header(~{::title},~{::link})}">
-  <title>회원가입</title>
+  <title>회원 탈퇴</title>
   <link rel="stylesheet" th:href="@{/css/login.css}">
+  <link rel="stylesheet" th:href="@{/css/nav.css}">
 </head>
 <body>
+<div id="logo"><a href="/view/posts">SWITHME</a></div>
+<div id="nav-icon">
+  <a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-user"></i></a>
+
+  <a th:href="@{/users/logout}" sec:authorize="isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-from-bracket"></i></a>
+
+  <a th:href="@{/users/login}" sec:authorize="!isAuthenticated()" class="right_button"><i
+          class="fa-solid fa-arrow-right-to-bracket"></i></a>
+</div>
 
 <div class="container" id="container">
   <!-- 회원가입 -->

@@ -97,8 +97,9 @@ function changeChat() {
 // 팝업 창을 열기 위한 JavaScript 함수
 function openPopup(link) {
     // 클래스로 엘리먼트를 선택하고 href 속성을 사용하여 팝업 창을 엽니다.
-    window.open(link.getAttribute('href'), '팝업창이름', 'width=400,height=400,top=300,left=1350');
+    window.open(link.getAttribute('href'), '팝업창이름', 'width=500,height=700,top=300,left=1300');
 }
+
 
 // 클래스가 "popup-link"인 모든 "a" 태그를 찾아 이벤트 리스너를 추가합니다.
 var popupLinks = document.querySelectorAll('.popup-link');
