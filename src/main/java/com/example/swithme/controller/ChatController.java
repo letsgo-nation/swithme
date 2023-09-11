@@ -129,7 +129,21 @@ public class ChatController {
     @PostMapping("/room/invite")
     public String inviteChatRoom(@ModelAttribute ChatRoomInviteRequestDTo chatRoomInviteRequestDTo, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();
-        chatRoomService.invite(chatRoomInviteRequestDTo, user);
+
+        try {
+            chatRoomService.invite(chatRoomInviteRequestDTo, user);
+        } catch (Exception e) {
+            e.getMessage();
+
+            ChatRoomResponseDto chatRoom = chatRoomService.find(chatRoomInviteRequestDTo.getId());
+            model.addAttribute("chatRoom", chatRoom);
+
+            //채팅방 초대 또는 참가자 명단
+            List<ChatUserResponseDto> inviteUser = chatRoomService.findUser(chatRoomInviteRequestDTo.getId());
+            model.addAttribute("inviteUsers", inviteUser);
+
+            return "redirect:/chat/room/edit?id=" + chatRoom.getId();
+        }
 
         ChatRoomResponseDto chatRoom = chatRoomService.find(chatRoomInviteRequestDTo.getId());
         model.addAttribute("chatRoom", chatRoom);
@@ -147,7 +161,7 @@ public class ChatController {
     public String inviteAccept(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         chatRoomService.inviteAccept(id, user);
-        return "chat/personalinvite";
+        return "redirect:/chat";
     }
 
 
@@ -156,7 +170,7 @@ public class ChatController {
     public String inviteDecline(@RequestParam Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         chatRoomService.inviteDecline(id, user);
-        return "chat/personalinvite";
+        return "redirect:/chat";
     }
 
     // 채팅룸 멤버 삭제

@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @Slf4j // 이것은 Lombok 라이브러리의 일부로, @Slf4j 애노테이션은 클래스에 log 자동으로 추가합니다.
 @RequiredArgsConstructor
@@ -42,6 +44,20 @@ public class RecordServiceImpl implements RecordService {
             accumulatedTime.setAccumulatedMinutes(newAccumulatedMinutes);
 
             accumulatedTimeRepository.save(accumulatedTime);
+
+
+            // 오늘 누적시간 업데이트
+            LocalDate today = LocalDate.now();
+            if(accumulatedTime.getLastUpdatedDate() == null || !today.isEqual(accumulatedTime.getLastUpdatedDate())) {
+                accumulatedTime.setTodayAccumulatedMinutes(0L);  // 날짜가 변경되면 오늘 누적시간 초기화
+                accumulatedTime.setLastUpdatedDate(today);
+            }
+
+            long newTodayAccumulatedMinutes = accumulatedTime.getTodayAccumulatedMinutes() +
+                    parseRecordedTime(recordedTime);
+            accumulatedTime.setTodayAccumulatedMinutes(newTodayAccumulatedMinutes);
+
+            accumulatedTimeRepository.save(accumulatedTime);
         } catch (Exception e) {
             log.error("Error recording time", e);
             throw new RecordTimeException("시간을 기록하는 중에 오류가 발생했습니다.");
@@ -57,5 +73,28 @@ public class RecordServiceImpl implements RecordService {
         int seconds = Integer.parseInt(parts[1]);
         return minutes * 60 + seconds;
     }
+
+    public Long getTodayAccumulatedTime(UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
+                .orElseThrow(() -> new RuntimeException("사용자의 누적 시간을 찾을 수 없습니다."));
+
+        return accumulatedTime.getTodayAccumulatedMinutes();
+    }
+
+    public Long getAccumulatedTime(UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
+                .orElseThrow(() -> new RuntimeException("사용자의 누적 시간을 찾을 수 없습니다."));
+
+        return accumulatedTime.getAccumulatedMinutes();
+    }
+
 }
 

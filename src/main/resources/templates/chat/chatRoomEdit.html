@@ -3,7 +3,6 @@
 
 <head th:replace="~{layout/head :: common_header(~{::title},~{})}">
     <title>채팅 </title>
-    <!--    <link rel="stylesheet" th:href="@{/css/chatPersonal.css}">-->
 </head>
 <body style="margin: 40px">
 
@@ -40,7 +39,7 @@
 <!-- 멤버 조회 -->
 <table>
     <col style="width: 160px;">
-    <col style="width: 80px;">
+    <col style="width: 100px;">
     <col style="width: 80px;">
     <tr>
         <th>아이디</th>
@@ -82,7 +81,7 @@
             }
         });
     }
-
+    // 채팅룸 삭제
     function deleteChatRoom(id) {
         let data = {'id': id};
 
@@ -92,7 +91,8 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                window.location.reload();
+                alert("삭제되었습니다. 새로고침해주세요")
+                window.close()
             },
             error: function (xhr, status, error) {
                 // 에러 시 처리할 코드

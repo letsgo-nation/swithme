@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,7 +68,9 @@ public class WebSecurityConfig {
                         //로그인 필요
                         // .requestMatchers("/view/post/write").authenticated()
                         .requestMatchers("view/post/**").authenticated()
+                        .requestMatchers("view/post/detail/**").authenticated()
                         .requestMatchers("/chat/**").authenticated() // 개인채팅 로그인 필요
+                        .requestMatchers("/studies/calendar").authenticated()
 
                         //그 외 모든 접근 허용
                         .anyRequest().permitAll()

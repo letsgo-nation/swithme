@@ -147,7 +147,11 @@ public class GoogleService {
                 // email: kakao email
                 String email = googleUserInfoDto.getEmail();
 
-                googleUser = new User(email, encodedPassword, googleUserInfoDto.getNickname(), googleId);
+                //@앞에 글자만 가져와서 닉네임
+                int location = email.indexOf("@");
+                String nickname = email.substring(0, location);
+
+                googleUser = new User(email, encodedPassword, nickname, googleId);
             }
 
             userRepository.save(googleUser);

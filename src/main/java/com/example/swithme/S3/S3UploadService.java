@@ -83,13 +83,19 @@ public class S3UploadService {
     // S3 delete file
     public void fileDelete(String fileName) {
         log.info("file name : " + fileName); //url
-        log.info("File : " + fileName.substring(53));
 
-        try {
-            amazonS3Client.deleteObject(this.bucket, fileName.substring(53));
+        if (fileName != null && !fileName.isEmpty()) {
+            log.info("File : " + fileName.substring(53));
 
-        } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
+            try {
+                amazonS3Client.deleteObject(this.bucket, fileName.substring(53));
+
+            } catch (AmazonServiceException e) {
+                System.err.println(e.getErrorMessage());
+            }
+        } else {
+            log.error("fileName is null, cannot perform delete operation");
+            // 파일 이름이 null인 경우에 대한 예외 처리 또는 오류 처리를 수행할 수 있음
         }
     }
 }
