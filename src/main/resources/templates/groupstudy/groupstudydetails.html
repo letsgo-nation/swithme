@@ -82,8 +82,14 @@
 
     $(document).ready(function () {
         let username = [[${info_username}]]
+        let groupName = [[${info_groupName}]]
+        let description = [[${info_description}]]
         let accumulatedTime = [[${accumulatedTime}]]
-        showPage(userId, username, groupId, accumulatedTime);
+        showPage(userId, username, groupId, accumulatedTime, groupName, description);
+    });
+
+    $(document).ready(function () {
+        showPage();
     });
 
     function showPage() {
@@ -191,7 +197,7 @@
                 alert("초대 성공")
                 window.location.href = `/api/view/group-page/${groupId}`;
             }, error: function (req, status, error) {
-                alert("보드 생성자만 초대 가능합니다.")
+                alert("이미 초대된 유저이거나 보드 생성자만 초대 가능합니다.")
             }
         });
     }
@@ -240,28 +246,7 @@
                         </div>
                     </div>
                 </div>
-            <div>
-                <div class="projects-section-line">
-                    <div class="view-actions">
-                        <button class="view-btn list-view" title="List View">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
-                                <line x1="8" y1="6" x2="21" y2="6" />
-                                <line x1="8" y1="12" x2="21" y2="12" />
-                                <line x1="8" y1="18" x2="21" y2="18" />
-                                <line x1="3" y1="6" x2="3.01" y2="6" />
-                                <line x1="3" y1="12" x2="3.01" y2="12" />
-                                <line x1="3" y1="18" x2="3.01" y2="18" /></svg>
-                        </button>
-                        <button class="view-btn grid-view active" title="Grid View">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
-                                <rect x="3" y="3" width="7" height="7" />
-                                <rect x="14" y="3" width="7" height="7" />
-                                <rect x="14" y="14" width="7" height="7" />
-                                <rect x="3" y="14" width="7" height="7" /></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
+
             </div>
 
             <div id="user">
@@ -269,29 +254,20 @@
             </div>
 
             <div class="project-boxes jsGridView">
-                <div class="project-box-wrapper">
+                <div class="project-box-wrapper" id="group-cards">
                     <div class="project-box" style="background-color: #fee4cb;">
                         <div class="project-box-header">
-                            <span>2023.10.7</span>
+                            <span></span>
                             <div class="more-wrapper">
-                                <button class="project-btn-more" onclick="menu()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                                        <circle cx="12" cy="12" r="1" />
-                                        <circle cx="12" cy="5" r="1" />
-                                        <circle cx="12" cy="19" r="1" /></svg>
-                                </button>
                             </div>
                         </div>
                         <div class="project-box-content-header">
-                            <p class="box-content-header"  th:text="${group.getGroupName()}">자격증시험</p>
+                            <p class="box-content-header" th:text="${group.getGroupName()}">자격증시험</p>
                             <p class="box-content-subheader" th:text="${group.getDescription()}">정보처리기사</p>
                         </div>
                         <div class="box-progress-wrapper">
-                            <p class="box-progress-header">공부 목표</p>
-                            <div class="box-progress-bar">
-                                <span class="box-progress" style="width: 60%; background-color: #ff942e"></span>
-                            </div>
-                            <p class="box-progress-percentage">60%</p>
+                            <p class="box-progress-header"></p>
+                            <p class="box-progress-percentage"></p>
                         </div>
                     </div>
                 </div>
