@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                         .requestMatchers("view/post/**").authenticated()
                         .requestMatchers("view/post/detail/**").authenticated()
                         .requestMatchers("/chat/**").authenticated() // 개인채팅 로그인 필요
+                        .requestMatchers("/studies/calendar").authenticated()
 
                         //그 외 모든 접근 허용
                         .anyRequest().permitAll()
