@@ -1,4 +1,4 @@
-package com.example.swithme.dto;
+package com.example.swithme.dto.group;
 
 import com.example.swithme.entity.Group;
 import com.example.swithme.entity.GroupUser;

@@ -1,8 +1,8 @@
 package com.example.swithme.service;
 
-import com.example.swithme.dto.BoardRequestDto;
-import com.example.swithme.dto.BoardResponseDto;
-import com.example.swithme.dto.BoardUserResponseDto;
+import com.example.swithme.dto.group.BoardRequestDto;
+import com.example.swithme.dto.group.BoardResponseDto;
+import com.example.swithme.dto.group.BoardUserResponseDto;
 import com.example.swithme.entity.Group;
 import com.example.swithme.entity.GroupUser;
 import com.example.swithme.entity.User;

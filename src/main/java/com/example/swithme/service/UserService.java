@@ -148,7 +148,7 @@ public class UserService {
             () -> new IllegalArgumentException("일치하는 회원이 없습니다."));
 
     user.update(userUpdateRequestDto);
-    return new UserUpdateResponseDto(user);
+    return new UserUpdateResponseDto(user, user.getAccumulatedTime());
   }
 
   //비밀번호 변경
@@ -185,7 +185,7 @@ public class UserService {
   // user 찾기
   public UserUpdateResponseDto lookupUser(Long id) {
     User user = findUser(id);
-    return new UserUpdateResponseDto(user);
+    return new UserUpdateResponseDto(user, user.getAccumulatedTime());
   }
 
   private User findUser(Long id) {

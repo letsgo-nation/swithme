@@ -1,9 +1,14 @@
 package com.example.swithme.controller;
 
 import com.example.swithme.dto.*;
+import com.example.swithme.dto.group.BoardRequestDto;
+import com.example.swithme.dto.group.BoardResponseDto;
+import com.example.swithme.dto.group.BoardUserResponseDto;
+import com.example.swithme.entity.User;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.GroupService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -76,6 +82,7 @@ public class GroupController {
 
     // 그룹보더 초대
     @PostMapping("/group/{groupId}/invite/{userId}")
+    @ResponseBody
     public ResponseEntity<ApiResponseDto> inviteBoard(@PathVariable Long groupId,
                                                       @PathVariable Long userId,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
