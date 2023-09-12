@@ -10,7 +10,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class SaveTest {
-//    실제 데이터베이스에 데이터를 저장하는 JPA 리포지토리입니다.
+
+    //    실제 데이터베이스에 데이터를 저장하는 JPA 리포지토리입니다.
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -25,6 +26,7 @@ public class SaveTest {
     ChatGroupRepository chatGroupRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+  
     @Test
     void saveTest() {
         //관리자 로그인
@@ -33,7 +35,9 @@ public class SaveTest {
         //일반 로그인
         User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
         userRepository.save(user);
-       }
+      
+    }
+
     @Test
     @Transactional
     @Rollback(value = false)
@@ -43,4 +47,5 @@ public class SaveTest {
         jdbcTemplate.execute("insert into category values (3, '공무원시험')");
         jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
     }
+  
 }

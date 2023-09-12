@@ -30,8 +30,7 @@
                         <div class="input-group-lg">
                             <span class="input-group-text">게시글 내용</span>
                             <span class="form-control" id="content" th:text="${post.content}"aria-label="With textarea" style="padding:30px"></span>
-                            <img class="form-control" id="image" th:src="${post.image}" th:alt="${post.title}" aria-label="With textarea" style="padding:30px" />
-
+                            <img class="form-control" id="image" th:if="${not #strings.isEmpty(post.image)}" th:src="${post.image}" th:alt="${post.title}" aria-label="With textarea" style="padding:30px" />
                         </div>
                         <!--수정, 삭제 버튼-->
                         <div class="d-flex justify-content-center mt-3">
@@ -105,7 +104,7 @@
         </div>
     </div>
 </div>
-<script src="/js/post/postDetail.js"></script>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1199.0.min.js"></script>
+<script src="/js/post/postDetail.js"></script>
 </body>
 </html>

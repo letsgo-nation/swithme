@@ -5,7 +5,6 @@ import com.example.swithme.dto.PostRequestDto;
 import com.example.swithme.dto.PostResponseDto;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.PostService;
-import com.example.swithme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final UserService userService;
 
     // 게시글 업로드
     @PostMapping("/post")

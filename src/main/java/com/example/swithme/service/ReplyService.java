@@ -79,5 +79,4 @@ public class ReplyService {
         replyRepository.delete(reply);
         return new ApiResponseDto ("댓글 삭제가 완료되었습니다.", HttpStatus.OK.value());
     }
-
 }
