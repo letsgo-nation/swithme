@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,13 +44,24 @@ public class CalendarController {
         return "redirect:/studies/calendar";
     }
 
-    //캘린더 출력
     @GetMapping("/studies/calendar")
-    public String showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String openCalendar() {
+        return "study/calendar";
+    }
+
+
+    //캘린더 출력
+    @ResponseBody
+    @GetMapping("/studies/calendar1")
+    public List<CalendarResponseDto> showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         List<Calendar> studies = studyRepository.findAllByUser(user);
-        model.addAttribute("studies", studies);
-        return "study/calendar";
+
+        List<CalendarResponseDto> studiesEntity = studies.stream()
+                .map(CalendarResponseDto::new)
+                .collect(Collectors.toList());
+
+        return studiesEntity;
     }
 
     @GetMapping("/studies/details/{id}")

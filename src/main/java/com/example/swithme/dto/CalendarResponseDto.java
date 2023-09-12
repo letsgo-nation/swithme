@@ -1,19 +1,26 @@
 package com.example.swithme.dto;
 
 import com.example.swithme.entity.Calendar;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class CalendarResponseDto {
     private Long id;
-    private String name;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String title;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     public CalendarResponseDto(Calendar calendar) {
         this.id = calendar.getId();
-        this.name = calendar.getName();
-        this.startTime = calendar.getStartTime();
-        this.endTime = calendar.getEndTime();
+        this.title = calendar.getName();
+        this.start = calendar.getStartTime();
+        this.end = calendar.getEndTime();
     }
 }
