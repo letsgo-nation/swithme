@@ -45,14 +45,6 @@ public class RecordServiceImpl implements RecordService {
 
             accumulatedTimeRepository.save(accumulatedTime);
 
-
-            // 오늘 누적시간 업데이트
-            LocalDate today = LocalDate.now();
-            if(accumulatedTime.getLastUpdatedDate() == null || !today.isEqual(accumulatedTime.getLastUpdatedDate())) {
-                accumulatedTime.setTodayAccumulatedMinutes(0L);  // 날짜가 변경되면 오늘 누적시간 초기화
-                accumulatedTime.setLastUpdatedDate(today);
-            }
-
             long newTodayAccumulatedMinutes = accumulatedTime.getTodayAccumulatedMinutes() +
                     parseRecordedTime(recordedTime);
             accumulatedTime.setTodayAccumulatedMinutes(newTodayAccumulatedMinutes);
@@ -81,6 +73,13 @@ public class RecordServiceImpl implements RecordService {
 
         AccumulatedTime accumulatedTime = accumulatedTimeRepository.findByUser(currentUser)
                 .orElseThrow(() -> new RuntimeException("사용자의 누적 시간을 찾을 수 없습니다."));
+
+        LocalDate today = LocalDate.now();
+        if(accumulatedTime.getLastUpdatedDate() == null || !today.isEqual(accumulatedTime.getLastUpdatedDate())) {
+            accumulatedTime.setTodayAccumulatedMinutes(0L);  // 날짜가 변경되면 오늘 누적시간 초기화
+            accumulatedTime.setLastUpdatedDate(today);
+            accumulatedTimeRepository.save(accumulatedTime); // 변경사항 저장
+        }
 
         return accumulatedTime.getTodayAccumulatedMinutes();
     }
