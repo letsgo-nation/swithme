@@ -20,7 +20,7 @@ public class Calendar {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
