@@ -12,6 +12,7 @@ window.onload = function connect() {
 
 }
 
+// 저장된 메시지를 출력
 function receiveMessage() {
     $.ajax({
         type: 'GET',

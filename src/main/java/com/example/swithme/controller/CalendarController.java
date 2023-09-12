@@ -1,5 +1,6 @@
 package com.example.swithme.controller;
 
+import com.example.swithme.dto.CalendarResponseDto;
 import com.example.swithme.entity.Calendar;
 import com.example.swithme.entity.User;
 import com.example.swithme.repository.CalendarRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,11 +48,17 @@ public class CalendarController {
         return "redirect:/studies/calendar";
     }
 
+    //캘린더 출력
     @GetMapping("/studies/calendar")
     public String showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         List<Calendar> studies = studyRepository.findAllByUser(user);
-        model.addAttribute("studies", studies);
+
+        List<CalendarResponseDto> studiesEntity = studies.stream()
+                .map(CalendarResponseDto::new)
+                .collect(Collectors.toList());
+
+        model.addAttribute("studies", studiesEntity);
         return "study/calendar";
     }
 

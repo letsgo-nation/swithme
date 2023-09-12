@@ -41,12 +41,6 @@ public class UserController {
 
     public static String url;
 
-    //샘플페이지
-    @GetMapping("/sample")
-    public String sample() {
-        return "sample";
-    }
-
     // 회원가입, 로그인 페이지 이동
     @GetMapping("/users/login")
     public String loginPage(Model model, HttpServletRequest request) {
@@ -72,6 +66,7 @@ public class UserController {
         }
 
         return "redirect:/users/login?content=email";
+
     }
 
     //이메일 인증 요청
@@ -93,10 +88,9 @@ public class UserController {
             return "redirect:/users/login?content=loginFail";
         }
 
-        if(url == null) {
+        if(url == null || url.equals("http://localhost:8080/") || url.equals("http://localhost:8080/users/login?content=email") || url.equals("http://localhost:8080/users/login") || url.equals("http://localhost:8080/api/users/signup")) {
             return "redirect:/";
         }
-
         return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
