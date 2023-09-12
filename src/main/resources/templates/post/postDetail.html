@@ -4,9 +4,9 @@
     <title>게시물 상세 페이지</title>
     <link rel="stylesheet" th:href="@{/css/post/postDetail.css}"/>
     <link rel="stylesheet" th:href="@{/css/nav.css}"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <body>
-
 <div class="app-container">
     <div th:replace="~{fragment/nav :: useNav}">insert</div>
     <div class="app-content">
@@ -104,6 +104,7 @@
         </div>
     </div>
 </div>
+<a id="back-to-top"></a>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1199.0.min.js"></script>
 <script src="/js/post/postDetail.js"></script>
 </body>
