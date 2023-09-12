@@ -38,7 +38,7 @@
     <img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white"/>
     <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white"/>
      <img src="https://img.shields.io/badge/bootstrap-3178C6?style=flat&logo=bootstrap&logoColor=white"/>
-    <img src="https://img.shields.io/badge/mysql-#4479A1?style=flat&logo=mysql&logoColor=white"/>
+    <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/>
 </div>
 
 <h4>백엔드 💻 </h4>
@@ -48,8 +48,8 @@
     <img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white" />
     <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/>
     <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/>
-    <img src="https://img.shields.io/badge/amazons3-#569A31?style=flat&logo=amazons3&logoColor=white"/>
-    <img src="https://img.shields.io/badge/amazonec2-#FF9900?style=flat&logo=amazonec2&logoColor=white"/>
+    <img src="https://img.shields.io/badge/amazons3-569A31?style=flat&logo=amazons3&logoColor=white"/>
+    <img src="https://img.shields.io/badge/amazonec2-FF9900?style=flat&logo=amazonec2&logoColor=white"/>
 </div>
 
 <h4>소통 💻 </h4>
@@ -57,7 +57,7 @@
     <img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white" />
     <img src="https://img.shields.io/badge/slack-4A154B?style=flat&logo=slack&logoColor=white" />
     <img src="https://img.shields.io/badge/notion-000000?style=flat&logo=notion&logoColor=white" />
-    <img src="https://img.shields.io/badge/figma-#F24E1E?style=flat&logo=figma&logoColor=white" />
+    <img src="https://img.shields.io/badge/figma-F24E1E?style=flat&logo=figma&logoColor=white" />
 </div>
 
 <br>
