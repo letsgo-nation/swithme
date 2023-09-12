@@ -5,7 +5,6 @@ import com.example.swithme.entity.User;
 import com.example.swithme.repository.CalendarRepository;
 import com.example.swithme.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,13 +45,13 @@ public class CalendarController {
         return "redirect:/studies/calendar";
     }
 
+    //캘린더 출력
     @GetMapping("/studies/calendar")
     public String showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         List<Calendar> studies = studyRepository.findAllByUser(user);
         model.addAttribute("studies", studies);
         return "study/calendar";
-
     }
 
     @GetMapping("/studies/details/{id}")
