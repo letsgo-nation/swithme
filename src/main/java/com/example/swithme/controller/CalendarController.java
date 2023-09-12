@@ -6,7 +6,6 @@ import com.example.swithme.entity.User;
 import com.example.swithme.repository.CalendarRepository;
 import com.example.swithme.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
