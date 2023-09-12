@@ -96,6 +96,7 @@
         //게시글 출력 페이지
         setRanking();
         setUser();
+        setUser();
     }
 
     function setUser() {
@@ -107,27 +108,20 @@
                 console.log(response)
 
                 let users = response.users;
+                let userSelect = $('#userSelect'); // select box의 ID를 사용하여 엘리먼트를 선택합니다.
+                let userCountElement = $('#userCount'); // 유저 숫자를 표시할 엘리먼트
 
-                $('#user').empty();
+                userSelect.empty();
 
                 for (let user of users) {
                     let username = user.username;
                     let userId = user.id;
-                    console.log(username, userId);
-                    setHtml2(username, userId);
+                    let option = `<option value="${userId}">${username}</option>`;
+                    userSelect.append(option);
                 }
+                userCountElement.text(users.length);
             }
         });
-    }
-
-    function setHtml2(username, groupId) {
-        let html = `
-                <div id="user">
-                참여중인 유저 : ${username}
-                <span hidden="hidden">${groupId}</span>
-                </div>
-                `;
-        $('#user').append(html);
     }
 
     function setRanking() {
@@ -251,6 +245,11 @@
 
             <div id="user">
                 참여중인 유저 :
+                <span id="userCount">0</span>명
+                <br>
+                <select id="userSelect" name="job">
+                    <option value="직업선택">직업선택</option>
+                </select>
             </div>
 
             <div class="project-boxes jsGridView">
