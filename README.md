@@ -1,52 +1,71 @@
-# swithme
-안녕하세요, 스윗미 입니다.
+# 프로젝트 명 : SWITHME(Study With Me)📕
+(+로고) 
+ 
+안녕하세요, 함께 공부하는 웹사이트 : 스윗미(SWITHME)입니다.
+<br>SWITHME는 타이머, 캘린더, 그룹, 채팅, 게시판 서비스를 제공하는 스터디 웹사이트입니다. 
 
-기술스택
+• 개발 기간 : 2023.08.26. ~ 2023.09.18.
+<br> • 팀 노션 : URL
+ <br><br>
+ <div>
+        <h2>📌 핵심 기능</h2>
+        <ol>
+            <li>타이머⏱️</li>
+            자투리 시간 활용 및 높은 효율성을 위해 타이머 기능 및 누적시간 조회 기능을 제공합니다.
+            <li>캘린더📆</li>
+            개인의 학업/업무 스케줄을 저장하고 관리할 수 있는 공간을 제공합니다.
+            <li>그룹👥</li>
+            동일한 관심 주제를 가진 멤버들이 모여 그룹을 형성하고 목표를 세우며 멤버별 누적시간의 순위를 확인합니다.
+            <li>채팅💻</li>
+            개인이 유저를 초대하여 채팅창을 생성하고 대화를 나눌 수 있습니다. 초대된 유저는 초대를 거절할 수 있습니다.
+            <li>게시판📋</li>
+            네 가지 카테고리별 게시판과 댓글/대댓글 기능을 통해 사용자 간의 관심 분야와 정보를 공유하는 커뮤니케이션 장을 제공합니다.
+        </ol>
+    </div>
+   <br>
 
-- 프론트
-    - HTML, CSS, javascript
-    - Bootstrap : 간단한 적용으로 프론트 구성 가능
-- 백엔드
-    - 기술 스택
-        - Spring web
-        - Spring Boot : 프레임워크
-        - Spring Data JPA : 데이터 접근
-        - Thymeleaf : 템플릿 엔진
-        - MySql : 데이터베이스
-    - 라이브러리
-        - Spring Security : 로그인, 보안
-        - jwt : jwt 토큰 생성
-        - OAuth2 Client : 카카오톡, 구글 Oauth2 인증에 사용
-        - Spring Validation : 회원가입 등 검증기능시 사용
-        - Websocket : 채팅 기능, 실시간 양방향 통신 구현
-        - Lombok : 코드 간소화
-        - fullcalendar : 캘린더 기능
-        - reactor : 알림 기능(sse사용 시 필요한 의존성)
-     
-코드컨벤션
+<h2>🌐 ERD & API</h2>
+<a href="https://www.erdcloud.com/d/nsyTLkMBDYAbSdHum" > ERD </a> &
+<a href="https://www.notion.so/7c369a586ec944ba80a535197a03bc6a?v=6fc3cb1ffa3c433aa086ecff7bfdc40d" > API</a>
 
-1. 패키지 이름
-    1. 소문자, 숫자로 작성
-    2. 요소를 .으로 구분
-2. class name
-    1. 명사
-    2. 첫  문자는 대문자
-    3. 캐멀 스타일로 작성
-    4. 숫자 포함 가능(첫 문자는 숫자X)
-    5. 특수문자 ($, _ 일반적으로 포함 가능하지만 쓰지 말기)
-3. variable name
-    1. 첫 문자는 소문자
-    2. 캐멀 스타일로 작성
-    3. 어떤 값을 저장하고 있는지 쉽게 알 수 있도록 의미 있는 이름을 짓기
-    4. 한글은 포함하지 않기
-4. method
-    1. 동사로 작성
-    2. 첫 문자는 소문자
-    3. 캐멀 스타일(firstname)
-5. 상수 
-    1. 모두 대문자로 작성하는 것이 관례 
-    2. 서로 다른 단어가 혼합된 이름 _로 단어들을 연결
-6. html 파일
-    1. 소문자로 작성
-    2. 특수문자 사용X(단, -은 가능)
-    3. 공백 금지
+<br>
+<h2>⛏️기술 스택</h2>
+<h4>프런트엔드 💻</h4>
+<div>
+    <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
+    <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/>
+    <img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white"/>
+    <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white"/>
+     <img src="https://img.shields.io/badge/bootstrap-3178C6?style=flat&logo=bootstrap&logoColor=white"/>
+    <img src="https://img.shields.io/badge/mysql-#4479A1?style=flat&logo=mysql&logoColor=white"/>
+</div>
+
+<h4>백엔드 💻 </h4>
+<div>
+    <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white" />
+    <img src="https://img.shields.io/badge/intellijidea-000000?style=flat&logo=intellijidea&logoColor=white" />
+    <img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white" />
+    <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/>
+    <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/>
+    <img src="https://img.shields.io/badge/amazons3-#569A31?style=flat&logo=amazons3&logoColor=white"/>
+    <img src="https://img.shields.io/badge/amazonec2-#FF9900?style=flat&logo=amazonec2&logoColor=white"/>
+</div>
+
+<h4>소통 💻 </h4>
+<div>
+    <img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white" />
+    <img src="https://img.shields.io/badge/slack-4A154B?style=flat&logo=slack&logoColor=white" />
+    <img src="https://img.shields.io/badge/notion-000000?style=flat&logo=notion&logoColor=white" />
+    <img src="https://img.shields.io/badge/figma-#F24E1E?style=flat&logo=figma&logoColor=white" />
+</div>
+
+<br>
+<h2>🗄️ 아키텍쳐</h2>
+<a href="https://miro.com/app/board/uXjVMpMSLE8=/?share_link_id=837613822203" > 아키텍쳐 </a>
+
+<br>
+<h2>🤝 협업 규칙</h2>
+<a href="https://www.notion.so/441694005d964cb5b34822d4d5fa2e6a">협업 규칙</a>
+
+
