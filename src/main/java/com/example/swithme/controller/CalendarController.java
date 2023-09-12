@@ -52,6 +52,7 @@ public class CalendarController {
         List<Calendar> studies = studyRepository.findAllByUser(user);
         model.addAttribute("studies", studies);
         return "study/calendar";
+
     }
 
     @GetMapping("/studies/details/{id}")
