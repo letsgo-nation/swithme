@@ -155,6 +155,7 @@ public class UserController {
 
         UserUpdateResponseDto userUpdateResponseDto = userService.updateUser(userUpdateRequestDto);
         model.addAttribute("userUpdateRequestDto", userUpdateResponseDto);
+        model.addAttribute("message", "닉네임이 수정되었습니다.");
         return "user/myPage";
     }
 
@@ -168,6 +169,7 @@ public class UserController {
 
         UserUpdateResponseDto userUpdateResponseDto = userService.updateUser(userUpdateRequestDto);
         model.addAttribute("userUpdateRequestDto", userUpdateResponseDto);
+        model.addAttribute("message", "닉네임이 수정되었습니다.");
         return "user/myPageOauth2Login";
     }
 

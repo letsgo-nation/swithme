@@ -2,10 +2,22 @@
 <head th:replace="layout/head :: common_header(~{::title},~{::link})">
     <title>메인 페이지</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
 </head>
 
 <body>
-<!--<div th:replace="~{fragment/nav :: useNav2}">insert</div>-->
+<div id="logo"><a href="/view/posts">SWITHME</a></div>
+<div id="nav-icon">
+    <a th:href="@{/users/myPage}" sec:authorize="isAuthenticated()" class="right_button"><i
+            class="fa-solid fa-user"></i></a>
+
+    <a th:href="@{/users/logout}" sec:authorize="isAuthenticated()" class="right_button"><i
+            class="fa-solid fa-arrow-right-from-bracket"></i></a>
+
+    <a th:href="@{/users/login}" sec:authorize="!isAuthenticated()" class="right_button"><i
+            class="fa-solid fa-arrow-right-to-bracket"></i></a>
+</div>
+
 <div class="options">
 
     <!--  게시글  -->
@@ -96,5 +108,15 @@
 <!--<a href="http://victorofvalencia-blog.tumblr.com" target="_blank" class="credit">Photos from Victor of Valencia on tumblr</a>-->
 
 <script src="/js/index.js"></script>
+<script>
+    function showAlertFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const content = urlParams.get('success');
+
+        if (content === 'password') {
+            alert('비밀번호가 변경되었습니다.');
+        }
+    }
+</script>
 </body>
 </html>

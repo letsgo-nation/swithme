@@ -120,7 +120,7 @@ public class ChatRoomService {
     //채팅방 초대 또는 참가자 명단
     public List<ChatUserResponseDto> findUser(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
-        List<ChatGroup> findChatGroup = chatGroupRepository.findAllByChatRoomAndChatRole(chatRoom, ChatRole.MEMBER);
+        List<ChatGroup> findChatGroup = chatGroupRepository.findAllByChatRoom(chatRoom);
 
 
         //유저이름, 초대여부(승낙, 대기)
@@ -133,8 +133,24 @@ public class ChatRoomService {
     }
 
     //채팅멤버 삭제
-    public void delete(Long chatGroupId, User user) {
-        chatGroupRepository.deleteById(chatGroupId);
+    public String delete(Long chatGroupId, User user) {
+        // 내가 매니저이거나, 아니면 나 자신이 경우 삭제 가능
+        ChatGroup findChatGroup = chatGroupRepository.findById(chatGroupId).get();
+        ChatRoom chatRoom = findChatGroup.getChatRoom();
+
+        ChatGroup chatGroup = chatGroupRepository.findByChatRoom_IdAndAndUser(chatRoom.getId(), user).get();
+        if (chatGroup.getChatRole().equals(ChatRole.MANAGER)) {
+            chatGroupRepository.deleteById(chatGroupId);
+            return "삭제되었습니다.";
+        }
+
+        if(findChatGroup.getUser().getUserId() == user.getUserId()) {
+            chatGroupRepository.deleteById(chatGroupId);
+            return "삭제되었습니다.";
+        } else {
+            return "권한이 없습니다.";
+        }
+
     }
 
     @Transactional
@@ -144,6 +160,8 @@ public class ChatRoomService {
         ChatGroup chatGroup = findChatGroup.get();
         if (findChatGroup.isPresent() && (chatGroup.getChatRole().equals(ChatRole.MANAGER))) {
             chatRoomRepository.delete(findChatGroup.get().getChatRoom());
+        } else {
+            throw new IllegalArgumentException("삭제가 실패했습니다.");
         }
     }
 

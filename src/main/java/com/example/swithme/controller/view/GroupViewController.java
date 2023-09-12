@@ -49,6 +49,8 @@ public class GroupViewController {
         model.addAttribute("info_groupId", groupService.getBoard(groupId).getId());
         model.addAttribute("info_username", userDetails.getUser().getUsername());
         model.addAttribute("info_accumulatedTime", userDetails.getUser().getAccumulatedTime());
+        model.addAttribute("info_groupName", groupService.getBoard(groupId).getGroupName());
+        model.addAttribute("info_description", groupService.getBoard(groupId).getDescription());
         List<User> userList = userRepository.findAll();
         model.addAttribute("users", userList);
 
