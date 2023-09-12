@@ -53,12 +53,7 @@ public class CalendarController {
     public String showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         List<Calendar> studies = studyRepository.findAllByUser(user);
-
-        List<CalendarResponseDto> studiesEntity = studies.stream()
-                .map(CalendarResponseDto::new)
-                .collect(Collectors.toList());
-
-        model.addAttribute("studies", studiesEntity);
+        model.addAttribute("studies", studies);
         return "study/calendar";
     }
 
