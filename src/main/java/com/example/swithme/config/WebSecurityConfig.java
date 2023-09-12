@@ -64,13 +64,16 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
                         .requestMatchers("/api/users/**").permitAll() // 로그인, 회원가입 누구나 가능.
+                        .requestMatchers("chat/content").permitAll()
 
                         //로그인 필요
                         // .requestMatchers("/view/post/write").authenticated()
-                        .requestMatchers("view/post/**").authenticated()
-                        .requestMatchers("view/post/detail/**").authenticated()
-                        .requestMatchers("/chat/**").authenticated() // 개인채팅 로그인 필요
-                        .requestMatchers("/studies/calendar").authenticated()
+                        .requestMatchers("view/post/**").authenticated() //게시글
+                        .requestMatchers("view/post/detail/**").authenticated() //게시글
+                        .requestMatchers("/chat/**").authenticated() // 개인채팅
+                        .requestMatchers("/studies/calendar").authenticated() //캘린더
+                        .requestMatchers("/stopwatch").authenticated() //스탑워치
+                        .requestMatchers("/api/view/groups").authenticated() //그룹스터디
 
                         //그 외 모든 접근 허용
                         .anyRequest().permitAll()
