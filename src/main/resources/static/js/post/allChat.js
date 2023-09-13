@@ -59,6 +59,7 @@ function sendMessage(event) {
         stompClient.send("/app/allChat.sendMessage/1", {}, JSON.stringify(chatMessage));
     }
     event.preventDefault();
+    document.getElementById('message').value = '';
 }
 
 messageForm.addEventListener('submit', sendMessage, true)
