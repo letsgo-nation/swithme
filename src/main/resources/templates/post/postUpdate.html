@@ -38,7 +38,11 @@
                             <textarea class="form-control" id="content" th:text="${post.content}" aria-label="With textarea" style="padding:30px"></textarea>
                         </div>
                         <!--                                이미지 업로드-->
-                        <input type="file" id="image" accept="image/*">
+                        <br>
+                        <div ><strong>이미지를 선택해주세요!</strong>
+                            <input type="file" id="image" accept="image/*">
+                            <br><br>
+                        </div>
                         <!--                                이미지 업로드 끝-->
                         <div class="d-flex justify-content-center mt-3">
                             <button type="button" class="btn btn-dark btn-lg me-5 w-25" onclick="location.href='/view/posts'" id="cancel">취소</button>
