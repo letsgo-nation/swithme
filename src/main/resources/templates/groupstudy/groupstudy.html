@@ -301,5 +301,19 @@
 </div>
 </div>
 <script th:src="@{/js/groupstudydetails.js}"></script>
+<script>
+    window.addEventListener("load", function() {
+
+// 네비게이션 항목을 선택
+        const navItems = document.querySelectorAll(".app-sidebar-link");
+        for (let i = 0; i < navItems.length; i++) {
+            let element = navItems.item(i);
+            element.classList.remove('active')
+        }
+
+        const nav = document.querySelector(".nav-groupstudy");
+        nav.classList.add('active')
+    });
+</script>
 </body>
 </html>

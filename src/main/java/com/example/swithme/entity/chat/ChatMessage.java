@@ -1,9 +1,7 @@
 package com.example.swithme.entity.chat;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.swithme.entity.User;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -16,11 +14,20 @@ public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sender;
+
     private String content;
 
-    public ChatMessage(String sender, String content) {
-        this.sender = sender;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "CHATROOM_ID")
+    private ChatRoom chatRoom;
+
+    public ChatMessage(String content, ChatRoom chatRoom, User user) {
         this.content = content;
+        this.chatRoom = chatRoom;
+        this.user = user;
     }
 }

@@ -31,7 +31,8 @@ function showAlertFromUrl() {
     }
 
     if (content === 'email') {
-        alert('이메일 인증 메일이 발송되었습니다. 확인 후 회원가입을 완료해주세요')
+        // alert('이메일 인증 메일이 발송되었습니다. 확인 후 회원가입을 완료해주세요')
+        alert('회원가입이 완료되었습니다.')
     }
 }
 

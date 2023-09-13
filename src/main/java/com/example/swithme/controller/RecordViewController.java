@@ -8,7 +8,7 @@ public class RecordViewController {
 
     @GetMapping("/stopwatch")
     public String showStopwatch() {
-        return "stopwatch/stopwatch1"; // stopwatch.html을 반환
+        return "stopwatch/stopwatch"; // stopwatch.html을 반환
     }
 }
 

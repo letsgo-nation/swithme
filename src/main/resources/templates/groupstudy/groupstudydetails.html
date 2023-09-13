@@ -99,6 +99,7 @@
         setUser();
     }
 
+
     function setUser() {
         $.ajax({
             type: 'GET',
@@ -124,6 +125,17 @@
         });
     }
 
+    function formatTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+
+        // 시, 분, 초를 문자열로 조합
+        const formattedTime = `${hours}시간 ${minutes}분 ${remainingSeconds}초`;
+
+        return formattedTime;
+    }
+
     function setRanking() {
 
         $.ajax({
@@ -135,14 +147,19 @@
 
                 let users = response.users;
 
+                users.sort(function(a, b) {
+                    return b.accumulatedTime - a.accumulatedTime;
+                });
+
                 $('#Ranking').empty();
 
                 for (let user of users) {
                     let username = user.username;
                     let accumulatedTime = user.accumulatedTime;
+                    let formattedTime = formatTime(accumulatedTime); // 누적 시간을 분과 초로 변환
                     let userId = user.id;
                     console.log(username, accumulatedTime, userId);
-                    setHtml(username, accumulatedTime, userId);
+                    setHtml(username, formattedTime, userId);
                 }
             }
         });
@@ -158,7 +175,7 @@
                             </div>
                         </div>
                         <p class="message-line">
-                            누적 공부시간 : ${accumulatedTime}초
+                            누적 공부시간 : ${accumulatedTime}
                         </p>
                         <span hidden="hidden">${userId}</span>
                         <p class="message-line time">

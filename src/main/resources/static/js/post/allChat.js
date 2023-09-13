@@ -12,6 +12,7 @@ window.onload = function connect() {
 
 }
 
+// 저장된 메시지를 출력
 function receiveMessage() {
     $.ajax({
         type: 'GET',
@@ -58,6 +59,7 @@ function sendMessage(event) {
         stompClient.send("/app/allChat.sendMessage/1", {}, JSON.stringify(chatMessage));
     }
     event.preventDefault();
+    document.getElementById('message').value = '';
 }
 
 messageForm.addEventListener('submit', sendMessage, true)

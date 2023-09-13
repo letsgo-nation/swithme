@@ -27,10 +27,7 @@ function openStudyDetails(id) {
 }
 
 function openEditForm(id) {
-    // window.location.href = '/studies/edit/' + id;
-
-    var url = '/studies/edit/' + id;
-    var popup = window.open(url, 'Edit Study', 'width=600,height=400');
+    window.location.href = '/studies/edit/' + id;
 }
 
 function deleteStudy(id) {
