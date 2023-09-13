@@ -83,7 +83,12 @@ public class ChatController {
     @ResponseBody
     @PostMapping("/group/content")
     public List<ChatMessageResponseDto> sendGroupRepositoryMessage(@RequestBody ChatUrlRequestDto chatUrl) {
-        List<ChatMessageResponseDto> message = chatRoomService.findGroupMessage(chatUrl.getChatUrl());
+        List<ChatMessageResponseDto> message = null;
+        try {
+            message = chatRoomService.findGroupMessage(chatUrl.getChatUrl());
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return message;
     }
 

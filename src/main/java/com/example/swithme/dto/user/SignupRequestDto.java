@@ -16,11 +16,13 @@ public class SignupRequestDto {
     @Email
     private String username; //아이디, 이메일
 
-    @Pattern(regexp = "^[A-Za-z0-9]{4,}$", message = "비밀번호는 최소 4글자 이상, 영문, 숫자 조합이어야 합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()_+{}:\"<>?,.\\\\/]{4,15}$",
+            message = "최소 4자 이상, 15자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수문자 로 구성되어야 합니다.")
     private String password;
 
     //비밀번호 확인
-    @Pattern(regexp = "^[A-Za-z0-9]{4,}$", message = "비밀번호는 최소 4글자 이상, 영문, 숫자 조합이어야 합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()_+{}:\"<>?,.\\\\/]{4,15}$",
+            message = "최소 4자 이상, 15자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수문자 로 구성되어야 합니다.")
     private String checkPassword;
 
     @NotBlank(message = "닉네임을 입력해주세요")
