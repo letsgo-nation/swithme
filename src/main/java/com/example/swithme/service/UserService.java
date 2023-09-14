@@ -97,10 +97,15 @@ public class UserService {
 //      javaMailSender.send(message);
     }
 
+    //닉네임 중복 오류
+    if(userRepository.findByNickname(nickName).isPresent()){
+      bindingResult.addError(new FieldError("signupRequestDto", "nickName", "이미 사용 중인 닉네임입니다."));
+    }
+
     //에러 없을 때 회원가입 성공
     if (!bindingResult.hasErrors()) {
       String passwordEncode = passwordEncoder.encode(signupRequestDto.getPassword());
-      User user = new User(username, passwordEncode, nickName, 0);
+      User user = new User(username, passwordEncode, nickName, 1);
       userRepository.save(user);
 
 //      MimeMessage message = CreateMail(username);

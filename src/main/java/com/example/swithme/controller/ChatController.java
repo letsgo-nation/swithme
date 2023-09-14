@@ -1,14 +1,15 @@
 package com.example.swithme.controller;
 
+import com.example.swithme.dto.ChatUrlRequestDto;
 import com.example.swithme.dto.chat.*;
 import com.example.swithme.entity.User;
-import com.example.swithme.entity.chat.ChatMessage;
 import com.example.swithme.repository.UserRepository;
 import com.example.swithme.security.UserDetailsImpl;
 import com.example.swithme.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -31,15 +32,17 @@ public class ChatController {
     @MessageMapping("/allChat.sendMessage/1")
     @SendTo("/topic/public/1")
     public ChatMessageRequestDto sendAllMessage(@Payload ChatMessageRequestDto chatMessageRequestDto, java.security.Principal principal) {
+        // 게스트 채팅 보내기
         if( principal == null) {
-            chatRoomService.save(new ChatMessage(chatMessageRequestDto.getSender(), chatMessageRequestDto.getContent()));
+            User user = userRepository.findById(1L).get();
+            chatRoomService.save( chatMessageRequestDto.getContent(), user);
             return chatMessageRequestDto;
         }
         String name = principal.getName();
         User user = userRepository.findByUsername(name).get();
 
-        chatRoomService.save(new ChatMessage(user.getNickname(), chatMessageRequestDto.getContent()));
-
+        // 로그인 사용자 채팅 보내기
+        chatRoomService.save(chatMessageRequestDto.getContent(), user);
         var sendMessage = ChatMessageRequestDto.builder()
                 .sender(user.getNickname())
                 .content(chatMessageRequestDto.getContent())
@@ -51,12 +54,13 @@ public class ChatController {
     // 그룹 채팅
     @MessageMapping("/chat.sendMessage/{chatUrl}")
     @SendTo("/topic/public/{chatUrl}")
-    public ChatMessageRequestDto sendMessage(@Payload ChatMessageRequestDto chatMessageRequestDto, java.security.Principal principal) {
+    public ChatMessageRequestDto sendMessage(@Payload ChatMessageRequestDto chatMessageRequestDto, java.security.Principal principal, @DestinationVariable String chatUrl) {
         if( principal == null) {
             return chatMessageRequestDto;
         }
         String name = principal.getName();
         User user = userRepository.findByUsername(name).get();
+        chatRoomService.groupChatSave(user, chatUrl, chatMessageRequestDto.getContent());
 
         var sendMessage = ChatMessageRequestDto.builder()
                 .sender(user.getNickname())
@@ -66,11 +70,25 @@ public class ChatController {
         return sendMessage;
     }
 
-    // 채팅내용 보내기
+    // 전체채팅내용 보내기
     @ResponseBody
     @GetMapping("/content")
     public List<ChatMessageResponseDto> sendRepositoryMessage() {
         List<ChatMessageResponseDto> message = chatRoomService.findMessage();
+        return message;
+    }
+
+
+    // 그룹채팅내용 보내기
+    @ResponseBody
+    @PostMapping("/group/content")
+    public List<ChatMessageResponseDto> sendGroupRepositoryMessage(@RequestBody ChatUrlRequestDto chatUrl) {
+        List<ChatMessageResponseDto> message = null;
+        try {
+            message = chatRoomService.findGroupMessage(chatUrl.getChatUrl());
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return message;
     }
 

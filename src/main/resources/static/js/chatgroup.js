@@ -25,11 +25,48 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 
 window.onload = function connect() {
+    receiveMessage()
     var socket = new SockJS('/swithme');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, onConnected, onError);
 }
+
+// 저장된 메시지를 출력
+function receiveMessage() {
+    let data = {'chatUrl': url};
+
+    $.ajax({
+        method: 'POST',
+        url: '/chat/group/content',
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                let sender = response[i]['sender'];
+                let content = response[i]['content'];
+
+                receiveMessageHtml(sender, content);
+            }
+        }
+    });
+}
+
+function receiveMessageHtml(sender, content) {
+    let html = `
+                <div class="message-box">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <div class="name">${sender}</div>
+                        </div>
+                        <p class="message-line">
+                            ${content}
+                        </p>
+                    </div>
+                </div>`;
+    $('#chat-container').append(html);
+}
+
 
 function onConnected() {
     // Subscribe to the Public Topic
@@ -46,6 +83,7 @@ function sendMessage(event) {
         stompClient.send(`/app/chat.sendMessage/${url}`, {}, JSON.stringify(chatMessage));
     }
     event.preventDefault();
+    document.getElementById('message').value = '';
 }
 
 messageForm.addEventListener('submit', sendMessage, true)

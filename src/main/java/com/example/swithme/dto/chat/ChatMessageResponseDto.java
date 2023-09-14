@@ -12,7 +12,7 @@ public class ChatMessageResponseDto {
     private String content;
 
     public ChatMessageResponseDto(ChatMessage chatMessage) {
-        this.sender = chatMessage.getSender();
+        this.sender = chatMessage.getUser().getNickname();
         this.content = chatMessage.getContent();
     }
 }

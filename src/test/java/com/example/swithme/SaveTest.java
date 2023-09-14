@@ -26,7 +26,7 @@ public class SaveTest {
     ChatGroupRepository chatGroupRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-  
+
     @Test
     void saveTest() {
         //관리자 로그인
@@ -35,9 +35,9 @@ public class SaveTest {
         //일반 로그인
         User user = new User("spring@naver.com", passwordEncoder.encode("1234"), "스프링",1);
         userRepository.save(user);
-      
-    }
 
+    }
+//
     @Test
     @Transactional
     @Rollback(value = false)
@@ -47,5 +47,4 @@ public class SaveTest {
         jdbcTemplate.execute("insert into category values (3, '공무원시험')");
         jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
     }
-  
 }
