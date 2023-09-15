@@ -77,16 +77,11 @@ function updatePost() {
         success: function(response) {
             // 업데이트 성공 시 실행할 코드
             alert(response.message);
-            console.log(response);
-            console.log("게시글 업데이트 성공");
             window.location.href = "/view/post/detail/" + postId;
         },
         error: function(jqXHR, textStatus, errorThrown) {
             // 업데이트 실패 시 실행할 코드
             alert("게시글 수정이 실패했습니다.");
-            console.error("게시글 업데이트 실패");
-            console.log("에러 상태 코드:", textStatus);
-            console.log("에러 메시지:", errorThrown);
         }
     });
 }

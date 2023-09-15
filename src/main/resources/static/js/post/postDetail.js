@@ -8,7 +8,6 @@ let lastPart = urlParts[urlParts.length - 1];
 //  JavaScript에서 변수 가져오기
 var currentNickname = document.getElementById('currentNickname').textContent;
 // 변수 사용 예제
-console.log('currentNickname의 값은: ' + currentNickname);
 
 // 삭제 버튼 클릭 시 게시물 삭제
 document.getElementById("deleteButton").addEventListener("click", function() {
@@ -21,14 +20,12 @@ document.getElementById("deleteButton").addEventListener("click", function() {
         }
     })
         .then(response => response.json())
-        .then(data => {
-            console.log(data); // 서버의 응답 데이터 처리
+        .then(data => { // 서버의 응답 데이터 처리
             // 여기서 필요한 동작 수행 (예: 페이지 새로고침)
             alert(data.message);
             window.location.href = "/view/posts";
         })
         .catch(error => {
-            console.error("Error:", error);
         });
 });
 
@@ -57,15 +54,11 @@ $(document).ready(function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 alert("댓글이 작성되었습니다.");
-                console.log(requestData)
                 $("#commentText").val("");
                 loadComments(lastPart);
             })
             .catch((error) => {
-                console.log(error);
-                console.log(requestData)
                 alert("댓글 작성 중 오류가 발생했습니다.");
             });
     });
@@ -91,12 +84,10 @@ $(document).ready(function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 alert("대댓글이 작성되었습니다.");
                 loadReplies(commentId);
             })
             .catch((error) => {
-                console.log(error);
                 alert("대댓글 작성 중 오류가 발생했습니다.");
             });
     });
@@ -108,10 +99,8 @@ $(document).ready(function () {
             .then((comments) => {
                 displayComments(comments);
                 loadInitialReplies();
-                console.log(comments)
             })
             .catch((error) => {
-                console.log(error);
                 alert("댓글을 불러오는 중 오류가 발생했습니다.");
             });
     }
@@ -124,7 +113,6 @@ $(document).ready(function () {
                 displayReplies(commentId, replies);
             })
             .catch((error) => {
-                console.log(error);
                 alert("대댓글을 불러오는 중 오류가 발생했습니다.");
             });
     }
@@ -134,10 +122,7 @@ $(document).ready(function () {
 
         const commentList = $("#commentList");
         commentList.html(""); // 댓글 목록 초기화
-        console.log("comments : " , comments);
         comments.forEach(function (comment) {
-            console.log("comment id : " , comment.id);
-            console.log("comment userNickname : " , comment.userNickname);
 
             const commentElement = document.createElement("div");
             commentElement.id = `comment-${comment.id}`;
@@ -179,7 +164,6 @@ $(document).ready(function () {
         replyList.html(""); // 대댓글 목록 초기화
 
         replies.forEach(function (reply) {
-            console.log("reply : " , reply);
             const replyElement = document.createElement("div");
 
             if (currentNickname == reply.userNickname) {
@@ -228,12 +212,10 @@ $(document).ready(function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 alert("댓글이 수정되었습니다.");
                 loadComments(lastPart);
             })
             .catch((error) => {
-                console.log(error);
                 alert("댓글 수정 중 오류가 발생했습니다.");
             });
     });
@@ -260,20 +242,15 @@ $(document).ready(function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 alert("대댓글이 수정되었습니다.");
                 const commentId = $(this).data("comment"); // 댓글 ID 가져오기
-                console.log(commentId)
-                // loadReplies(commentId);
                 const reply = {
                     id:replyId,
                     content:editedText
                 }
-                // displayReplies(commentId, replies)
                 updateReply(reply)
             })
             .catch((error) => {
-                console.log(error);
                 alert("대댓글 수정 중 오류가 발생했습니다.");
             });
     });
@@ -298,7 +275,6 @@ $(document).ready(function () {
                 }
             })
             .catch((error) => {
-                console.log(error);
                 alert("댓글 삭제 중 오류가 발생했습니다.");
             });
     });
@@ -324,14 +300,12 @@ $(document).ready(function () {
                 }
             })
             .catch((error) => {
-                console.log(error);
                 alert("대댓글 삭제 중 오류가 발생했습니다.");
             });
     });
 
     // 초기 댓글 로드
     loadComments(lastPart);
-    console.log("lastPart;" , lastPart);
 
     // 페이지 로드 시 대댓글 불러오기
     loadInitialReplies();
