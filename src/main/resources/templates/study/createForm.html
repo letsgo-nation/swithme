@@ -68,10 +68,25 @@
   }
 </style>
 
+<script>
+  function validateForm() {
+    // 시작 시간과 종료 시간을 가져옵니다.
+    var startTime = new Date(document.getElementById("startTime").value);
+    var endTime = new Date(document.getElementById("endTime").value);
+
+    // 시작 시간이 종료 시간보다 클 경우 알림창을 표시합니다.
+    if (startTime > endTime) {
+      alert("시작 시간은 종료 시간보다 이전이어야 합니다.");
+      return false; // 폼 제출을 중단합니다.
+    }
+    return true; // 폼 제출을 허용합니다.
+  }
+</script>
+
 <body>
 <div class="login-container">
   <h1>Create Study</h1>
-  <form th:object="${study}" th:action="@{/studies}" method="post">
+  <form th:object="${study}" th:action="@{/studies}" method="post" onsubmit="return validateForm();">
     <div class="form-group">
       <label for="name">Study Name:</label>
       <input type="text" id="name" name="name" th:field="*{name}" required><br>
