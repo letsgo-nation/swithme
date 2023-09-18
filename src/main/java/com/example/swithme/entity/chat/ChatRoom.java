@@ -31,6 +31,9 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChatGroup> chatGroups = new ArrayList<>();
 
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
     public ChatRoom(String title, String content, UUID chatUrl) {
         this.title = title;
         this.content = content;
