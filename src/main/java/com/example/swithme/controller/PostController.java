@@ -22,7 +22,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    // 게시글 업로드
+    // 게시글 생성
     @PostMapping("/post")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> createPost(
@@ -32,7 +32,7 @@ public class PostController {
         ApiResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser(), image);
         return ResponseEntity.ok().body(responseDto);
     }
-    // 전체 개인 스터디 게시물 조회
+    // 전체 게시물 조회
     @GetMapping("/posts")
     @ResponseBody
     public ResponseEntity<List<PostResponseDto>> getPosts() {
@@ -40,7 +40,7 @@ public class PostController {
          return ResponseEntity.ok().body(responseDto);
     }
 
-    // 개인 스터디 게시물 단건 조회
+    // 게시물 단건 조회
     @GetMapping("/post/{id}")
     @ResponseBody
     public ResponseEntity<PostResponseDto> lookupPost(@PathVariable Long id) {
@@ -49,7 +49,7 @@ public class PostController {
 
     }
 
-    // 개인 스터디 게시물 수정
+    // 게시물 수정
     @PutMapping("/post/{id}")
     public ResponseEntity<ApiResponseDto> updatePost(
             @PathVariable Long id,
@@ -59,7 +59,7 @@ public class PostController {
         return postService.updatePost(id, postRequestDto, userDetails.getUser(), image);
     }
 
-    // 개인 스터디 게시물 삭제
+    // 게시물 삭제
     @DeleteMapping("/post/{id}")
     @ResponseBody
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {

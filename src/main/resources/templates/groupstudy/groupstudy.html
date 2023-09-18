@@ -120,7 +120,7 @@
             type: 'DELETE',
             url: `/api/group/${group_id}`,
             success: function (response) {
-                alert("게시글 삭제 성공");
+                alert("그룹스터디 삭제성공");
                 window.location.href = "/api/view/groups";
             }, error: function (req, status, error) {
                 alert("그룹 생성자만 삭제할 수 있습니다.");
