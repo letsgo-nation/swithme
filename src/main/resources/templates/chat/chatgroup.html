@@ -22,11 +22,10 @@
 
             <!-- 메인 가운데 - 제목, 날짜 영역 -->
             <div class="projects-section-header">
-                <p>그룹 채팅</p>
-                <button class="add-btn" onclick="create_chat()">
-                    <svg class="btn-icon feather feather-plus" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" /></svg>
+                <p>그룹 채팅<span style="font-size: 14px;">비슷한 주제를 가진 사람들과 대화해 보세요!</span></p>
+
+                <button class="btn btn-dark" onclick="create_chat()">
+                    채팅방 생성
                 </button>
             </div>
 
@@ -102,7 +101,7 @@
 
                             <!-- 2 Days Left 버튼 모양  -->
                             <div class="days-left" style="color: #ff942e;">
-                                <a th:href="@{/chat(url=${chatRoom.chatUrl})}" onclick="changeChat()" >채팅</a>
+                                <a th:href="@{/chat(url=${chatRoom.chatUrl})}" onclick="changeChat()" >채팅 입장</a>
                             </div>
                         </div>
                     </div>

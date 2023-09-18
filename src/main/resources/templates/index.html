@@ -111,10 +111,14 @@
 <script>
     function showAlertFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        const content = urlParams.get('success');
+        const content = urlParams.get('content');
 
         if (content === 'password') {
             alert('비밀번호가 변경되었습니다.');
+        }
+
+        if (content === 'login') {
+            alert('로그인 되었습니다.');
         }
     }
 </script>

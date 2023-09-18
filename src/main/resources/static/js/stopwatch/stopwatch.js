@@ -134,6 +134,7 @@ window.addEventListener("load", function() {
     for (let i = 0; i < navItems.length; i++) {
         let element = navItems.item(i);
         element.classList.remove('active')
+
     }
 
     const nav = document.querySelector(".nav-stopwatch");

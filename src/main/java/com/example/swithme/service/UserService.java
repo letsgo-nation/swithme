@@ -35,11 +35,10 @@ public class UserService {
   private final JwtUtil jwtUtil;
   private final TokenBlacklistRepository tokenBlacklistRepository;
 
-  //이메일
-//  private final JavaMailSender javaMailSender;
+  private final JavaMailSender javaMailSender;
 
-//  private static final String senderEmail = "seed0335@gmail.com";
-//  private static int number;
+  private static final String senderEmail = "seed0335@gmail.com";
+  private static int number;
 
 
   // 로그아웃시 토큰 블랙리스트 추가
@@ -50,25 +49,25 @@ public class UserService {
   }
 
   //이메일 인증
-//  public MimeMessage CreateMail(String mail){
-//    MimeMessage message = javaMailSender.createMimeMessage();
-//
-//    try {
-//      message.setFrom(senderEmail);
-//      message.setRecipients(MimeMessage.RecipientType.TO, mail);
-//      message.setSubject("swithme 회원가입을 위한 인증안내 입니다. . ");
-//      String body = "";
-//      body += "<h3>" + "swithme 회원가입을 위한 이메일 인증을 안내드립니다.." + "</h3>";
-//      body += "<h3>" + "아래 버튼을 누르시면 이메일 인증이 완료되며, 페이지로 이동합니다." + "</h3>";
-//      body += "<a href=\"http://localhost:8080/api/users/email/" + mail + "\">버튼을 클릭하세요</a>";
-//      body += "<h3>" + "감사합니다." + "</h3>";
-//      message.setText(body,"UTF-8", "html");
-//    } catch (MessagingException e) {
-//      e.printStackTrace();
-//    }
-//
-//    return message;
-//  }
+  public MimeMessage CreateMail(String mail){
+    MimeMessage message = javaMailSender.createMimeMessage();
+
+    try {
+      message.setFrom(senderEmail);
+      message.setRecipients(MimeMessage.RecipientType.TO, mail);
+      message.setSubject("swithme 회원가입을 위한 인증안내 입니다. . ");
+      String body = "";
+      body += "<h3>" + "swithme 회원가입을 위한 이메일 인증을 안내드립니다.." + "</h3>";
+      body += "<h3>" + "아래 버튼을 누르시면 이메일 인증이 완료되며, 페이지로 이동합니다." + "</h3>";
+      body += "<a href=\"http://swithme.store/api/users/email/" + mail + "\">버튼을 클릭하세요</a>";
+      body += "<h3>" + "감사합니다." + "</h3>";
+      message.setText(body,"UTF-8", "html");
+    } catch (MessagingException e) {
+      e.printStackTrace();
+    }
+
+    return message;
+  }
 
   //회원가입
   @Transactional
@@ -93,8 +92,8 @@ public class UserService {
     Optional<User> checkUsername = userRepository.findByUsername(username);
     if (checkUsername.isPresent()) {
       bindingResult.addError(new FieldError("signupRequestDto", "username", "이미 가입된 이메일입니다. 로그인 또는 이메일 인증을 진행해주세요."));
-//      MimeMessage message = CreateMail(username);
-//      javaMailSender.send(message);
+      MimeMessage message = CreateMail(username);
+      javaMailSender.send(message);
     }
 
     //닉네임 중복 오류
@@ -105,11 +104,11 @@ public class UserService {
     //에러 없을 때 회원가입 성공
     if (!bindingResult.hasErrors()) {
       String passwordEncode = passwordEncoder.encode(signupRequestDto.getPassword());
-      User user = new User(username, passwordEncode, nickName, 1);
+      User user = new User(username, passwordEncode, nickName, 0);
       userRepository.save(user);
 
-//      MimeMessage message = CreateMail(username);
-//      javaMailSender.send(message);
+      MimeMessage message = CreateMail(username);
+      javaMailSender.send(message);
     }
   }
 
