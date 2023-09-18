@@ -37,7 +37,7 @@ public class SaveTest {
         userRepository.save(user);
 
     }
-//
+
     @Test
     @Transactional
     @Rollback(value = false)
@@ -47,4 +47,5 @@ public class SaveTest {
         jdbcTemplate.execute("insert into category values (3, '공무원시험')");
         jdbcTemplate.execute("insert into category values (4, '어학 자격증')");
     }
+  
 }

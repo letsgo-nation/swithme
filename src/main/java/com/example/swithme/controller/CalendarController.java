@@ -21,39 +21,39 @@ public class CalendarController {
 
     private final CalendarRepository studyRepository;
 
-//    @GetMapping("/studies")
-//    public String listStudies(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        User user = userDetails.getUser();
-//        List<Calendar> studies = studyRepository.findAllByUser(user);
-//        model.addAttribute("studies", studies);
-//        return "study/list";
-//    }
-
+    // 캘린더 작성 폼
     @GetMapping("/studies/new")
     public String showCreateForm(Model model) {
         model.addAttribute("study", new Calendar());
         return "study/createForm";
     }
 
+    // 캘린더 일정 작성기능
     @PostMapping("/studies")
-    public String createStudy(@ModelAttribute Calendar study, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String createStudy(@ModelAttribute Calendar study, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();
         study.setUser(user);
+
+        if(study.getStartTime().isAfter(study.getEndTime())) {
+            model.addAttribute("error", "시작 시간은 종료 시간보다 이전이어야 합니다.");
+            return "redirect:/studies/calendar";
+        }
 
         studyRepository.save(study);
         return "redirect:/studies/calendar";
     }
 
+    // 캘린더 일정조회 (템플릿)
     @GetMapping("/studies/calendar")
     public String openCalendar() {
         return "study/calendar";
     }
 
 
-    //캘린더 출력
+    //캘린더 조회출력
     @ResponseBody
     @GetMapping("/studies/calendar1")
-    public List<CalendarResponseDto> showCalendar(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<CalendarResponseDto> showCalendar(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         List<Calendar> studies = studyRepository.findAllByUser(user);
 
