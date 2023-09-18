@@ -29,26 +29,80 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
 
+    //DB에 전체 채팅 메시지 저장
+    public void save(String content, User user) {
+        ChatRoom chatRoom = chatRoomRepository.findById(1L).get();
+        ChatMessage chatMessage = new ChatMessage(content, chatRoom, user);
+        chatMessageRepository.save(chatMessage);
+    }
+
+    //DB에 그룹 채팅 메시지 저장
+    public void groupChatSave(User user, String chatUrl, String content) {
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(chatUrl);
+            System.out.println("변환된 UUID: " + uuid);
+        } catch (IllegalArgumentException e) {
+            System.out.println("올바르지 않은 UUID 형식입니다.");
+        }
+
+
+        ChatRoom chatRoom = chatRoomRepository.findByChatUrl(uuid).get();
+        ChatMessage chatMessage = new ChatMessage(content, chatRoom, user);
+        chatMessageRepository.save(chatMessage);
+    }
+
+
+    // DB에 저장된 이전 전체채팅내용 보내기
+    public List<ChatMessageResponseDto> findMessage() {
+        ChatRoom chatRoom = chatRoomRepository.findById(1L).get();
+        List<ChatMessageResponseDto> allMessage = chatMessageRepository.findAllByChatRoom(chatRoom).stream()
+                .map(ChatMessageResponseDto::new)
+                .collect(Collectors.toList());
+        return allMessage ;
+    }
+
+    // DB에 저장된 이전 그룹채팅내용 보내기
+    public List<ChatMessageResponseDto> findGroupMessage(String chatUrl) {
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(chatUrl);
+            System.out.println("변환된 UUID: " + uuid);
+        } catch (IllegalArgumentException e) {
+            System.out.println("올바르지 않은 UUID 형식입니다.");
+        }
+
+        ChatRoom chatRoom = chatRoomRepository.findByChatUrl(uuid).get();
+        List<ChatMessageResponseDto> allMessage = chatMessageRepository.findAllByChatRoom(chatRoom).stream()
+                .map(ChatMessageResponseDto::new)
+                .collect(Collectors.toList());
+        return allMessage;
+    }
 
     // 내가 가입된 채팅방 조회
     public List<ChatRoomResponseDto> findAllById(User user) {
+        // 채팅그룹에서 내가 초대를 승락한 모든 리스트를 가져옴 Invite.YES
         List<ChatRoom> findChatGroup =
                 chatGroupRepository.findAllByUserAndInvite(user, Invite.YES).stream()
                         .map(chatGroup -> chatGroup.getChatRoom())
                         .collect(Collectors.toList());
 
+        // DTO로 변환
         List<ChatRoomResponseDto> findAllChatRoom = findChatGroup.stream()
                 .map(ChatRoomResponseDto::new)
                 .collect(Collectors.toList());
         return findAllChatRoom;
     }
 
+    //초대 알림 페이지 조회
     public List<ChatRoomResponseDto> findAllInvite(User user) {
+        // 채팅그룹에서 나를 초대한 모든 리스트 가져옴 Invite.WAIT
         List<ChatRoom> findChatGroup =
                 chatGroupRepository.findAllByUserAndInvite(user, Invite.WAIT).stream()
                         .map(chatGroup -> chatGroup.getChatRoom())
                         .collect(Collectors.toList());
 
+        // DTO로 변환
         List<ChatRoomResponseDto> findAllChatRoom = findChatGroup.stream()
                 .map(ChatRoomResponseDto::new)
                 .collect(Collectors.toList());
@@ -57,9 +111,11 @@ public class ChatRoomService {
 
     //채팅룸 생성
     public void create(User user) {
+        //채팅룸 생성
         ChatRoom chatRoom = new ChatRoom("제목", "내용", UUID.randomUUID());
         chatRoomRepository.save(chatRoom);
 
+        //생성한 채팅룸을 채팅그룹과 유저로 연관관계 매핑하고, 매니저 권한을 부여
         ChatGroup chatGroup = new ChatGroup(user, chatRoom, ChatRole.MANAGER, Invite.YES);
         chatGroupRepository.save(chatGroup);
     }
@@ -81,6 +137,7 @@ public class ChatRoomService {
         }
     }
 
+    //채팅 초대
     public void invite(ChatRoomInviteRequestDTo chatRoomInviteRequestDTo, User user) {
         // 채팅방 번호와 유저로 내가 속한 채팅그룹을 찾음
         Optional<ChatGroup> findChatGroup = chatGroupRepository.findByChatRoom_IdAndAndUser(chatRoomInviteRequestDTo.getId(), user);
@@ -119,7 +176,7 @@ public class ChatRoomService {
         }
     }
 
-    //채팅방 초대 또는 참가자 명단
+    //채팅방 명단 : YES, INVITE
     public List<ChatUserResponseDto> findUser(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
         List<ChatGroup> findChatGroup = chatGroupRepository.findAllByChatRoom(chatRoom);
@@ -141,6 +198,7 @@ public class ChatRoomService {
         ChatGroup findChatGroup = chatGroupRepository.findById(chatGroupId).get();
         ChatRoom chatRoom = findChatGroup.getChatRoom();
 
+        // 내가 매니저인지 확인
         ChatGroup chatGroup = chatGroupRepository.findByChatRoom_IdAndAndUser(chatRoom.getId(), user).get();
         if (chatGroup.getChatRole().equals(ChatRole.MANAGER)) {
             chatGroupRepository.deleteById(chatGroupId);
@@ -148,6 +206,7 @@ public class ChatRoomService {
             return "삭제되었습니다.";
         }
 
+        //내가 나 자신을 삭제하는지 확인
         if(findChatGroup.getUser().getUserId() == user.getUserId()) {
             chatGroupRepository.deleteById(chatGroupId);
             return "삭제되었습니다.";
@@ -167,55 +226,6 @@ public class ChatRoomService {
         } else {
             throw new IllegalArgumentException("삭제가 실패했습니다.");
         }
-    }
-
-    //전체 채팅 메시지 저장
-    public void save(String content, User user) {
-        ChatRoom chatRoom = chatRoomRepository.findById(1L).get();
-        ChatMessage chatMessage = new ChatMessage(content, chatRoom, user);
-        chatMessageRepository.save(chatMessage);
-    }
-
-    public void groupChatSave(User user, String chatUrl, String content) {
-        UUID uuid = null;
-        try {
-            uuid = UUID.fromString(chatUrl);
-            System.out.println("변환된 UUID: " + uuid);
-        } catch (IllegalArgumentException e) {
-            System.out.println("올바르지 않은 UUID 형식입니다.");
-        }
-
-
-        ChatRoom chatRoom = chatRoomRepository.findByChatUrl(uuid).get();
-        ChatMessage chatMessage = new ChatMessage(content, chatRoom, user);
-        chatMessageRepository.save(chatMessage);
-    }
-
-
-    //전체 채팅 내용 반환
-    public List<ChatMessageResponseDto> findMessage() {
-        ChatRoom chatRoom = chatRoomRepository.findById(1L).get();
-        List<ChatMessageResponseDto> allMessage = chatMessageRepository.findAllByChatRoom(chatRoom).stream()
-                .map(ChatMessageResponseDto::new)
-                .collect(Collectors.toList());
-        return allMessage ;
-    }
-
-    //그룹 채팅 내용 반환
-    public List<ChatMessageResponseDto> findGroupMessage(String chatUrl) {
-        UUID uuid = null;
-        try {
-            uuid = UUID.fromString(chatUrl);
-            System.out.println("변환된 UUID: " + uuid);
-        } catch (IllegalArgumentException e) {
-            System.out.println("올바르지 않은 UUID 형식입니다.");
-        }
-
-        ChatRoom chatRoom = chatRoomRepository.findByChatUrl(uuid).get();
-        List<ChatMessageResponseDto> allMessage = chatMessageRepository.findAllByChatRoom(chatRoom).stream()
-                .map(ChatMessageResponseDto::new)
-                .collect(Collectors.toList());
-        return allMessage;
     }
 
 }

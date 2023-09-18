@@ -70,7 +70,7 @@ public class ChatController {
         return sendMessage;
     }
 
-    // 전체채팅내용 보내기
+    // DB에 저장된 이전 전체채팅내용 보내기
     @ResponseBody
     @GetMapping("/content")
     public List<ChatMessageResponseDto> sendRepositoryMessage() {
@@ -79,7 +79,7 @@ public class ChatController {
     }
 
 
-    // 그룹채팅내용 보내기
+    // DB에 저장된 이전 그룹채팅내용 보내기
     @ResponseBody
     @PostMapping("/group/content")
     public List<ChatMessageResponseDto> sendGroupRepositoryMessage(@RequestBody ChatUrlRequestDto chatUrl) {
@@ -93,7 +93,7 @@ public class ChatController {
     }
 
 
-    // 채팅그룹 조회 페이지 이동
+    // 나의 그룹 페이지 이동
     @GetMapping
     public String chatPersonal(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();
@@ -102,7 +102,7 @@ public class ChatController {
         return "chat/chatgroup";
     }
 
-    // 채팅그룹 초대 조회 페이지 이동
+    // 초대 알림 페이지 이동
     @GetMapping("/alert")
     public String chatInvite(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();

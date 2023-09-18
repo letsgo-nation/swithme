@@ -39,14 +39,10 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final AccumulatedTimeRepository accumulatedTimeRepository;
 
-    public static String url;
-
     // 회원가입, 로그인 페이지 이동
     @GetMapping("/users/login")
     public String loginPage(Model model, HttpServletRequest request) {
         model.addAttribute("signupRequestDto", new SignupRequestDto());
-
-        url = request.getHeader("referer");
 
         return "user/login";
     }
@@ -88,10 +84,7 @@ public class UserController {
             return "redirect:/users/login?content=loginFail";
         }
 
-        if(url == null || url.equals("http://localhost:8080/") || url.equals("http://localhost:8080/users/login?content=email") || url.equals("http://localhost:8080/users/login") || url.equals("http://localhost:8080/api/users/signup")) {
             return "redirect:/";
-        }
-        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //카카오 로그인
@@ -99,11 +92,7 @@ public class UserController {
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         kakaoService.kakaoLogin(code, response); // 쿠키 생성
 
-        if(url == null) {
             return "redirect:/";
-        }
-
-        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //구글 로그인
@@ -111,11 +100,7 @@ public class UserController {
     public String googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         googleService.googleLogin(code, response); // 반환 값이 JWT 토큰
 
-        if(url == null) {
             return "redirect:/";
-        }
-
-        return "redirect:" + url; // 이전 페이지로 리디렉션합니다.
     }
 
     //로그아웃

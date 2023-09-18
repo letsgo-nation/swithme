@@ -74,6 +74,7 @@ function onConnected() {
 };
 
 
+// 채팅 전달
 function sendMessage(event) {
     if (stompClient) {
         var chatMessage = {
@@ -91,6 +92,7 @@ messageForm.addEventListener('submit', sendMessage, true)
 function onError(error) {
 }
 
+//메시지 수신
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
     var sender = message.sender;
