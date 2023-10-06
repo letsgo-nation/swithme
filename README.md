@@ -5,7 +5,8 @@
 <br>스윗미는 게시판, 그룹, 캘린더, 스톱워치, 채팅서비스를 제공하는 스터디 웹사이트입니다.
 
 • 개발 기간 : 2023.08.26. ~ 2023.09.18.(3주)
-<br> • 팀 노션 : [URL](https://rowan-pufferfish-a5a.notion.site/SWITHME-884f77ca6e294588a2ffe745900de845?pvs=4)
+<br> • 팀 노션 : [팀 노션](https://rowan-pufferfish-a5a.notion.site/SWITHME-7f7439e749f14811b222065339171abe?pvs=4)
+• 개인 노션 : [소원 노션](https://rowan-pufferfish-a5a.notion.site/SWITHME-884f77ca6e294588a2ffe745900de845?pvs=4)
 <br>
 <img src="https://drive.google.com/uc?id=1ycENGrTHndcqJIcovlP4X-CnNy1VERtU" />
  <br><br>
