@@ -32,8 +32,8 @@
 <img src="https://drive.google.com/uc?id=14yPLmV5HJks5JwxcZH2yNLUyuK4ILX4o" />
 
 <h2>🌐 ERD & API</h2>
-<a href="https://www.erdcloud.com/d/nsyTLkMBDYAbSdHum" > ERD </a> &
-<a href="https://www.notion.so/API-01750d96374a4aa9afc58ab496c0a65e?pvs=4" > API</a>
+<img src="https://drive.google.com/uc?id=1N0sCDaS960-ZJfM94tLuukFQZ3IkLIWh" />
+API 노션 : <a href="https://rowan-pufferfish-a5a.notion.site/API-584d0ae9f5614a8194eac183e2688ae6" > API</a>
 
 <br>
 <h2>⛏️기술 스택</h2>
@@ -68,7 +68,7 @@
 </div>
 
 <br>
-<h2><a href="https://www.notion.so/0599f43749c2427c853fa95cdaa8b238?pvs=4">🤝 협업 규칙</a></h2>
+<h2><a href="https://rowan-pufferfish-a5a.notion.site/a311b44e161b40ee99a2d9c629d1a0bd">🤝 협업 규칙</a></h2>
 <div>
        <ol>
            <li>코드 컨벤션</li>
