@@ -72,7 +72,7 @@ API 노션 : <a href="https://rowan-pufferfish-a5a.notion.site/API-584d0ae9f5614
 <h2><a href="https://rowan-pufferfish-a5a.notion.site/a311b44e161b40ee99a2d9c629d1a0bd">🤝 협업 규칙</a></h2>
 <div>
        <ol>
-           <li>코드 컨벤션</li>
+           <li>카밋 컨벤션</li>
            Commit 메시지 구조 - 제목,본문,꼬리말 세가지 파트로 나눔
            <br> 각 파트는 빈줄을 두어 구분
            <li>코드 컨벤션</li>
